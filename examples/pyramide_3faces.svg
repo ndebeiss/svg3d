@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-flat-20030114.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" 
+ width="100%" height="100%" onload="init(this)">
+	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
+	<title>SVG animation - pyramide 3 faces</title>
+	<g id="g1" onclick="toggleRotation()">
+		<path id="face0" style="fill: yellow" d="M0 -150 L-90 0 L90 0 Z">
+            <z:rotation incRotY="0.1" />
+            <z:translation z="51.5" />
+            <z:rotation rotX="0.349" />
+        </path>
+		<path id="face1" style="fill: gold" d="M0 -150 L-90 0 L90 0 Z">
+            <z:rotation rotY="2.094" incRotY="0.1" />
+            <z:translation z="51.5" />
+            <z:rotation rotX="0.349" />
+        </path>
+		<path id="face2" style="fill: goldenRod" d="M0 -150 L-90 0 L90 0 Z">
+            <z:rotation rotY="4.189" incRotY="0.1" />
+            <z:translation z="51.5" />
+            <z:rotation rotX="0.349" />
+        </path>
+	</g>
+</svg>

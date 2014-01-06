@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rng:grammar ns="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
+	xmlns:svg="http://www.w3.org/2000/svg"
+	xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+	xmlns:rng="http://relaxng.org/ns/structure/1.0"
+	xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
+	datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+	
+	<rng:start>
+		<rng:ref name="3dtransformations"/>
+	</rng:start>
+	
+	<rng:define name="3dtransformations">
+		<rng:oneOrMore>
+			<rng:choice>
+				<rng:ref name="rotation"/>
+				<rng:ref name="translation"/>
+                <rng:ref name="optimizedrotation"/>
+			</rng:choice>
+		</rng:oneOrMore>
+	</rng:define>
+	
+	<rng:define name="rotation">
+		<rng:element name="z:rotation">
+			<rng:attribute name="rotX">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="rotY">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="rotZ">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incRotX">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incRotY">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incRotZ">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+		</rng:element>
+	</rng:define>
+	
+	<rng:define name="translation">
+		<rng:element name="z:translation">
+			<rng:attribute name="x">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="y">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="z">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incX">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incY">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incZ">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+		</rng:element>
+	</rng:define>
+    
+    <rng:define name="optimizedrotation">
+		<rng:element name="z:optimizedrotation">
+			<rng:attribute name="cosX">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="cosY">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="cosZ">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incCosX">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incCosY">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incCosZ">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+            <rng:attribute name="sinX">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="sinY">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="sinZ">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incSinX">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incSinY">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+			<rng:attribute name="incSinZ">
+				<rng:data type="decimal"/>
+			</rng:attribute>
+		</rng:element>
+	</rng:define>
+	
+</rng:grammar>

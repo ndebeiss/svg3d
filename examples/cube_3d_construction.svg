@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-flat-20030114.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
+    id="body" width="640" height="480" viewBox="0 0 640 480" xml:space="preserve"
+    onload="initCustomized(this)" >
+	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
+	<script type="text/ecmascript"><![CDATA[
+	
+    
+	var rotationX = 0.2;
+	var rotationY = 0.3;
+	var rotationZ = 0.4;
+	
+	var demipi = Math.PI / 2;
+	var dpi = 2*Math.PI;
+
+	var size = 120;
+	
+	var animationSteps = "axes";
+	var animationUnderSteps = 0;
+	var animationUnderUnderSteps = new Array();
+	
+    var axeArray = new Array();
+    var faceArray = new Array();
+    var textArray = new Array();
+    
+	function initCustomized(g) {
+		axeArray[0] = shapeFactory(document.getElementById("axeX"));
+		axeArray[1] = shapeFactory(document.getElementById("axeY"));
+		axeArray[2] = shapeFactory(document.getElementById("axeZ"));
+		
+		faceArray[0] = shapeFactory(document.getElementById("face1"));
+		faceArray[1] = shapeFactory(document.getElementById("face2"));
+		faceArray[2] = shapeFactory(document.getElementById("face3"));
+		faceArray[3] = shapeFactory(document.getElementById("face4"));
+		faceArray[4] = shapeFactory(document.getElementById("face5"));
+		faceArray[5] = shapeFactory(document.getElementById("face6"));
+		
+		textArray[0] = shapeFactory(document.getElementById("text_face1"));
+		textArray[1] = shapeFactory(document.getElementById("text_face2"));
+		textArray[2] = shapeFactory(document.getElementById("text_face3"));
+		textArray[3] = shapeFactory(document.getElementById("text_face4"));
+		textArray[4] = shapeFactory(document.getElementById("text_face5"));
+		textArray[5] = shapeFactory(document.getElementById("text_face6"));
+		
+		clockRotation = window.setInterval("rotateCube()", rotationTime);
+	}
+    
+	function constructAxes(index) {
+		var matrixArray = new Array();
+		matrixArray[0] = setAnglesRotationMatrix(rotationX, rotationY, rotationZ);		
+		if (index == 2) {
+			matrixArray[1] = setAnglesRotationMatrix(0, demipi, 0);
+		}
+		axeArray[index].transform(matrixArray);
+	}
+	
+	function rotateCube() {
+		if (animationSteps == "axes") {
+			//animationUnderSteps goes from 0 to 3
+			for (var i=0 ; i<animationUnderSteps ; i++) {
+				constructAxes(i);
+			}
+			if (animationUnderSteps >= axeArray.length) {
+				animationUnderSteps = 0;
+				animationSteps = "faces";
+			} else {
+				animationUnderSteps += 0.5;
+			}
+		} else if(animationSteps == "faces") {
+			//animationUnderSteps goes from 0 to 6
+			// animationUnderUnderSteps goes from 0 to 1 for each face
+			if (animationUnderSteps >= 0 && animationUnderSteps < 1) {
+				animationUnderUnderSteps[0] = 1;
+				animationUnderSteps += 0.5;
+			} else if (animationUnderSteps >= 1 && animationUnderSteps < 2.0) {
+				animationUnderSteps += 0.2;
+				animationUnderUnderSteps[1] = animationUnderSteps - 1;
+			} else if (animationUnderSteps >= 2 && animationUnderSteps < 3) {
+				animationUnderSteps += 0.2;
+				animationUnderUnderSteps[2] = animationUnderSteps - 2;
+			} else if (animationUnderSteps >= 3 && animationUnderSteps < 4) {
+				animationUnderSteps += 0.2;
+				animationUnderUnderSteps[3] = animationUnderSteps - 3;
+			} else if (animationUnderSteps >= 4 && animationUnderSteps < 5) {
+				animationUnderSteps += 0.2;
+				animationUnderUnderSteps[4] = animationUnderSteps - 4;
+			} else if (animationUnderSteps >= 5 && animationUnderSteps < 6) {
+				animationUnderSteps += 0.2;
+				animationUnderUnderSteps[5] = animationUnderSteps - 5;
+			} else if (animationUnderSteps >= 6) {
+				animationSteps = "rotation";
+			}
+			//verify quotient as javascript mathematics is not exact science :-)
+			var j;
+			for (j in animationUnderUnderSteps) {
+				if (animationUnderUnderSteps[j] > 1.0) {
+					animationUnderUnderSteps[j] = 1;
+				}
+			}
+			if (animationUnderSteps >= 6) {
+				animationUnderSteps = 6;
+			}
+			for (var i=0 ; i<animationUnderSteps ; i++) {
+				applyTransform(i, faceArray[i], animationUnderUnderSteps[i]);
+			}
+			var indexPathsSorted = sortFacesAverageZ(faceArray);
+            sortFaces(faceArray, indexPathsSorted);
+			
+		} else if(animationSteps == "rotation") {
+			incrementRotation(0.04, 0.03, 0.02);
+			for (var i=0 ; i<faceArray.length ; i++) {
+				applyTransform(i, faceArray[i], 1);
+			}
+			var indexPathsSorted = sortFacesAverageZ(faceArray);
+            sortFaces(faceArray, indexPathsSorted);
+		}
+	}
+	
+	function applyTransform(index, face, quotient) {
+		var matrixArray = new Array();
+		//is applied to everything
+		matrixArray[0] = setAnglesRotationMatrix(rotationX, rotationY, rotationZ);
+		if (index == 1) {
+			matrixArray[1] = setAnglesRotationMatrix(-demipi*quotient, 0, 0);
+		} else if (index == 2) {
+			matrixArray[1] = setAnglesRotationMatrix(0, -demipi*quotient, 0);
+		} else if (index == 3) {
+			matrixArray[1] = setTranslationMatrix(0, 0, -size*quotient);
+		} else if (index == 4) {
+			matrixArray[1] = setTranslationMatrix(0, size*quotient, 0);
+			matrixArray[2] = setAnglesRotationMatrix(-demipi*quotient, 0, 0);
+		} else if (index == 5) {
+			matrixArray[1] = setTranslationMatrix(size*quotient, 0, 0);
+			matrixArray[2] = setAnglesRotationMatrix(0, -demipi*quotient, 0);
+		}
+		face.transform(matrixArray);
+		textArray[index].transform(matrixArray);
+	}
+	
+	
+	function incrementRotation(incRotX, incRotY, incRotZ) {
+		rotationX += incRotX;
+		if (rotationX > dpi) {
+			rotationX -= dpi;
+		}		
+		rotationY += incRotY;
+		if (rotationY > dpi) {
+			rotationY -= dpi;
+		}
+		rotationZ += incRotZ;
+		if (rotationZ > dpi) {
+			rotationZ -= dpi;
+		}
+	}
+
+]]></script>
+	<title>SVG Animation - Cube Demonstration</title>
+	
+	
+	<path id="axeX" style="fill: red; stroke-width: 1px; stroke: red" d="M0,0L400,0z"/>
+	<path id="axeY" style="fill: blue; stroke-width: 1px; stroke: blue" d="M0,0L0,400z"/>
+	<path id="axeZ" style="fill: green; stroke-width: 1px; stroke: green" d="M0,0L400,0z"/>
+	
+	<g id="g2" onclick="toggleRotation()" z:sortAlgo="none">
+		<path id="face1" style="fill: red; opacity: 0.6;" d="M0,0L120,0L120,120L0,120z" />
+		<!-- x 20,20 40,100 30,60 20,100 40,20 -->
+		<!-- html -->
+		<path id="text_face1" style="fill: none; stroke-width: 2px; stroke: black" d="M20,20L20,100 M20,60L40,60 M40,100L40,20 M45,20L55,20L55,100 M55,20L65,20 M70,100L70,20L80,60L90,20L90,100 M95,20L95,100L115,100" />
+		
+		<path id="face2" style="fill: blue; opacity: 0.6;" d="M0,0L120,0L120,120L0,120z" />
+		<!-- xml -->
+		<path id="text_face2" style="fill: none; stroke-width: 2px; stroke: black" d="M20,20L40,100 M20,100L40,20 M45,100L45,20L55,60L65,20L65,100 M70,20L70,100L90,100" />
+		
+		<path id="face3" style="fill: green; opacity: 0.6;" d="M0,0L120,0L120,120L0,120z" />
+		<!-- rng -->
+		<path id="text_face3" style="fill: none; stroke-width: 2px; stroke: black" d="M20,100 L20,20 C45,20 45,60 20,60 L40,100 M45,100 L45,20 L65,100 L65,20 M90,50 C65,-60 65,180 90,70 L80,70" />
+		
+		<path id="face4" style="fill: yellow; opacity: 0.6;" d="M0,0L120,0L120,120L0,120z" />
+		<!-- xsd -->
+		<path id="text_face4" style="fill: none; stroke-width: 2px; stroke: black;" d="M20,20L40,100 M20,100L40,20 M65,30C40,0 40,55 55,60C70,65 70,120 45,90 M70,20C100,20 100,100 70,100L70,20"/>
+		
+		<path id="face5" style="fill: grey; opacity: 0.6;" d="M0,0L120,0L120,120L0,120z" />
+		<!--  -->
+		<path id="text_face5" style="display: none" d="0,0" />
+		
+		<path id="face6" style="fill: purple; opacity: 0.6;" d="M0,0L120,0L120,120L0,120z" />
+		<!-- -->
+		<path id="text_face6" style="display: none" d="0,0" />
+		
+	</g>
+	
+	
+</svg>

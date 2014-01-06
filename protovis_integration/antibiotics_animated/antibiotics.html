@@ -1,0 +1,254 @@
+<html>
+  <head>
+    <title>Antibiotic Effectiveness</title>
+    <link type="text/css" href="../ex.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../protovis-r3.3.js"></script>
+    <script type="text/javascript" src="antibiotics.js"></script>
+    <script type="text/ecmascript" src="svg3d/svg3d.js"></script>
+    <script type="text/ecmascript" src="svg3d/svg3d_parsing.js"></script>
+    <script type="text/ecmascript" src="svg3d/dom_utils.js"></script>
+
+    <style type="text/css">
+
+body {
+  background: rgb(240, 225, 210);
+}
+
+#fig {
+  height: 800px;
+  width: 700px;
+}
+
+#selector {
+  margin-left: 20px;
+  margin-top: 50px;
+}
+
+#selector #help {
+  padding-bottom: 20px;
+  padding-left: 10px;
+}
+
+#selector .bacteria {
+  border: 1px solid;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#selector label:hover {
+  text-decoration: blink;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+    </style>
+  </head>
+  <body>
+
+<div id="selector">
+<div id="help">
+Pass your mouse pointer over the bacteria in order to see the values on the scale :
+</div>
+
+</div>
+<script type="text/javascript">
+
+var svg;
+var gList;
+var chosenPie;
+var clockRotation;
+var anim;
+var endingAngle;
+var actualAngle = 0;
+var initialized = false;
+function turnChart(i) {
+   if (!initialized) {
+      initialized = true;
+      svg = document.getElementsByTagName("svg")[0];
+      gList = svg.getElementsByTagName("g");
+      svg.setAttribute("xmlns:z", "http://debeissat.nicolas.free.fr/svg3d/svg3d.rng");
+      svg.setAttribute("z:xOrigin", "0");
+      svg.setAttribute("z:yOrigin", "0");
+      svg.setAttribute("z:sortAlgo", "none");
+      svg.setAttribute("onclick", "toggleRotation()");
+      initObjects(svg);
+   }
+   anim = 0;
+   chosenPie = i;
+   endingAngle = ( chosenPie + 1 ) * 2.0 * Math.PI / (bacteria.length + 1);
+   //take the short way
+   if ((endingAngle - actualAngle) > Math.PI) {
+      endingAngle -= Math.PI * 2.0;
+   }
+   clockRotation = window.clearInterval(clockRotation);
+   clockRotation = window.setInterval("doTransform()", 200);
+}
+
+function doTransform() {
+   //step starts from 7 and ends at 1;
+   var step = 7 - anim;
+   actualAngle = actualAngle + (endingAngle - actualAngle) / step;
+   setRotationTag(gList[0], step);
+   setRotationTag(gList[1], step);
+   setRotationTag(gList[2], step);
+   setRotationTag(gList[3], step);
+   setRotationTag(gList[6], step); 
+   transform();
+   anim++;
+   if (step === 1) {
+       clockRotation = window.clearInterval(clockRotation);
+   }
+}
+
+function setRotationTag(g, step) {
+   var pathList = g.getElementsByTagName("path");
+   var pathListLen = pathList.length;
+   for (var j = 0 ; j < pathListLen ; j++) {
+       var path = pathList[j];
+       var rotationList = path.getElementsByTagName("rotation");
+       if (rotationList.length === 0) {
+           var rotation = document.createElement("rotation");
+           rotation.setAttribute("rotZ", actualAngle);
+           path.appendChild(rotation);
+       } else {
+           var rotation = rotationList[0];
+           rotation.setAttribute("rotZ", actualAngle);
+       }
+       
+   }
+}
+
+var selector = document.getElementById("selector");
+var len = bacteria.length;
+for (var i = 0 ; i < len ; i++) {
+   var newdiv = document.createElement("div");
+   newdiv.setAttribute("class", "bacteria");
+   newdiv.innerHTML = "<label onmouseover='turnChart(" + i + ")'>" + bacteria[i].name + "</label>";
+   selector.appendChild(newdiv);
+}
+</script>
+
+<div id="center"><div id="fig">
+    <script type="text/javascript+protovis">
+
+/* Basic dimensions. */
+var width = 700,
+    height = 700,
+    innerRadius = 90,
+    outerRadius = 300 - 10;
+
+/* Colors. */
+var drugColor = {
+    Penicillin: "rgb(10, 50, 100)",
+    Streptomycin: "rgb(200, 70, 50)",
+    Neomycin: "black"
+  }, gramColor = {
+    positive: "rgba(174, 174, 184, .8)",
+    negative: "rgba(230, 130, 110, .8)"
+  };
+
+/* Burtin's radius encoding is, as far as I can tell, sqrt(log(mic)). */
+var min = Math.sqrt(Math.log(.001 * 1E4)),
+    max = Math.sqrt(Math.log(1000 * 1E4)),
+    a = (outerRadius - innerRadius) / (min - max),
+    b = innerRadius - a * max,
+    radius = function(mic) a * Math.sqrt(Math.log(mic * 1E4)) + b;
+
+/*
+ * The pie is split into equal sections for each bacteria, with a blank
+ * section at the top for the grid labels. Each wedge is further
+ * subdivided to make room for the three antibiotics, equispaced.
+ */
+var bigAngle = 2.0 * Math.PI / (bacteria.length + 1),
+    smallAngle = bigAngle / 7;
+
+/* The root panel. */
+var vis = new pv.Panel()
+    .width(width)
+    .height(height)
+    .bottom(100);
+
+/* Background wedges to indicate gram staining color. */
+var bg = vis.add(pv.Wedge)
+    .data(bacteria) // assumes Burtin's order
+    .left(width / 2)
+    .top(height / 2)
+    .innerRadius(innerRadius)
+    .outerRadius(outerRadius)
+    .angle(bigAngle)
+    .startAngle(function(d) this.index * bigAngle + bigAngle / 2 - Math.PI / 2)
+    .fillStyle(function(d) gramColor[d.gram]);
+
+/* Antibiotics. */
+bg.add(pv.Wedge)
+    .angle(smallAngle)
+    .startAngle(function(d) bg.startAngle() + smallAngle)
+    .outerRadius(function(d) radius(d.penicillin))
+    .fillStyle(drugColor.Penicillin)
+  .add(pv.Wedge)
+    .startAngle(function(d) this.proto.startAngle() + 2 * smallAngle)
+    .outerRadius(function(d) radius(d.streptomycin))
+    .fillStyle(drugColor.Streptomycin)
+  .add(pv.Wedge)
+    .outerRadius(function(d) radius(d.neomycin))
+    .fillStyle(drugColor.Neomycin);
+
+/* Circular grid lines. */
+bg.add(pv.Dot)
+    .data(pv.range(-3, 4))
+    .fillStyle(null)
+    .strokeStyle("#eee")
+    .lineWidth(1)
+    .shapeSize(function(i) Math.pow(radius(Math.pow(10, i)), 2))
+  .anchor("top").add(pv.Label)
+    .visible(function(i) i < 3)
+    .textBaseline("middle")
+    .text(function(i) Math.pow(10, i).toFixed((i > 0) ? 0 : -i));
+
+/* Radial grid lines. */
+bg.add(pv.Wedge)
+    .data(pv.range(bacteria.length + 1))
+    .innerRadius(innerRadius - 10)
+    .outerRadius(outerRadius + 10)
+    .fillStyle(null)
+    .strokeStyle("black")
+    .angle(0);
+
+/* Labels. */
+bg.anchor("outer").add(pv.Label)
+    .textAlign("center")
+    .text(function(d) d.bacteria);
+
+/* Antibiotic legend. */
+vis.add(pv.Bar)
+    .data(pv.keys(drugColor))
+    .right(width / 2 + 3)
+    .top(function() height / 2 - 28 + this.index * 18)
+    .fillStyle(function(d) drugColor[d])
+    .width(36)
+    .height(12)
+  .anchor("right").add(pv.Label)
+    .textMargin(6)
+    .textAlign("left");
+
+/* Gram-stain legend. */
+vis.add(pv.Dot)
+    .data(pv.keys(gramColor))
+    .left(width / 2 - 20)
+    .bottom(function() -60 + this.index * 18)
+    .fillStyle(function(d) gramColor[d])
+    .strokeStyle(null)
+    .shapeSize(30)
+  .anchor("right").add(pv.Label)
+    .textMargin(6)
+    .textAlign("left")
+    .text(function(d) "Gram-" + d);
+
+vis.render();
+
+    </script>
+  </div>
+  </div>
+</body>
+</html>

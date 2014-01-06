@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
+onload="init(this)" z:xInfinite="0" z:yInfinite="0" z:rotationTime="300" z:sortAlgo="none">
+  <desc>Example rect01 - rectangle with sharp corners</desc>
+    <g xmlns:xlink="http://www.w3.org/1999/xlink"
+       onclick="toggleRotation()">
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js"></script>
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js"></script>
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js"></script>
+      <!-- Show outline of canvas using 'rect' element -->
+      <rect x="1" y="1" width="600" height="300" rx="20" ry="10" fill="none" stroke="blue" stroke-width="2" >
+            <z:translation x="300" y="100" />
+            <z:rotation incRotY="0.2" />
+            <z:translation x="-300" y="-100" />
+        </rect>
+
+      <rect x="100" y="100" width="400" height="100" rx="10" ry="5" fill="yellow" stroke="navy" stroke-width="10" >
+            <z:translation x="300" y="100" />
+            <z:rotation incRotY="0.2" />
+            <z:translation x="-300" y="-100" />
+        </rect>
+    </g>
+</svg>

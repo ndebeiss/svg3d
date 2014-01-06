@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-flat-20030114.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" width="100%" height="100%"
+ onload="init(this)" z:rotationTime="300" z:sortAlgo="allToAll" z:showDirectorVector="true">
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
+    
+	<title>SVG animation - Ball</title>
+    <g id="g1" onclick="toggleRotation()">
+    	<path id="purple" style="fill: purple;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path id="indigo" style="fill: indigo;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="0.571" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path id="blue" style="fill: blue;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="1.142" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path id="cyan" style="fill: cyan;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="1.714" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+        <path id="Aquamarine" style="fill: Aquamarine;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="2.285" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path id="green" style="fill: green;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="2.856" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path id="greenyellow" style="fill: greenyellow;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="3.427" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path id="yellow" style="fill: yellow;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="3.998" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path id="orange" style="fill: orange;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="4.57" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path id="red" style="fill: red;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="5.141" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+        <path id="FireBrick" style="fill: FireBrick;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="5.712" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    </g>
+</svg>

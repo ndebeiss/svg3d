@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-flat-20030114.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
+onload="init(this)" z:showDirectorVector="true" z:zRatio="0.2" z:xInfinite="0" z:yInfinite="0" z:focalDistance="800" z:sortAlgo="allToAll">
+ 	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
+	<title>SVG Animation - Cube Demonstration</title>
+	
+	<g id="g2" onclick="toggleRotation()">
+		<path style="fill: red;" d="M200,200,-10 L 300,200,-110 L 300,300,-110 L 200,300,-10z" z:threeD="true">
+        </path>
+        <path style="fill: darkorange;" d="M200,100,0 L 300,100,-100 L 300,250,-100 L 200,250,0z" z:threeD="true">
+            <z:translation x="200" y="200" />
+            <z:rotation incRotY="0.03"/>
+            <z:translation x="-200" y="-200" />
+        </path>
+        <path style="fill: orange;" d="M100,250,110 L 300,250,-90 L 300,300,-90 L 100,300,110z" z:threeD="true">
+        </path>
+        <path style="fill: yellow;" d="M100,200,120 L 200,200,20 L 200,300,20 L 100,300,120z" z:threeD="true">
+        </path>
+	</g>
+	
+</svg>

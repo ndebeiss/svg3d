@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-flat-20030114.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" width="100%" height="100%" onload="init(this)" z:sortAlgo="allToAll">
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
+	<title>SVG animation - Ball</title>
+    <g id="g1" onclick="toggleRotation()">
+    	<path style="fill: black;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path style="fill: purple;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="0.628" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path style="fill: indigo;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="1.257" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path style="fill: blue;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="1.885" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path style="fill: cyan;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="2.513" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path style="fill: green;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="3.142" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path style="fill: greenyellow;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="3.770" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path style="fill: yellow;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="4.398" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path style="fill: orange;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="5.027" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    	<path style="fill: red;" d="M-60,0 C-60,90 60,90 60,0">
+            <z:rotation rotX="5.655" incRotX="0.07" incRotY="0.1" incRotZ="0.3"/>
+        </path>
+    </g>
+</svg>

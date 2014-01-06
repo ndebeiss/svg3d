@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-flat-20030114.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
+onload="init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="120" z:focalDistance="1200" >
+ 	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />    
+	<title>SVG Animation - Cube Demonstration</title>
+	
+	<g id="g2" onclick="toggleRotation()">
+        <!-- z face -->
+		<path id="red" style="fill: red;" d="M-60,-60,-60L60,-60,-60L60,60,-60L-60,60,-60z" z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+        </path>
+		<!-- html -->
+		<path id="html" style="fill: none; stroke-width: 2px; stroke: black" d="M-40,-40,-61L-40,40,-61 M-40,0,-61L-20,0,-61 M-20,40,-61L-20,-40,-61 M-15,-40,-61L-5,-40,-61L-5,40,-61 M-5,-40,-61L5,-40,-61 M10,40,-61L10,-40,-61L20,0,-61L30,-40,-61L30,40,-61 M35,-40,-61L35,40,-61L55,40,-61" z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+        </path>
+		
+        <!-- y face -->
+		<path id="blue" style="fill: blue;" d="M-60,-60,-60L60,-60,-60L60,-60,60L-60,-60,60z" z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+        </path>
+		<!-- xml -->
+		<path id="xml" style="fill: none; stroke-width: 2px; stroke: black" d="M-40,-61,-40L-20,-61,40 M-40,-61,40L-20,-61,-40 M-15,-61,40L-15,-61,-40L-5,-61,0L5,-61,-40L5,-61,40 M10,-61,-40L10,-61,40L30,-61,40" z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+        </path>
+		
+        <!-- x face -->
+		<path id="green" style="fill: green;" d="M-60,-60,-60L-60,60,-60L-60,60,60L-60,-60,60z" z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+        </path>
+		<!-- rng -->
+		<path id="rng" style="fill: none; stroke-width: 2px; stroke: black" d="M-61,-40,40 L-61,-40,-40 C-61,-15,-40 -61,-15,0 -61,-40,0 L-61,-20,40 M-61,-15,40 L-61,-15,-40 L-61,5,40 L-61,5,-40 M-61,30,-10 C-61,5,-120 -61,5,120 -61,30,10 L-61,20,10" z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+        </path>
+		
+        <!-- z face -->
+		<path id="yellow" style="fill: yellow;" d="M-60,-60,60L60,-60,60L60,60,60L-60,60,60z" z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+        </path>
+        <!-- xsd -->
+		<path id="xsd" style="fill: none; stroke-width: 2px; stroke: black;" d="M-40,-40,61L-20,40,61 M-40,40,61L-20,-40,61 M5,-30,61C-20,-60,61 -20,-5,61 -5,0,61C10,5,61 10,60,61 -15,30,61 M10,-40,61C40,-40,61 40,40,61 10,40,61L10,-40,61" z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+        </path>
+		
+        <!-- y face -->
+		<path id="grey" style="fill: grey;" d="M-60,60,-60L60,60,-60L60,60,60L-60,60,60z" z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+        </path>
+		
+        <!-- x face -->
+		<path id="purple" style="fill: purple;" d="M60,-60,-60L60,60,-60L60,60,60L60,-60,60z" z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+        </path>
+		
+	</g>
+	
+</svg>

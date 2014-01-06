@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body" xml:space="preserve" onload="init(evt)" >
+	<script xlink:href="../svg3d/svg3d.js" />
+	<script type="text/ecmascript"><![CDATA[
+
+	var focalDistance = 400;
+	//the bigger it is, the less the z length is deformed
+	var zRatio = 3;
+	
+	var xInfinite = 300;
+    var yInfinite = 300;
+    
+	var axeArray = new Array();
+    var faceArray = new Array();
+    var textArray = new Array();
+    
+	var rotationX = 0;
+	var rotationY = 0;
+	var rotationZ = 0;
+	
+	var angle = Math.PI / 2;
+	var dpi = 2*Math.PI;
+	var size = 180;
+	
+    var rotationTime = 150;
+	var clockRotation;
+	
+	function init(evt) {
+		faceArray[0] = new Path(document.getElementById('face0'));
+		faceArray[1] = new Path(document.getElementById('face1'));
+		faceArray[2] = new Path(document.getElementById('face2'));
+		faceArray[3] = new Path(document.getElementById('face3'));
+		faceArray[4] = new Path(document.getElementById('face4'));
+		faceArray[5] = new Path(document.getElementById('face5'));
+		
+		textArray[0] = new Path(document.getElementById('text_face0'));
+		textArray[1] = new Path(document.getElementById('text_face1'));
+		textArray[2] = new Path(document.getElementById('text_face2'));
+		textArray[3] = new Path(document.getElementById('text_face3'));
+		textArray[4] = new Path(document.getElementById('text_face4'));
+		textArray[5] = new Path(document.getElementById('text_face5'));
+		
+		clockRotation = window.setInterval("rotateCube()", rotationTime);
+	}
+	
+	function toggleRotation() {
+		if (!clockRotation) {
+			clockRotation = window.setInterval("rotateCube()", rotationTime);
+		} else {
+			clockRotation = window.clearInterval(clockRotation);
+		}
+	}
+	
+	function rotateCube() {
+		var i;
+		for (i in faceArray) {
+			applyTransform(i,faceArray[i]);
+		}
+		sortFaces()
+		incrementRotation(0.07,0.03,0.02);
+	}
+	
+	function sortFaces() {
+		//will contain the index of the faces in the order they have to be displayed
+		var indexPathsSorted = sortZ(faceArray);
+		var parentNode = faceArray[0].domNode.parentNode;
+		for (i in indexPathsSorted) {
+			var index = indexPathsSorted[i];
+			if (i > 2) {
+				//no need to remove child before
+				parentNode.appendChild(faceArray[index].domNode);
+				
+				applyTransform(index,textArray[index]);
+				parentNode.appendChild(textArray[index].domNode);
+				
+				faceArray[index].domNode.style.display = "";
+				textArray[index].domNode.style.display = "";
+			} else {
+				faceArray[index].domNode.style.display = "none";
+				textArray[index].domNode.style.display = "none";
+			}
+		}
+	}
+	
+	function applyTransform(index,face) {
+		var matrixArray = new Array();
+		//is applied to everything
+		matrixArray[0] = setAnglesRotationMatrix(rotationX,rotationY,rotationZ);
+		if (index == 0) {
+			matrixArray[1] = setTranslationMatrix(0,0,-size);
+		} else if (index == 1) {
+			matrixArray[1] = setTranslationMatrix(0,-size,0);
+			matrixArray[2] = setRotationMatrix(0,-1,1,0,1,0);
+		} else if (index == 2) {
+			matrixArray[1] = setTranslationMatrix(-size,0,0);
+			matrixArray[2] = setRotationMatrix(1,0,0,-1,1,0);
+		} else if (index == 3) {
+			matrixArray[1] = setTranslationMatrix(0,0,size);
+		} else if (index == 4) {
+			matrixArray[1] = setTranslationMatrix(0,size,0);
+			matrixArray[2] = setRotationMatrix(0,-1,1,0,1,0);
+		} else if (index == 5) {
+			matrixArray[1] = setTranslationMatrix(size,0,0);
+			matrixArray[2] = setRotationMatrix(1,0,0,-1,1,0);
+		}
+		transformPath(face,matrixArray);
+	}
+	
+	function incrementRotation(incRotX,incRotY,incRotZ) {
+		rotationX += incRotX;
+		if (rotationX > dpi) {
+			rotationX -= dpi;
+		}		
+		rotationY += incRotY;
+		if (rotationY > dpi) {
+			rotationY -= dpi;
+		}
+		rotationZ += incRotZ;
+		if (rotationZ > dpi) {
+			rotationZ -= dpi;
+		}
+	}
+	
+	
+]]></script>
+	<title>SVG Animation - Cube Demonstration</title>
+	
+	<g id="g2" onclick="toggleRotation()">
+		<path id="face0" style="fill: red;" d="M-180,-180L180,-180L180,180L-180,180z" />
+		<!-- x 20,20 40,100 30,60 20,100 40,20 -->
+		<!-- html -->
+		<path id="text_face0" style="fill: none; stroke-width: 2px; stroke: black" d="M-140,120L-80,120L-80,-120 M-65,120L-65,-120L-35,0L5,-120L5,120 M10,-120L70,-120 M40,-120L40,120 M85,-120L85,120 M85,0L145,0 M145,-120L145,120" />
+		
+		<path id="face1" style="fill: royalblue;" d="M-180,-180L180,-180L180,180L-180,180z" />
+		<!-- xml -->
+		<path id="text_face1" style="fill: none; stroke-width: 2px; stroke: black" d="M-120,-120L-60,120 M-120,120L-60,-120 M-45,120L-45,-120L-15,0L15,-120L15,120 M30,-120L30,120L90,120" />
+		
+		<path id="face2" style="fill: yellow;" d="M-180,-180L180,-180L180,180L-180,180z" />
+		<!-- rng -->
+		<path id="text_face2" style="fill: none; stroke-width: 2px; stroke: black" d="M-120,120 L-120,-120 C-45,-120 -45,0 -120,0 L-60,120 M-45,120 L-45,-120 L15,120 L15,-120 M90,-30 C15,-360 15,360 90,30 L60,30" />
+		
+		<path id="face3" style="fill: orange;" d="M-180,-180L180,-180L180,180L-180,180z" />
+		<!-- xsd -->
+		<path id="text_face3" style="fill: none; stroke-width: 2px; stroke: black;" d="M-120,-120L-60,120 M-120,120L-60,-120 M15,-90C-60,-180 -60,-15 -15,0C30,15 30,180 -45,90 M30,-120C120,-120 120,120 30,120L30,-120" />
+		
+		<path id="face4" style="fill: limegreen;" d="M-180,-180L180,-180L180,180L-180,180z" />
+		<!-- svg -->
+		<path id="text_face4" style="fill: none; stroke-width: 2px; stroke: black;" d="M-90,30L-120,30C-45,360 -45,-360 -120,-30 M-45,-120L-15,120L15,-120 M30,-90C105,-180 105,-15 60,0C15,15 15,180 90,90" />
+		
+		<path id="face5" style="fill: white;" d="M-180,-180L180,-180L180,180L-180,180z" />
+		<!-- xsl -->
+		<path id="text_face5" style="fill: none; stroke-width: 2px; stroke: black;" d="M-140,120L-80,120L-80,-120 M-65,-90C10,-180 10,-15 -35,0C-80,15 -80,180 -5,90 M10,-120L70,120 M10,120L70,-120" />
+		
+		
+	</g>
+	
+</svg>
