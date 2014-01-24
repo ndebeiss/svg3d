@@ -1,5 +1,5 @@
 /*
-Copyright or © or Copr. Nicolas Debeissat
+Copyright or Â© or Copr. Nicolas Debeissat
 
 nicolas.debeissat@gmail.com (http://debeissat.nicolas.free.fr/)
 
@@ -34,19 +34,25 @@ knowledge of the CeCILL license and that you accept its terms.
 
 */
 
+(function( window ) {
+
+if (window.svg3d === undefined) {
+    window.svg3d = function() {};
+}
+
 //distance from the eye to the screen
-var focalDistance = 400;
+svg3d.focalDistance = 400;
 //z is divided by this ratio in order not to deform too much the image
 // applying a very big perspective
-var zRatio = 3;
+svg3d.zRatio = 3;
 
 //sorting algorithm used
-var AVERAGE_Z = "averageZ";
-var ONE_TO_ALL = "oneToAll";
-var ALL_TO_ALL = "allToAll";
+svg3d.AVERAGE_Z = "averageZ";
+svg3d.ONE_TO_ALL = "oneToAll";
+svg3d.ALL_TO_ALL = "allToAll";
 //no sorting of faces
-var NONE = "none";
-var sortAlgo = ONE_TO_ALL;
+svg3d.NONE = "none";
+svg3d.sortAlgo = svg3d.ONE_TO_ALL;
 
 //transformations used
 var ROTATION = "rotation";
@@ -56,73 +62,73 @@ var OPTIMIZED_ROTATION = "optimizedrotation";
 var PATH = "path";
 var POLYLINE = "polyline";
 
-var xOrigin = 0;
-var yOrigin = 0;
+svg3d.xOrigin = 0;
+svg3d.yOrigin = 0;
 
-var xInfinite = 150;
-var yInfinite = 150;
+svg3d.xInfinite = 150;
+svg3d.yInfinite = 150;
 
 var objects;
 
-var rotationTime = 50;
+svg3d.rotationTime = 50;
 
 var debugDirectorVector = false;
 
-var clockRotation;
+svg3d.clockRotation = undefined;
 
-function init(g) {
-    initObjects(g);
-    clockRotation = window.setInterval(transform, rotationTime);
+svg3d.init = function(g) {
+    svg3d.initObjects(g);
+    svg3d.clockRotation = window.setInterval(svg3d.transform, svg3d.rotationTime);
 }
 
-function initObjects(g) {
+svg3d.initObjects = function(g) {
     var focalDistanceAttr = g.getAttribute("z:focalDistance");
     // can not be changed to !== as DOM returns null
     if (focalDistanceAttr != undefined) {
-        focalDistance = parseFloat(focalDistanceAttr);
+        svg3d.focalDistance = parseFloat(focalDistanceAttr);
     }
     var zRatioAttr = g.getAttribute("z:zRatio");
     if (zRatioAttr != undefined) {
-        zRatio = parseFloat(zRatioAttr);
+        svg3d.zRatio = parseFloat(zRatioAttr);
     }
     var xOriginAttr = g.getAttribute("z:xOrigin");
     if (xOriginAttr != undefined) {
-        xOrigin = parseFloat(xOriginAttr);
+        svg3d.xOrigin = parseFloat(xOriginAttr);
     }
     var yOriginAttr = g.getAttribute("z:yOrigin");
     if (yOriginAttr != undefined) {
-        yOrigin = parseFloat(yOriginAttr);
+        svg3d.yOrigin = parseFloat(yOriginAttr);
     }
     var xInfiniteAttr = g.getAttribute("z:xInfinite");
     if (xInfiniteAttr != undefined) {
-        xInfinite = parseFloat(xInfiniteAttr);
+        svg3d.xInfinite = parseFloat(xInfiniteAttr);
     }
     var yInfiniteAttr = g.getAttribute("z:yInfinite");
     if (yInfiniteAttr != undefined) {
-        yInfinite = parseFloat(yInfiniteAttr);
+        svg3d.yInfinite = parseFloat(yInfiniteAttr);
     }
     var rotationTimeAttr = g.getAttribute("z:rotationTime");
     if (rotationTimeAttr != undefined) {
-        rotationTime = parseFloat(rotationTimeAttr);
+        svg3d.rotationTime = parseFloat(rotationTimeAttr);
     }
     var sortAlgoAttr = g.getAttribute("z:sortAlgo");
     if (sortAlgoAttr != undefined) {
-        sortAlgo = sortAlgoAttr;
+        svg3d.sortAlgo = sortAlgoAttr;
     }
     var debugDirectorVectorAttr = g.getAttribute("z:showDirectorVector");
     if (debugDirectorVectorAttr != undefined) {
         debugDirectorVector = debugDirectorVectorAttr === "true";
     }
     objects = [];
-    createObjects(g);
+    svg3d.createObjects(g);
 }
 
-function createObjects(g) {
+svg3d.createObjects = function(g) {
     for (var node = getFirstChildElement(g) ; node ; node = getNextSiblingElement(node)) {
         if (node.localName === "g") {
-            createObjects(node);
+            svg3d.createObjects(node);
         } else {
-            var shape = shapeFactory(node);
+            var shape = svg3d.shapeFactory(node);
             if (shape) {
                 objects.push(shape);
             }
@@ -130,46 +136,46 @@ function createObjects(g) {
     }
 }
 
-function toggleRotation() {
-    if (!clockRotation) {
-        clockRotation = window.setInterval(transform, rotationTime);
+svg3d.toggleRotation = function() {
+    if (!svg3d.clockRotation) {
+        svg3d.clockRotation = window.setInterval(svg3d.transform, svg3d.rotationTime);
     } else {
-        clockRotation = window.clearInterval(clockRotation);
+        svg3d.clockRotation = window.clearInterval(svg3d.clockRotation);
     }
 }	
 
-function transform() {
+svg3d.transform = function() {
     var i = objects.length;
     while (i--) {
-        applyTransform(objects[i]);
+        svg3d.applyTransform(objects[i]);
     }
-    sort(objects);
+    svg3d.sort(objects);
 }
 
-function sort(objectArray) {
+svg3d.sort = function(objectArray) {
     var indexPathsSorted;
-    switch (sortAlgo) {
-        case NONE:
+    switch (svg3d.sortAlgo) {
+        case svg3d.NONE:
             break;
-        case AVERAGE_Z:
-            indexPathsSorted = sortFacesAverageZ(objectArray);
-            sortFaces(objectArray, indexPathsSorted);
+        case svg3d.AVERAGE_Z:
+            indexPathsSorted = svg3d.sortFacesAverageZ(objectArray);
+            svg3d.sortFaces(objectArray, indexPathsSorted);
             break;
-        case ALL_TO_ALL:
-            indexPathsSorted = sortFacesAllToAll(objectArray);
-            sortFaces(objectArray, indexPathsSorted);
+        case svg3d.ALL_TO_ALL:
+            indexPathsSorted = svg3d.sortFacesAllToAll(objectArray);
+            svg3d.sortFaces(objectArray, indexPathsSorted);
             showDirectorVectorsIfNeeded();
             break;
         default:
-            indexPathsSorted = sortFacesOneToAll(objectArray);
-            sortFaces(objectArray, indexPathsSorted);
-            showDirectorVectorsIfNeeded();
+            indexPathsSorted = svg3d.sortFacesOneToAll(objectArray);
+            svg3d.sortFaces(objectArray, indexPathsSorted);
+            svg3d.showDirectorVectorsIfNeeded();
             break;
     }
 }
 
 //indexPathsSorted contains the index of the objects in the order they have to be displayed, from front to behind
-function sortFaces(objectArray, indexPathsSorted) {
+svg3d.sortFaces = function(objectArray, indexPathsSorted) {
     var previousDomNode = objectArray[indexPathsSorted[0]].domNode;
     var parentNode = previousDomNode.parentNode;
     var length = indexPathsSorted.length;
@@ -205,18 +211,18 @@ function showDirectorVectorsIfNeeded() {
     }
 }
 
-function applyTransform(object) {
+svg3d.applyTransform = function(object) {
     var matrixArray = [];
     for (var node = getFirstChildElement(object.domNode) ; node ; node = getNextSiblingElement(node)) {
         switch (node.localName) {
             case ROTATION:
-                matrixArray.push(getRotation(node));
+                matrixArray.push(svg3d.getRotation(node));
                 break;
             case TRANSLATION:
-                matrixArray.push(getTranslation(node));
+                matrixArray.push(svg3d.getTranslation(node));
                 break;
             default:
-                matrixArray.push(getOptimizedRotation(node));
+                matrixArray.push(svg3d.getOptimizedRotation(node));
                 break;
         }
     }
@@ -226,31 +232,31 @@ function applyTransform(object) {
 /*
 rotation is specified by rotX, rotY, ...
 */
-function getRotation(node) {
+svg3d.getRotation = function(node) {
     var rotX = getAttrValue(node, "rotX", "incRotX");
     var rotY = getAttrValue(node, "rotY", "incRotY");
     var rotZ = getAttrValue(node, "rotZ", "incRotZ");
-    return setAnglesRotationMatrix(rotX, rotY, rotZ);
+    return svg3d.setAnglesRotationMatrix(rotX, rotY, rotZ);
 }
 
 /*
 rotation is specified by cos x, cos y, etc...
 */
-function getOptimizedRotation(node) {
+svg3d.getOptimizedRotation = function(node) {
     var cosX = getAttrValue(node, "cosX", "incCosX");
     var cosY = getAttrValue(node, "cosY", "incCosY");
     var cosZ = getAttrValue(node, "cosZ", "incCosZ");
     var sinX = getAttrValue(node, "sinX", "incSinX");
     var sinY = getAttrValue(node, "sinY", "incSinY");
     var sinZ = getAttrValue(node, "sinZ", "incSinZ");
-    return setRotationMatrix(cosX, sinX, cosY, sinY, cosZ, sinZ);
+    return svg3d.setRotationMatrix(cosX, sinX, cosY, sinY, cosZ, sinZ);
 }
 
-function getTranslation(node) {
+svg3d.getTranslation = function(node) {
     var x = getAttrValue(node, "x", "incX");
     var y = getAttrValue(node, "y", "incY");
     var z = getAttrValue(node, "z", "incZ");
-    return setTranslationMatrix(x, y, z);
+    return svg3d.setTranslationMatrix(x, y, z);
 }
 
 function getAttrValue(node, tag, incTag) {
@@ -267,3 +273,5 @@ function getAttrValue(node, tag, incTag) {
     }
     return returnedValue;
 }
+
+})( window );

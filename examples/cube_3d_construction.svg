@@ -29,32 +29,32 @@
     var textArray = new Array();
     
 	function initCustomized(g) {
-		axeArray[0] = shapeFactory(document.getElementById("axeX"));
-		axeArray[1] = shapeFactory(document.getElementById("axeY"));
-		axeArray[2] = shapeFactory(document.getElementById("axeZ"));
+		axeArray[0] = svg3d.shapeFactory(document.getElementById("axeX"));
+		axeArray[1] = svg3d.shapeFactory(document.getElementById("axeY"));
+		axeArray[2] = svg3d.shapeFactory(document.getElementById("axeZ"));
 		
-		faceArray[0] = shapeFactory(document.getElementById("face1"));
-		faceArray[1] = shapeFactory(document.getElementById("face2"));
-		faceArray[2] = shapeFactory(document.getElementById("face3"));
-		faceArray[3] = shapeFactory(document.getElementById("face4"));
-		faceArray[4] = shapeFactory(document.getElementById("face5"));
-		faceArray[5] = shapeFactory(document.getElementById("face6"));
+		faceArray[0] = svg3d.shapeFactory(document.getElementById("face1"));
+		faceArray[1] = svg3d.shapeFactory(document.getElementById("face2"));
+		faceArray[2] = svg3d.shapeFactory(document.getElementById("face3"));
+		faceArray[3] = svg3d.shapeFactory(document.getElementById("face4"));
+		faceArray[4] = svg3d.shapeFactory(document.getElementById("face5"));
+		faceArray[5] = svg3d.shapeFactory(document.getElementById("face6"));
 		
-		textArray[0] = shapeFactory(document.getElementById("text_face1"));
-		textArray[1] = shapeFactory(document.getElementById("text_face2"));
-		textArray[2] = shapeFactory(document.getElementById("text_face3"));
-		textArray[3] = shapeFactory(document.getElementById("text_face4"));
-		textArray[4] = shapeFactory(document.getElementById("text_face5"));
-		textArray[5] = shapeFactory(document.getElementById("text_face6"));
+		textArray[0] = svg3d.shapeFactory(document.getElementById("text_face1"));
+		textArray[1] = svg3d.shapeFactory(document.getElementById("text_face2"));
+		textArray[2] = svg3d.shapeFactory(document.getElementById("text_face3"));
+		textArray[3] = svg3d.shapeFactory(document.getElementById("text_face4"));
+		textArray[4] = svg3d.shapeFactory(document.getElementById("text_face5"));
+		textArray[5] = svg3d.shapeFactory(document.getElementById("text_face6"));
 		
-		clockRotation = window.setInterval("rotateCube()", rotationTime);
+		svg3d.clockRotation = window.setInterval("rotateCube()", svg3d.rotationTime);
 	}
     
 	function constructAxes(index) {
 		var matrixArray = new Array();
-		matrixArray[0] = setAnglesRotationMatrix(rotationX, rotationY, rotationZ);		
+		matrixArray[0] = svg3d.setAnglesRotationMatrix(rotationX, rotationY, rotationZ);		
 		if (index == 2) {
-			matrixArray[1] = setAnglesRotationMatrix(0, demipi, 0);
+			matrixArray[1] = svg3d.setAnglesRotationMatrix(0, demipi, 0);
 		}
 		axeArray[index].transform(matrixArray);
 	}
@@ -108,35 +108,35 @@
 			for (var i=0 ; i<animationUnderSteps ; i++) {
 				applyTransform(i, faceArray[i], animationUnderUnderSteps[i]);
 			}
-			var indexPathsSorted = sortFacesAverageZ(faceArray);
-            sortFaces(faceArray, indexPathsSorted);
+			var indexPathsSorted = svg3d.sortFacesAverageZ(faceArray);
+            svg3d.sortFaces(faceArray, indexPathsSorted);
 			
 		} else if(animationSteps == "rotation") {
 			incrementRotation(0.04, 0.03, 0.02);
 			for (var i=0 ; i<faceArray.length ; i++) {
 				applyTransform(i, faceArray[i], 1);
 			}
-			var indexPathsSorted = sortFacesAverageZ(faceArray);
-            sortFaces(faceArray, indexPathsSorted);
+			var indexPathsSorted = svg3d.sortFacesAverageZ(faceArray);
+            svg3d.sortFaces(faceArray, indexPathsSorted);
 		}
 	}
 	
 	function applyTransform(index, face, quotient) {
 		var matrixArray = new Array();
 		//is applied to everything
-		matrixArray[0] = setAnglesRotationMatrix(rotationX, rotationY, rotationZ);
+		matrixArray[0] = svg3d.setAnglesRotationMatrix(rotationX, rotationY, rotationZ);
 		if (index == 1) {
-			matrixArray[1] = setAnglesRotationMatrix(-demipi*quotient, 0, 0);
+			matrixArray[1] = svg3d.setAnglesRotationMatrix(-demipi*quotient, 0, 0);
 		} else if (index == 2) {
-			matrixArray[1] = setAnglesRotationMatrix(0, -demipi*quotient, 0);
+			matrixArray[1] = svg3d.setAnglesRotationMatrix(0, -demipi*quotient, 0);
 		} else if (index == 3) {
-			matrixArray[1] = setTranslationMatrix(0, 0, -size*quotient);
+			matrixArray[1] = svg3d.setTranslationMatrix(0, 0, -size*quotient);
 		} else if (index == 4) {
-			matrixArray[1] = setTranslationMatrix(0, size*quotient, 0);
-			matrixArray[2] = setAnglesRotationMatrix(-demipi*quotient, 0, 0);
+			matrixArray[1] = svg3d.setTranslationMatrix(0, size*quotient, 0);
+			matrixArray[2] = svg3d.setAnglesRotationMatrix(-demipi*quotient, 0, 0);
 		} else if (index == 5) {
-			matrixArray[1] = setTranslationMatrix(size*quotient, 0, 0);
-			matrixArray[2] = setAnglesRotationMatrix(0, -demipi*quotient, 0);
+			matrixArray[1] = svg3d.setTranslationMatrix(size*quotient, 0, 0);
+			matrixArray[2] = svg3d.setAnglesRotationMatrix(0, -demipi*quotient, 0);
 		}
 		face.transform(matrixArray);
 		textArray[index].transform(matrixArray);
@@ -166,7 +166,7 @@
 	<path id="axeY" style="fill: blue; stroke-width: 1px; stroke: blue" d="M0,0L0,400z"/>
 	<path id="axeZ" style="fill: green; stroke-width: 1px; stroke: green" d="M0,0L400,0z"/>
 	
-	<g id="g2" onclick="toggleRotation()" z:sortAlgo="none">
+	<g id="g2" onclick="svg3d.toggleRotation()" z:sortAlgo="none">
 		<path id="face1" style="fill: red; opacity: 0.6;" d="M0,0L120,0L120,120L0,120z" />
 		<!-- x 20,20 40,100 30,60 20,100 40,20 -->
 		<!-- html -->

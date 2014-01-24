@@ -48,7 +48,7 @@ function addShapes(shapes, parentNode) {
 		if (node.localName === "g") {
 			addShapes(shapes, node);
 		} else {
-			var shape = shapeFactory(node);
+			var shape = svg3d.shapeFactory(node);
 			if (shape) {
 				shapes.push(shape);
 			}
@@ -201,7 +201,7 @@ $(document).ready(function() {
 	$.cssHooks[ "translate3dz" ] = {
 		set: function( elem, value ) {
 			elem.translate3dz = value;
-			elem.translateMatrix = setTranslationMatrix(elem.translate3dx, elem.translate3dy, elem.translate3dz);
+			elem.translateMatrix = svg3d.setTranslationMatrix(elem.translate3dx, elem.translate3dy, elem.translate3dz);
 		}
 	};
 	$.cssHooks[ "clone3dx" ] = {
@@ -255,7 +255,7 @@ $(document).ready(function() {
 				var surface = Math.floor( i / elem.clone3dsurface );
 				var row = Math.floor( ( i % elem.clone3dsurface ) / elem.clone3drow);
 				var z = Math.floor( ( ( i % elem.clone3dsurface ) % elem.clone3drow ) );
-				clone.cloneMatrix = setTranslationMatrix(elem.clone3dx * row, elem.clone3dy * surface, elem.clone3dz * z);
+				clone.cloneMatrix = svg3d.setTranslationMatrix(elem.clone3dx * row, elem.clone3dy * surface, elem.clone3dz * z);
 			}
 		}
 	};

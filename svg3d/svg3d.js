@@ -34,6 +34,11 @@ knowledge of the CeCILL license and that you accept its terms.
 
 */
 
+(function( window ) {
+
+if (window.svg3d === undefined) {
+    window.svg3d = function() {};
+}
 
 function Shape(domNode) {
     this.domNode = domNode;
@@ -441,13 +446,13 @@ function transformCircle(matrixArray) {
     var points = [];
     transformPoint(matrixArray, pt3d);
     //points are stored before projection
-    if (sortAlgo !== NONE) {
+    if (svg3d.sortAlgo !== svg3d.NONE) {
         points.push(pt3d);
     }
     projectPoint3d(pt3d);
     this.setDirectorVector(points);
     //reduces or increases the radius of the circle (sphere)
-    var perspectiveRatio = focalDistance / (focalDistance + (pt3d[2] / zRatio));
+    var perspectiveRatio = svg3d.focalDistance / (svg3d.focalDistance + (pt3d[2] / svg3d.zRatio));
     var newRadius = this.radius * perspectiveRatio;
     this.domNode.setAttribute("cx", pt3d[0]);
     this.domNode.setAttribute("cy", pt3d[1]);
@@ -565,7 +570,7 @@ function setDirectorVector_default(points) {
     }
 }
 
-function shapeFactory(domNode) {
+svg3d.shapeFactory = function(domNode) {
     var returnedShape;
     var threeD = domNode.getAttribute("z:threeD");
     if (threeD && threeD === "true") {
@@ -606,15 +611,15 @@ function shapeFactory(domNode) {
 }
 
 function assignSetDirectorVector(returnedShape) {
-	switch (sortAlgo) {
-        case NONE:
+	switch (svg3d.sortAlgo) {
+        case svg3d.NONE:
             returnedShape.setDirectorVector = function() {};
             break;
-        case AVERAGE_Z:
+        case svg3d.AVERAGE_Z:
             returnedShape.setDirectorVector = setDirectorVector_averageZ;
             returnedShape.z = 0;
             break;
-        case ALL_TO_ALL:
+        case svg3d.ALL_TO_ALL:
             returnedShape.setDirectorVector = setDirectorVector_default;
             returnedShape.directorVector = new Array(3);
             returnedShape.position = new Array(3);
@@ -635,7 +640,7 @@ function transformAndStore(pt3d, matrixArray, points) {
     }
     transformPoint(matrixArray, newPt3d);
     //points are stored before projection
-    if (sortAlgo !== NONE) {
+    if (svg3d.sortAlgo !== svg3d.NONE) {
         points.push(cloneArray(newPt3d));
     }
     projectPoint3d(newPt3d);
@@ -662,13 +667,13 @@ function transformPoint(matrixArray, pt3d) {
 }
 
 function projectPoint3d(pt3d) {
-    var perspectiveRatio = focalDistance / (focalDistance + (pt3d[2] / zRatio));
-    pt3d[0] = (pt3d[0] - xOrigin) * perspectiveRatio + xInfinite;
-    pt3d[1] = (pt3d[1] - yOrigin) * perspectiveRatio + yInfinite;
+    var perspectiveRatio = svg3d.focalDistance / (svg3d.focalDistance + (pt3d[2] / svg3d.zRatio));
+    pt3d[0] = (pt3d[0] - svg3d.xOrigin) * perspectiveRatio + svg3d.xInfinite;
+    pt3d[1] = (pt3d[1] - svg3d.yOrigin) * perspectiveRatio + svg3d.yInfinite;
 }
 
 // Sets the specified matrix to a rotation matrix
-function setAnglesRotationMatrix(rotx, roty, rotz) {
+svg3d.setAnglesRotationMatrix = function(rotx, roty, rotz) {
     // Assuming the angles are in radians
     var cx = Math.cos(rotx);
     var sx = Math.sin(rotx);
@@ -676,10 +681,10 @@ function setAnglesRotationMatrix(rotx, roty, rotz) {
     var sy = Math.sin(roty);
     var cz = Math.cos(rotz);
     var sz = Math.sin(rotz);
-    return setRotationMatrix(cx, sx, cy, sy, cz, sz);
+    return svg3d.setRotationMatrix(cx, sx, cy, sy, cz, sz);
 }
 
-function setRotationMatrix(cx, sx, cy, sy, cz, sz) {
+svg3d.setRotationMatrix = function(cx, sx, cy, sy, cz, sz) {
     var matrix = [];
     matrix[0] = cz * cy;
     matrix[1] = sz * cx * cy - sx * sy;
@@ -696,7 +701,7 @@ function setRotationMatrix(cx, sx, cy, sy, cz, sz) {
     return matrix;
 }
 
-function setTranslationMatrix(x, y, z) {
+svg3d.setTranslationMatrix = function(x, y, z) {
     var matrix = [];
     matrix[0] = 1;
     matrix[1] = 0;
@@ -713,7 +718,7 @@ function setTranslationMatrix(x, y, z) {
     return matrix;
 }
 
-function sortFacesAverageZ(pathArray) {
+svg3d.sortFacesAverageZ = function(pathArray) {
     var indexArray = [];
     var i = pathArray.length;
     while (i--) {
@@ -730,7 +735,7 @@ function sortFacesAverageZ(pathArray) {
     return indexArray;
 }
 
-function sortFacesOneToAll(pathArray) {
+svg3d.sortFacesOneToAll = function(pathArray) {
     var indexArray = [];
     //optimization
     var i = pathArray.length;
@@ -749,7 +754,7 @@ function sortFacesOneToAll(pathArray) {
     return indexArray;
 }
 
-function sortFacesAllToAll(pathArray) {
+svg3d.sortFacesAllToAll = function(pathArray) {
     var indexArray = [];
     var i = pathArray.length;
     while (i--) {
@@ -798,3 +803,19 @@ function isBehind(face, reference) {
     return false;
 }
 
+/*
+Expose Objects
+*/
+
+svg3d.Shape = Shape;
+svg3d.Path = Path;
+svg3d.Path3d = Path3d;
+svg3d.Rect = Rect;
+svg3d.Polyline = Polyline;
+svg3d.Polyline3d = Polyline3d;
+svg3d.Circle = Circle;
+svg3d.Circle3d = Circle3d;
+
+window.svg3d = svg3d;
+
+})( window );
