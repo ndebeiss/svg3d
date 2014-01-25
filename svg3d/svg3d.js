@@ -159,13 +159,13 @@ function transformPath(matrixArray) {
                 for (coord = this.getCoord() ; coord !== undefined ; coord = this.getCoord()) {
                     var oldPt3d = cloneArray(pt3d);
                     transformPoint(matrixArray, oldPt3d);
-                    projectPoint3d(oldPt3d);
+                    svg3d.projectPoint3d(oldPt3d);
                     // the pt3d retrieved here is radial so it is relative
                     this.getPointCumul(pt3d, coord);
                     //does not modify pt3d for support of relative coords
                     var newPt3d = cloneArray(pt3d);
                     transformPoint(matrixArray, newPt3d);
-                    projectPoint3d(newPt3d);
+                    svg3d.projectPoint3d(newPt3d);
                     var rx = newPt3d[0] - oldPt3d[0];
                     var ry = newPt3d[1] - oldPt3d[1];
                     newD += ch + Math.abs(rx) + "," + Math.abs(ry);
@@ -449,7 +449,7 @@ function transformCircle(matrixArray) {
     if (svg3d.sortAlgo !== svg3d.NONE) {
         points.push(pt3d);
     }
-    projectPoint3d(pt3d);
+    svg3d.projectPoint3d(pt3d);
     this.setDirectorVector(points);
     //reduces or increases the radius of the circle (sphere)
     var perspectiveRatio = svg3d.focalDistance / (svg3d.focalDistance + (pt3d[2] / svg3d.zRatio));
@@ -643,7 +643,7 @@ function transformAndStore(pt3d, matrixArray, points) {
     if (svg3d.sortAlgo !== svg3d.NONE) {
         points.push(cloneArray(newPt3d));
     }
-    projectPoint3d(newPt3d);
+    svg3d.projectPoint3d(newPt3d);
     return newPt3d[0] + "," + newPt3d[1];
 }
 
@@ -666,7 +666,7 @@ function transformPoint(matrixArray, pt3d) {
     }
 }
 
-function projectPoint3d(pt3d) {
+svg3d.projectPoint3d = function(pt3d) {
     var perspectiveRatio = svg3d.focalDistance / (svg3d.focalDistance + (pt3d[2] / svg3d.zRatio));
     pt3d[0] = (pt3d[0] - svg3d.xOrigin) * perspectiveRatio + svg3d.xInfinite;
     pt3d[1] = (pt3d[1] - svg3d.yOrigin) * perspectiveRatio + svg3d.yInfinite;

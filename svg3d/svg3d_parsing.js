@@ -169,7 +169,7 @@ svg3d.sort = function(objectArray) {
         default:
             indexPathsSorted = svg3d.sortFacesOneToAll(objectArray);
             svg3d.sortFaces(objectArray, indexPathsSorted);
-            svg3d.showDirectorVectorsIfNeeded();
+            showDirectorVectorsIfNeeded();
             break;
     }
 }
@@ -199,9 +199,9 @@ function showDirectorVectorsIfNeeded() {
                 object.cloned.setAttribute("id", "vector_" + id);
             }
             var origin = new Array(object.position[0], object.position[1], object.position[2]);
-            projectPoint3d(origin);
+            svg3d.projectPoint3d(origin);
             var vector = new Array(object.position[0] + (object.directorVector[0] / 50), object.position[1] + (object.directorVector[1] / 50), object.position[2] + (object.directorVector[2] / 50));
-            projectPoint3d(vector);
+            svg3d.projectPoint3d(vector);
             object.cloned.setAttribute("d", "M" + origin[0] + "," + origin[1] + "L" + vector[0] + "," + vector[1] + "z");
             var style = object.cloned.getAttribute("style");
             var color = style.replace(/^.*fill *: */,"").replace(/ *; *.*$/,"");
