@@ -29,7 +29,7 @@
    sodipodi:docname="ebay.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
       xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-             onload="init(document.getElementById('g18707'))" >
+             onload="svg3d.init(document.getElementById('g18707'))" >
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js"></script>
@@ -272,7 +272,7 @@
       <g
          transform="matrix(0.4148514,0,0,0.4940366,74.006086,-113.07045)"
          id="g18707"
-         onclick="toggleRotation()"
+         onclick="svg3d.toggleRotation()"
           z:xInfinite="0"
           z:yInfinite="0"
           z:rotationTime="200">

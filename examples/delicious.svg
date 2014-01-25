@@ -26,7 +26,7 @@
    sodipodi:docname="delicious.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape" 
    xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-       onload="init(this)" 
+       onload="svg3d.init(this)" 
           z:xInfinite="0"
           z:yInfinite="0"
           z:rotationTime="100"
@@ -215,7 +215,7 @@
        inkscape:export-filename="C:\Documents and Settings\utilisateur\Bureau\delicious.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-         onclick="toggleRotation()">
+         onclick="svg3d.toggleRotation()">
       <path
          style="fill:#9d9893;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter6421)"
          id="path8630"
