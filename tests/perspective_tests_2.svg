@@ -8,7 +8,7 @@
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
 	<title>SVG Animation - Cube Demonstration</title>
 	
-	<g id="g2" onload="init(this)" z:zRatio="0.2" z:xInfinite="0" z:yInfinite="0" z:focalDistance="800" onclick="toggleRotation()">
+	<g id="g2" onload="svg3d.init(this)" z:zRatio="0.2" z:xInfinite="0" z:yInfinite="0" z:focalDistance="800" onclick="svg3d.toggleRotation()">
 		<path style="fill: red;" d="M100,100,0 L 300,100,-50 L 300,300,-50 L 100,300,00z" z:threeD="true">
         </path>
         <path style="fill: darkorange;" d="M100,100,100 L 300,100,50 L 300,300,50 L 100,300,100z" z:threeD="true">

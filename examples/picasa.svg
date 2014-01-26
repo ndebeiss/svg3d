@@ -24,7 +24,7 @@
    sodipodi:docname="picasa.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
       xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-         onload="init(document.getElementById('g16443'))" >
+         onload="svg3d.init(document.getElementById('g16443'))" >
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js"></script>
@@ -351,7 +351,7 @@
          style="opacity:0.97560975"
          transform="matrix(1.6058956,0,0,1.6753229,-102.67862,-204.36216)"
          id="g16443"
-         onclick="toggleRotation()"
+         onclick="svg3d.toggleRotation()"
          z:xInfinite="0"
           z:yInfinite="0"
           z:rotationTime="170">

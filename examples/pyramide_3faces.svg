@@ -3,12 +3,12 @@
 <svg xmlns="http://www.w3.org/2000/svg"
  xmlns:xlink="http://www.w3.org/1999/xlink" 
  xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" 
- width="100%" height="100%" onload="init(this)">
+ width="100%" height="100%" onload="svg3d.init(this)">
 	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
 	<title>SVG animation - pyramide 3 faces</title>
-	<g id="g1" onclick="toggleRotation()">
+	<g id="g1" onclick="svg3d.toggleRotation()">
 		<path id="face0" style="fill: yellow" d="M0 -150 L-90 0 L90 0 Z">
             <z:rotation incRotY="0.1" />
             <z:translation z="51.5" />

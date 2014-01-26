@@ -40,7 +40,7 @@
 		textArray[4] = svg3d.shapeFactory(document.getElementById('text_face4'));
 		textArray[5] = svg3d.shapeFactory(document.getElementById('text_face5'));
 		
-		svg3d.clockRotation = window.setInterval("rotateCube()", svg3d.rotationTime);
+		svg3d.clockRotation = window.setInterval(rotateCube, svg3d.rotationTime);
 	}
 	
 	function toggleRotation() {
@@ -62,22 +62,15 @@
 	
 	function sortFaces() {
 		//will contain the index of the faces in the order they have to be displayed
-		var indexPathsSorted = svg3d.sort(faceArray);
+		var indexPathsSorted = svg3d.sortFacesOneToAll(faceArray);
 		var parentNode = faceArray[0].domNode.parentNode;
-		for (i in indexPathsSorted) {
+		var i = indexPathsSorted.length;
+		while(i--) {
 			var index = indexPathsSorted[i];
-			if (i > 2) {
-				parentNode.appendChild(faceArray[index].domNode);
-				
-				applyTransform(index,textArray[index]);
-				parentNode.appendChild(textArray[index].domNode);
-				
-				faceArray[index].domNode.style.display = "";
-				textArray[index].domNode.style.display = "";
-			} else {
-				faceArray[index].domNode.style.display = "none";
-				textArray[index].domNode.style.display = "none";
-			}
+			parentNode.appendChild(faceArray[index].domNode);
+			
+			applyTransform(index,textArray[index]);
+			parentNode.appendChild(textArray[index].domNode);
 		}
 	}
 	

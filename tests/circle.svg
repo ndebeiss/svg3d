@@ -3,8 +3,8 @@
 "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
 <svg width="100%" height="100%" version="1.1" xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-xmlns="http://www.w3.org/2000/svg" onload="init(this)" z:rotationTime="100" z:sortAlgo="none">
-    <g xmlns:xlink="http://www.w3.org/1999/xlink" onclick="toggleRotation()">
+xmlns="http://www.w3.org/2000/svg" onload="svg3d.init(this)" z:rotationTime="100" z:sortAlgo="none">
+    <g xmlns:xlink="http://www.w3.org/1999/xlink" onclick="svg3d.toggleRotation()">
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js"></script>

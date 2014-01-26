@@ -24,7 +24,7 @@
    sodipodi:docname="rss.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-             onload="init(this)" 
+             onload="svg3d.init(this)" 
           z:xInfinite="0"
           z:yInfinite="0"
           z:rotationTime="100"
@@ -247,7 +247,7 @@
       <g
          transform="translate(-14.314392,-345.05076)"
          id="g15406"
-         onclick="toggleRotation()">
+         onclick="svg3d.toggleRotation()">
         <g
            id="g13452"
            transform="translate(20,295.71429)">

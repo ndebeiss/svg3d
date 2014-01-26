@@ -11,7 +11,6 @@
 	svg3d.xInfinite = 120;
     svg3d.yInfinite = 120;
     
-	var axeArray = new Array();
     var faceArray = new Array();
     var textArray = new Array();
     
@@ -48,7 +47,7 @@
 		}
 		
 		//will contain the index of the faces in the order they have to be displayed
-		var indexPathsSorted = svg3d.sort(faceArray);
+		var indexPathsSorted = svg3d.sortFacesOneToAll(faceArray);
 		var parentNode = faceArray[0].domNode.parentNode;
 		
 		for (i in indexPathsSorted) {

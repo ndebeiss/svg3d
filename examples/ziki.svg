@@ -23,7 +23,7 @@
    inkscape:version="0.46"
    sodipodi:docname="ziki.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-         onload="init(this)" 
+         onload="svg3d.init(this)" 
          xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
       z:xInfinite="0"
       z:yInfinite="0"
@@ -319,7 +319,7 @@
       <g
          transform="translate(71.720831,235.36554)"
          id="g26468"
-       onclick="toggleRotation()">
+       onclick="svg3d.toggleRotation()">
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js"></script>

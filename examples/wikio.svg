@@ -29,7 +29,7 @@
    sodipodi:docname="wikio.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-             onload="init(this)" 
+             onload="svg3d.init(this)" 
           z:xInfinite="0"
           z:yInfinite="0"
           z:rotationTime="170"
@@ -392,7 +392,7 @@
           <g
              transform="translate(54.548237,4.5713932e-8)"
              id="g8802" 
-         onclick="toggleRotation()">
+         onclick="svg3d.toggleRotation()">
             <path
                style="fill:#9f9898;fill-opacity:1;stroke:none;stroke-width:0.98752135;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
                d="M 477.35935,297.39382 C 445.21989,298.11817 419.35025,320.17352 419.35028,347.25967 C 419.35031,374.80138 446.10218,397.12554 478.99085,397.12551 C 511.58151,397.12548 538.06357,375.20846 538.54079,348.01141 L 513.16182,348.01141 C 512.71941,365.18421 497.19587,379.00007 478.1751,379.00007 C 458.87679,379.00004 443.18838,364.78037 443.18838,347.25967 C 443.18841,329.98471 458.43389,315.91049 477.35935,315.51926 L 477.35935,297.39382 z "

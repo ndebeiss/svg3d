@@ -21,7 +21,7 @@
    inkscape:version="0.46"
    sodipodi:docname="ziki.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-         onload="init(document.getElementById('g26468'))" >
+         onload="svg3d.init(document.getElementById('g26468'))" >
   <defs
      id="defs3213">
     <linearGradient
@@ -312,7 +312,7 @@
       <g
          transform="translate(71.720831,235.36554)"
          id="g26468"
-       onclick="toggleRotation()"
+       onclick="svg3d.toggleRotation()"
          xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
       z:xInfinite="0"
       z:yInfinite="0"

@@ -3,12 +3,12 @@
 <svg xmlns="http://www.w3.org/2000/svg"
  xmlns:xlink="http://www.w3.org/1999/xlink" 
  xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" 
- width="100%" height="100%" onload="init(this)" >
+ width="100%" height="100%" onload="svg3d.init(this)" >
 	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
 	<title>SVG animation - spiral</title>
-	<g id="g1" onclick="toggleRotation()">
+	<g id="g1" onclick="svg3d.toggleRotation()">
 		<path id="arc0" style="fill: none; stroke-width: 2px; stroke: red;" d="M153 334
 C153 334 151 334 151 334
 C151 339 153 344 156 344

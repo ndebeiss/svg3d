@@ -24,7 +24,7 @@
    sodipodi:docname="youtube.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-      onload="init(this)" 
+      onload="svg3d.init(this)" 
       z:xInfinite="0"
       z:yInfinite="0"
       z:rotationTime="170"
@@ -354,7 +354,7 @@
       <g
          transform="matrix(0.5743479,0,0,0.6032117,218.58305,454.90537)"
          id="g11440"
-       onclick="toggleRotation()">
+       onclick="svg3d.toggleRotation()">
         <path
            style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            d="M 273.92857,204.1479 L 286.78571,204.1479 L 295.35714,236.6479 L 303.57143,204.1479 L 316.78571,204.1479 L 302.14286,253.79076 L 301.78571,290.57647 L 289.64286,290.57647 L 289.64286,254.50504 L 273.92857,204.1479 z "

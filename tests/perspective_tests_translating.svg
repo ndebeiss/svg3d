@@ -3,13 +3,13 @@
 <svg xmlns="http://www.w3.org/2000/svg"
  xmlns:xlink="http://www.w3.org/1999/xlink" 
  xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-onload="init(this)" z:zRatio="0.2" z:xInfinite="50" z:yInfinite="50" z:focalDistance="800">
+onload="svg3d.init(this)" z:zRatio="0.2" z:xInfinite="50" z:yInfinite="50" z:focalDistance="800">
  	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
 	<title>SVG Animation - Cube Demonstration</title>
 	
-	<g id="g2" onclick="toggleRotation()">
+	<g id="g2" onclick="svg3d.toggleRotation()">
 		<path style="fill: red;" d="M100,100,0 L 300,100,0 L 300,300,0 L 100,300,0z" z:threeD="true">
         </path>
         <path style="fill: darkorange;" d="M100,100,100 L 300,100,100 L 300,300,100 L 100,300,100z" z:threeD="true">
