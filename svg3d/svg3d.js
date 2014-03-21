@@ -570,6 +570,7 @@ Group.prototype.assignSetDirectorVector = function() {
                 }
                 this.z = sumZ / this.subShapes.length;
             };
+            this.z = 0;
             break;
         case svg3d.ALL_TO_ALL:
             this.setDirectorVector = this.setPositionDirectorVectorAverage;
@@ -602,21 +603,19 @@ Group.prototype.setPositionDirectorVectorAverage = function(points) {
     this.directorVector[0] = sumDirectorVector[0] / this.subShapes.length;
     this.directorVector[1] = sumDirectorVector[1] / this.subShapes.length;
     this.directorVector[2] = sumDirectorVector[2] / this.subShapes.length;
-}
+};
 
 function setDirectorVector_averageZ(points) {
-    var length = points.length;
-    var i = length - 1;
+    var i = points.length - 1;
     var sumZ = points[i][2];
     while (i--) {
         sumZ += points[i][2];
     }
-    this.z = sumZ / length;
+    this.z = sumZ / points.length;
 }
 
 function setDirectorVector_default(points) {
-    var length = points.length;
-    switch (length) {
+    switch (points.length) {
         case 0:
             this.directorVector[0] = 0;
             this.directorVector[1] = 0;
@@ -640,7 +639,7 @@ function setDirectorVector_default(points) {
         //as soon we have 3 points
         default:
             //calcultates the position of the surface, also avoids the problem of very small director vectors
-            var i = length - 1;
+            var i = points.length - 1;
             this.position[0] = points[i][0];
             this.position[1] = points[i][1];
             this.position[2] = points[i][2];
