@@ -221,7 +221,7 @@ svg3d.applyTransform = function(object) {
             case TRANSLATION:
                 matrixArray.push(svg3d.getTranslation(node));
                 break;
-            default:
+            case OPTIMIZED_ROTATION:
                 matrixArray.push(svg3d.getOptimizedRotation(node));
                 break;
         }

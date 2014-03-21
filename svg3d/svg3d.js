@@ -42,6 +42,7 @@ if (window.svg3d === undefined) {
 
 function Shape(domNode) {
     this.domNode = domNode;
+    this.assignSetDirectorVector();
 }
 /*
 get next coord in the string
@@ -55,6 +56,28 @@ Shape.prototype.getCoord = function() {
     }
     return undefined;
 };
+
+Shape.prototype.assignSetDirectorVector = function() {
+    switch (svg3d.sortAlgo) {
+        case svg3d.NONE:
+            this.setDirectorVector = function() {};
+            break;
+        case svg3d.AVERAGE_Z:
+            this.setDirectorVector = setDirectorVector_averageZ;
+            this.z = 0;
+            break;
+        case svg3d.ALL_TO_ALL:
+            this.setDirectorVector = setDirectorVector_default;
+            this.directorVector = new Array(3);
+            this.position = new Array(3);
+            break;
+        default:
+            this.setDirectorVector = setDirectorVector_default;
+            this.directorVector = new Array(3);
+            this.position = new Array(3);
+            break;
+    }
+}
 
 /*
     *  M = moveto
@@ -244,7 +267,6 @@ Path.prototype.getYZCumul = getYZ2dCumul;
 Path.prototype.cloneOn = function(domNode) {
     domNode.setAttribute("d", this.coords);
     var clone = new Path(domNode);
-    assignSetDirectorVector(clone);
     return clone;
 };
 
@@ -296,7 +318,6 @@ Path3d.prototype.getYZCumul = getYZ3dCumul;
 Path3d.prototype.cloneOn = function(domNode) {
     domNode.setAttribute("d", this.coords);
     var clone = new Path3d(domNode);
-    assignSetDirectorVector(clone);
     return clone;
 };
 
@@ -382,7 +403,6 @@ Rect.prototype.getYZCumul = getYZ2dCumul;
 // The original domNode has not been modified, the domNode passed here must be the hidden domNode
 Rect.prototype.cloneOn = function(domNode) {
     var clone = new Rect(domNode);
-    assignSetDirectorVector(clone);
     return clone;
 };
 
@@ -422,7 +442,6 @@ Polyline.prototype.getPoint = getPt2d;
 Polyline.prototype.cloneOn = function(domNode) {
     this.domNode.setAttribute("points", this.coords);
     var clone = new Polyline(domNode);
-    assignSetDirectorVector(clone);
     return clone;
 };
 
@@ -437,7 +456,6 @@ Polyline3d.prototype.getPoint = getPt3d;
 Polyline3d.prototype.cloneOn = function(domNode) {
     this.domNode.setAttribute("points", this.coords);
     var clone = new Polyline3d(domNode);
-    assignSetDirectorVector(clone);
     return clone;
 };
 
@@ -479,7 +497,6 @@ Circle.prototype.cloneOn = function(domNode) {
     this.domNode.setAttribute("cx", this.center[0]);
     this.domNode.setAttribute("cy", this.center[1]);
     var clone = new Circle(domNode);
-    assignSetDirectorVector(clone);
     return clone;
 };
 
@@ -499,18 +516,102 @@ Circle3d.prototype.cloneOn = function(domNode) {
     this.domNode.setAttribute("cy", this.center[1]);
     this.domNode.setAttribute("z:cz", this.center[2]);
     var clone = new Circle3d(domNode);
-    assignSetDirectorVector(clone);
     return clone;
 };
+
+Group.prototype = new Shape();
+Group.constructor = Shape;
+
+function Group(domNode) {
+    Shape.call(this, domNode);
+    this.subShapes = [];
+    addShapes(this.subShapes, domNode);
+}
+
+function addShapes(shapes, parentNode) {
+    if (parentNode) {
+        for (var node = getFirstChildElement(parentNode) ; node ; node = getNextSiblingElement(node)) {
+            if (node.localName === "g") {
+                addShapes(shapes, node);
+            } else {
+                var shape = svg3d.shapeFactory(node);
+                if (shape) {
+                    shapes.push(shape);
+                }
+            }
+        }
+    }
+}
+
+Group.prototype.transform = function(matrixArray) {
+    var i = this.subShapes.length;
+    while (i--) {
+        this.subShapes[i].transform(matrixArray);
+    }
+};
+
+Group.prototype.cloneOn = function(domNode) {
+    var clone = new Group(domNode);
+    return clone;
+};
+
+Group.prototype.assignSetDirectorVector = function() {
+    switch (svg3d.sortAlgo) {
+        case svg3d.NONE:
+            this.setDirectorVector = function(points) {};
+            break;
+        case svg3d.AVERAGE_Z:
+            this.setDirectorVector = function(points) {
+                // z will be the average z of all the shapes contained in that g tag
+                var sumZ = 0, i = this.subShapes.length;
+                while (i--) {
+                    this.subShapes[i].setDirectorVector(points);
+                    sumZ += this.subShapes[i].z;
+                }
+                this.z = sumZ / this.subShapes.length;
+            };
+            break;
+        case svg3d.ALL_TO_ALL:
+            this.setDirectorVector = this.setPositionDirectorVectorAverage;
+            this.directorVector = new Array(3);
+            this.position = new Array(3);
+            break;
+        default:
+            this.setDirectorVector = this.setPositionDirectorVectorAverage;
+            this.directorVector = new Array(3);
+            this.position = new Array(3);
+            break;
+    }
+};
+
+Group.prototype.setPositionDirectorVectorAverage = function(points) {
+    // position and director vector will be the average position and director vector of all the shapes contained in that g tag
+    var sumPosition = [0, 0, 0], sumDirectorVector = [0, 0, 0], i = this.subShapes.length;
+    while (i--) {
+        this.subShapes[i].setDirectorVector_default(points);
+        sumPosition[0] += this.subShapes[i].position[0];
+        sumPosition[1] += this.subShapes[i].position[1];
+        sumPosition[2] += this.subShapes[i].position[2];
+        sumDirectorVector[0] += this.subShapes[i].position[0];
+        sumDirectorVector[1] += this.subShapes[i].position[1];
+        sumDirectorVector[2] += this.subShapes[i].position[2];
+    }
+    this.position[0] = sumPosition[0] / this.subShapes.length;
+    this.position[1] = sumPosition[1] / this.subShapes.length;
+    this.position[2] = sumPosition[2] / this.subShapes.length;
+    this.directorVector[0] = sumDirectorVector[0] / this.subShapes.length;
+    this.directorVector[1] = sumDirectorVector[1] / this.subShapes.length;
+    this.directorVector[2] = sumDirectorVector[2] / this.subShapes.length;
+}
 
 function setDirectorVector_averageZ(points) {
     var length = points.length;
     var i = length - 1;
-    var sum = points[i][2];
+    var sumZ = points[i][2];
     while (i--) {
-        sum += points[i][2];
+        sumZ += points[i][2];
     }
-    this.z = sum / length;
+    this.z = sumZ / length;
 }
 
 function setDirectorVector_default(points) {
@@ -586,6 +687,9 @@ svg3d.shapeFactory = function(domNode) {
                 returnedShape = new Path(domNode);
             }
             break;
+        case "g":
+            returnedShape = new Group(domNode);
+            break;
         case "rect":
             returnedShape = new Rect(domNode);
             break;
@@ -606,30 +710,7 @@ svg3d.shapeFactory = function(domNode) {
         default:
             return;
     }
-    assignSetDirectorVector(returnedShape);
     return returnedShape;
-}
-
-function assignSetDirectorVector(returnedShape) {
-	switch (svg3d.sortAlgo) {
-        case svg3d.NONE:
-            returnedShape.setDirectorVector = function() {};
-            break;
-        case svg3d.AVERAGE_Z:
-            returnedShape.setDirectorVector = setDirectorVector_averageZ;
-            returnedShape.z = 0;
-            break;
-        case svg3d.ALL_TO_ALL:
-            returnedShape.setDirectorVector = setDirectorVector_default;
-            returnedShape.directorVector = new Array(3);
-            returnedShape.position = new Array(3);
-            break;
-        default:
-            returnedShape.setDirectorVector = setDirectorVector_default;
-            returnedShape.directorVector = new Array(3);
-            returnedShape.position = new Array(3);
-            break;
-    }
 }
 
 function transformAndStore(pt3d, matrixArray, points) {

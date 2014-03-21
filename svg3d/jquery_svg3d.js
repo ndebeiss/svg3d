@@ -66,13 +66,6 @@ function getNodes(returnedArr, parentNode) {
 	}
 }
 
-function svg3dtransform(svg3dshapes, matrixArray) {
-	var i = svg3dshapes.length;
-	while (i--) {
-		svg3dshapes[i].transform(matrixArray);
-	}
-}
-
 
 var rExtractScale = /scale\(([^)]*)\)/;
 var rReplaceScale = /scale\([^\)]*\)/;
@@ -119,13 +112,13 @@ function setTransformPart(elem, value, partName, replaceRegexp, appendAfter) {
 }
 
 function sortClones(elem) {
-	if (elem.svg3dshapes.length > 0) {
+	if (elem.svg3dshape !== undefined) {
 		var indexArray = [], i = elem.svg3dclones.length, current, j, beforeElem = true, parentNode = elem.parentNode;
 		// sort the clones by their z coordinates
 		while (i--) {
 			current = elem.svg3dclones[i];
 			j = indexArray.length;
-			while (j && elem.svg3dclones[indexArray[j - 1]].svg3dshapes[0].z > current.svg3dshapes[0].z) {
+			while (j && elem.svg3dclones[indexArray[j - 1]].svg3dshape.z > current.svg3dshape.z) {
 				//translates to the end
 				indexArray[j] = indexArray[j - 1];
 				j--;
@@ -136,7 +129,7 @@ function sortClones(elem) {
 		j = indexArray.length;
 		while (j--) {
 			current = elem.svg3dclones[indexArray[j]];
-			if (beforeElem && current.svg3dshapes[0].z > elem.svg3dshapes[0].z) {
+			if (beforeElem && current.svg3dshape.z > elem.svg3dshape.z) {
 				parentNode.insertBefore(current, elem);
 			} else {
 				beforeElem = false;
@@ -165,15 +158,14 @@ $(document).ready(function() {
 		},
 		set: function( elem, value ) {
 			var objects = [];
-			if (elem.svg3dshapes === undefined) {
-				elem.svg3dshapes = [];
-				addShapes(elem.svg3dshapes, elem);
+			if (elem.svg3dshape === undefined) {
+				elem.svg3dshape = svg3d.shapeFactory(elem);
 			}
 			var matrixArray = [];
 			if (elem.translateMatrix !== undefined) {
 				matrixArray.push(elem.translateMatrix);
 			}
-			svg3dtransform(elem.svg3dshapes, matrixArray);
+			elem.svg3dshape.transform(matrixArray);
 			if (elem.svg3dclones !== undefined) {
 				var i = elem.svg3dclones.length;
 				while (i--) {
@@ -182,7 +174,7 @@ $(document).ready(function() {
 					if (elem.translateMatrix !== undefined) {
 						matrixArray4Clone.push(elem.translateMatrix);
 					}
-					svg3dtransform(elem.svg3dclones[i].svg3dshapes, matrixArray4Clone);
+					elem.svg3dclones[i].svg3dshape.transform(matrixArray4Clone);
 				}
 				sortClones(elem);
 			}
@@ -242,15 +234,8 @@ $(document).ready(function() {
 			for (var i = elem.svg3dclones.length; i < value; i++) {
 				var clone = $(elem).clone()[0];
 				elem.svg3dclones.push(clone);
-				if (clone.svg3dshapes === undefined) {
-					clone.svg3dshapes = [];
-					var j = elem.svg3dshapes.length;
-					var nodes = [];
-					getNodes(nodes, clone);
-					while (j--) {
-						var shapeCloned = elem.svg3dshapes[j].cloneOn(nodes[j]);
-						clone.svg3dshapes.push(shapeCloned);						
-					}
+				if (clone.svg3dshape === undefined) {
+					clone.svg3dshape = elem.svg3dshape.cloneOn(clone);
 				}
 				var surface = Math.floor( i / elem.clone3dsurface );
 				var row = Math.floor( ( i % elem.clone3dsurface ) / elem.clone3drow);
