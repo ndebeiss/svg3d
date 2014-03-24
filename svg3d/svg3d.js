@@ -68,13 +68,13 @@ Shape.prototype.assignSetDirectorVector = function() {
             break;
         case svg3d.ALL_TO_ALL:
             this.setDirectorVector = setDirectorVector_default;
-            this.directorVector = new Array(3);
-            this.position = new Array(3);
+            this.directorVector = [0, 0, 0];
+            this.position = [0, 0, 0];
             break;
         default:
             this.setDirectorVector = setDirectorVector_default;
-            this.directorVector = new Array(3);
-            this.position = new Array(3);
+            this.directorVector = [0, 0, 0];
+            this.position = [0, 0, 0];
             break;
     }
 }
@@ -93,7 +93,7 @@ Shape.prototype.assignSetDirectorVector = function() {
 */
 function transformPath(matrixArray) {
     this.index = 0;
-    var pt3d = new Array(3);
+    var pt3d = [0, 0, 0];
     var points = [];
     var newD = "";
     //optimization ?
@@ -409,7 +409,7 @@ Rect.prototype.cloneOn = function(domNode) {
 
 function transformPolyline(matrixArray) {
     this.index = 0;
-    var pt3d = new Array(3);
+    var pt3d = [0, 0, 0];
     var points = [];
     var newPoints = "";
     var coord = 0;
@@ -484,7 +484,7 @@ function Circle(domNode) {
     Shape.call(this, domNode);
     if (domNode) {
         this.radius = domNode.getAttribute("r");
-        this.center = new Array(3);
+        this.center = [0, 0, 0];
         this.center[0] = domNode.getAttribute("cx");
         this.center[1] = domNode.getAttribute("cy");
         this.center[2] = 0;
@@ -574,13 +574,13 @@ Group.prototype.assignSetDirectorVector = function() {
             break;
         case svg3d.ALL_TO_ALL:
             this.setDirectorVector = this.setPositionDirectorVectorAverage;
-            this.directorVector = new Array(3);
-            this.position = new Array(3);
+            this.directorVector = [0, 0, 0];
+            this.position = [0, 0, 0];
             break;
         default:
             this.setDirectorVector = this.setPositionDirectorVectorAverage;
-            this.directorVector = new Array(3);
-            this.position = new Array(3);
+            this.directorVector = [0, 0, 0];
+            this.position = [0, 0, 0];
             break;
     }
 };
