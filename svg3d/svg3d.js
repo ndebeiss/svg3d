@@ -620,7 +620,7 @@ function setDirectorVector_default(points) {
             this.directorVector[0] = 0;
             this.directorVector[1] = 0;
             this.directorVector[2] = 0;
-            this.position = new Array(0, 0, 0);
+            this.position = [0, 0, 0];
             break;
         case 1:
             //surface is parallel to ( x, y ) plan
