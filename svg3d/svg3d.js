@@ -70,7 +70,7 @@ Shape.prototype.getCoord = function() {
 */
 function transformPath(matrixArray) {
     this.index = 0;
-    var pt3d = new Array(3);
+    var pt3d = [0, 0, 0];
     var points = [];
     var newD = "";
     //optimization ?
@@ -389,7 +389,7 @@ Rect.prototype.cloneOn = function(domNode) {
 
 function transformPolyline(matrixArray) {
     this.index = 0;
-    var pt3d = new Array(3);
+    var pt3d = [0, 0, 0];
     var points = [];
     var newPoints = "";
     var coord = 0;
@@ -466,7 +466,7 @@ function Circle(domNode) {
     Shape.call(this, domNode);
     if (domNode) {
         this.radius = domNode.getAttribute("r");
-        this.center = new Array(3);
+        this.center = [0, 0, 0];
         this.center[0] = domNode.getAttribute("cx");
         this.center[1] = domNode.getAttribute("cy");
         this.center[2] = 0;
@@ -520,7 +520,7 @@ function setDirectorVector_default(points) {
             this.directorVector[0] = 0;
             this.directorVector[1] = 0;
             this.directorVector[2] = 0;
-            this.position = new Array(0, 0, 0);
+            this.position = [0, 0, 0];
             break;
         case 1:
             //surface is parallel to ( x, y ) plan
@@ -621,13 +621,13 @@ function assignSetDirectorVector(returnedShape) {
             break;
         case svg3d.ALL_TO_ALL:
             returnedShape.setDirectorVector = setDirectorVector_default;
-            returnedShape.directorVector = new Array(3);
-            returnedShape.position = new Array(3);
+            returnedShape.directorVector = [0, 0, 0];
+            returnedShape.position = [0, 0, 0];
             break;
         default:
             returnedShape.setDirectorVector = setDirectorVector_default;
-            returnedShape.directorVector = new Array(3);
-            returnedShape.position = new Array(3);
+            returnedShape.directorVector = [0, 0, 0];
+            returnedShape.position = [0, 0, 0];
             break;
     }
 }
