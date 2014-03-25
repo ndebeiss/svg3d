@@ -6,7 +6,7 @@ svg3d.yOrigin = 10;
 svg3d.sortAlgo = svg3d.AVERAGE_Z;
 
 $( document ).ready(function() {
-  $("#g3172").animate({
+  $("#g3038").animate({
     svg3d: {
       translate3d : {x: 0, y: 0, z: 0},
       clone3d: {
