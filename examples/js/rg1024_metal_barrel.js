@@ -28,10 +28,16 @@ $( document ).ready(function() {
 			scale: 1,
 			xOrigin: 20,
 			yOrigin: 15
-		}
+		},
+		yInfinite: -400,
+		yOrigin: -400
 	}, {
-		duration: 1000, 
-		easing: "easeInCubic"
+		duration: 3000, 
+		easing: "easeInOutCubic",
+		specialEasing: {
+			yInfinite: "easeInCubic",
+			yOrigin: "easeInCubic"
+		}
  	});
 	
 });

@@ -294,7 +294,22 @@ $(document).ready(function() {
 			return getTransformPart(elem, "translate", rExtractTranslatey);
 		}
 	};
-
+	$.cssHooks[ "yInfinite" ] = {
+		set: function( elem, value ) {
+			svg3d.yInfinite = value;
+		},
+		get: function( elem ) {
+			return svg3d.yInfinite ;
+		}
+	};
+	$.cssHooks[ "yOrigin" ] = {
+		set: function( elem, value ) {
+			svg3d.yOrigin = value;
+		},
+		get: function( elem ) {
+			return svg3d.yOrigin;
+		}
+	};
 
 	$.fx.step[ "translate3d" ] = function( fx ) {
 		$.cssHooks[ "translate3d" ].set( fx.elem, fx.now );
@@ -346,6 +361,12 @@ $(document).ready(function() {
 	};
 	$.fx.step[ "translatey" ] = function( fx ) {
 		$.cssHooks[ "translatey" ].set( fx.elem, fx.now );	
+	};
+	$.fx.step[ "yInfinite" ] = function( fx ) {
+		$.cssHooks[ "yInfinite" ].set( fx.elem, fx.now );	
+	};
+	$.fx.step[ "yOrigin" ] = function( fx ) {
+		$.cssHooks[ "yOrigin" ].set( fx.elem, fx.now );	
 	};
 });
 
