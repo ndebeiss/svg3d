@@ -43,30 +43,6 @@ $.each( baseEasings, function( name, easeIn ) {
 	};
 });
 
-function addShapes(shapes, parentNode) {
-    for (var node = getFirstChildElement(parentNode) ; node ; node = getNextSiblingElement(node)) {
-		if (node.localName === "g") {
-			addShapes(shapes, node);
-		} else {
-			var shape = svg3d.shapeFactory(node);
-			if (shape) {
-				shapes.push(shape);
-			}
-		}
-	}
-}
-
-function getNodes(returnedArr, parentNode) {
-  for (var node = getFirstChildElement(parentNode) ; node ; node = getNextSiblingElement(node)) {
-		if (node.localName === "g") {
-			getNodes(returnedArr, node);
-		} else {
-			returnedArr.push(node);
-		}
-	}
-}
-
-
 var rExtractScale = /scale\(([^)]*)\)/;
 var rReplaceScale = /scale\([^\)]*\)/;
 var rExtractTranslatex = /translate\(([^),]*),[^)]*\)/;
