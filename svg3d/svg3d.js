@@ -522,23 +522,32 @@ Circle3d.prototype.cloneOn = function(domNode) {
 Group.prototype = new Shape();
 Group.constructor = Shape;
 
-function Group(domNode) {
+function Group(domNode, subShapes) {
     Shape.call(this, domNode);
-    this.subShapes = [];
-    addShapes(this.subShapes, domNode);
+    if (subShapes === undefined) {
+        this.subShapes = [];
+        addShapes(this.subShapes, domNode);
+    } else {
+        this.subShapes = subShapes;
+    }
 }
 
 function addShapes(shapes, parentNode) {
     if (parentNode) {
         for (var node = getFirstChildElement(parentNode) ; node ; node = getNextSiblingElement(node)) {
-            if (node.localName === "g") {
-                addShapes(shapes, node);
-            } else {
-                var shape = svg3d.shapeFactory(node);
-                if (shape) {
-                    shapes.push(shape);
-                }
+            var shape = svg3d.shapeFactory(node);
+            if (shape) {
+                shapes.push(shape);
             }
+        }
+    }
+}
+
+function addClonedSubShapes(clonedSubShapes, subShapes, parentNode) {
+    if (parentNode) {
+        for (var node = getFirstChildElement(parentNode), i = 0 ; node ; node = getNextSiblingElement(node), i++) {
+            var clonedSubShape = subShapes[i].cloneOn(node);
+            clonedSubShapes.push(clonedSubShape);
         }
     }
 }
@@ -548,24 +557,26 @@ Group.prototype.transform = function(matrixArray) {
     while (i--) {
         this.subShapes[i].transform(matrixArray);
     }
+    this.setDirectorVector();
 };
 
 Group.prototype.cloneOn = function(domNode) {
-    var clone = new Group(domNode);
+    var clonedSubShapes = [];
+    addClonedSubShapes(clonedSubShapes, this.subShapes, domNode);
+    var clone = new Group(domNode, clonedSubShapes);
     return clone;
 };
 
 Group.prototype.assignSetDirectorVector = function() {
     switch (svg3d.sortAlgo) {
         case svg3d.NONE:
-            this.setDirectorVector = function(points) {};
+            this.setDirectorVector = function() {};
             break;
         case svg3d.AVERAGE_Z:
-            this.setDirectorVector = function(points) {
+            this.setDirectorVector = function() {
                 // z will be the average z of all the shapes contained in that g tag
                 var sumZ = 0, i = this.subShapes.length;
                 while (i--) {
-                    this.subShapes[i].setDirectorVector(points);
                     sumZ += this.subShapes[i].z;
                 }
                 this.z = sumZ / this.subShapes.length;
