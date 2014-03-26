@@ -119,18 +119,22 @@ function sortClones(elem) {
 $(document).ready(function() {
 	$.cssHooks[ "svg3d" ] = {
 		expand: function( value ) {
-			return {
-				translate3dx : value.translate3d.x,
-				translate3dy : value.translate3d.y,
-				translate3dz : value.translate3d.z,
-				clone3drow : value.clone3d.row,
-				clone3dx : value.clone3d.x,
-				clone3dsurface : value.clone3d.surface,
-				clone3dy : value.clone3d.y,
-				clone3dz : value.clone3d.z,
-				clone3dNb : value.clone3d.nb,
-				svg3d : 1
-			};
+			var expanded = {};
+			if (value.translate3d !== undefined) {
+				expanded.translate3dx = value.translate3d.x;
+				expanded.translate3dy = value.translate3d.y;
+				expanded.translate3dz = value.translate3d.z;
+			}
+			if (value.clone3d !== undefined) {
+				expanded.clone3drow = value.clone3d.row;
+				expanded.clone3dx = value.clone3d.x;
+				expanded.clone3dsurface = value.clone3d.surface;
+				expanded.clone3dy = value.clone3d.y;
+				expanded.clone3dz = value.clone3d.z;
+				expanded.clone3dNb = value.clone3d.nb;
+			}
+			expanded.svg3d = 1;
+			return expanded;
 		},
 		set: function( elem, value ) {
 			var objects = [];
