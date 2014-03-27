@@ -120,21 +120,21 @@ $(document).ready(function() {
 	$.cssHooks[ "svg3d" ] = {
 		expand: function( value ) {
 			var expanded = {};
-			if (value.translate3d !== undefined) {
-				expanded.translate3dx = value.translate3d.x;
-				expanded.translate3dy = value.translate3d.y;
-				expanded.translate3dz = value.translate3d.z;
-			}
-			if (value.clone3d !== undefined) {
-				expanded.clone3drow = value.clone3d.row;
-				expanded.clone3dx = value.clone3d.x;
-				expanded.clone3dsurface = value.clone3d.surface;
-				expanded.clone3dy = value.clone3d.y;
-				expanded.clone3dz = value.clone3d.z;
-				expanded.clone3dNb = value.clone3d.nb;
-			}
-			expanded.svg3d = 1;
-			return expanded;
+            if (value.translate3d !== undefined) {
+                expanded.translate3dx = value.translate3d.x;
+                expanded.translate3dy = value.translate3d.y;
+                expanded.translate3dz = value.translate3d.z;
+            }
+            if (value.clone3d !== undefined) {
+                expanded.clone3drow = value.clone3d.row;
+                expanded.clone3dx = value.clone3d.x;
+                expanded.clone3dsurface = value.clone3d.surface;
+                expanded.clone3dy = value.clone3d.y;
+                expanded.clone3dz = value.clone3d.z;
+                expanded.clone3dNb = value.clone3d.nb;
+            }
+            expanded.svg3d = 1;
+            return expanded;
 		},
 		set: function( elem, value ) {
 			var objects = [];
@@ -298,12 +298,28 @@ $(document).ready(function() {
 			return getTransformPart(elem, "translate", rExtractTranslatey);
 		}
 	};
+	$.cssHooks[ "xInfinite" ] = {
+		set: function( elem, value ) {
+			svg3d.xInfinite = value;
+		},
+		get: function( elem ) {
+			return svg3d.xInfinite ;
+		}
+	};
 	$.cssHooks[ "yInfinite" ] = {
 		set: function( elem, value ) {
 			svg3d.yInfinite = value;
 		},
 		get: function( elem ) {
 			return svg3d.yInfinite ;
+		}
+	};
+	$.cssHooks[ "xOrigin" ] = {
+		set: function( elem, value ) {
+			svg3d.xOrigin = value;
+		},
+		get: function( elem ) {
+			return svg3d.xOrigin;
 		}
 	};
 	$.cssHooks[ "yOrigin" ] = {
@@ -366,8 +382,14 @@ $(document).ready(function() {
 	$.fx.step[ "translatey" ] = function( fx ) {
 		$.cssHooks[ "translatey" ].set( fx.elem, fx.now );	
 	};
+	$.fx.step[ "xInfinite" ] = function( fx ) {
+		$.cssHooks[ "xInfinite" ].set( fx.elem, fx.now );	
+	};
 	$.fx.step[ "yInfinite" ] = function( fx ) {
 		$.cssHooks[ "yInfinite" ].set( fx.elem, fx.now );	
+	};
+	$.fx.step[ "xOrigin" ] = function( fx ) {
+		$.cssHooks[ "xOrigin" ].set( fx.elem, fx.now );	
 	};
 	$.fx.step[ "yOrigin" ] = function( fx ) {
 		$.cssHooks[ "yOrigin" ].set( fx.elem, fx.now );	
