@@ -197,7 +197,7 @@ function transformPath(matrixArray) {
                     transformPoint(matrixArray, oldPt3d);
                     svg3d.projectPoint3d(oldPt3d);
                     // the pt3d retrieved here is radial so it is relative
-                    this.getPointCumul(pt3d, coord);
+                    this.getPointCumul(pt3d, coord, pt3d);
                     //does not modify pt3d for support of relative coords
                     var newPt3d = cloneArray(pt3d);
                     transformPoint(matrixArray, newPt3d);
@@ -213,7 +213,7 @@ function transformPath(matrixArray) {
                     if (isAbsolute) {
                         this.getPoint(pt3d, this.getCoord());
                     } else {
-                        this.getPointCumul(pt3d, this.getCoord());
+                        this.getPointCumul(pt3d, this.getCoord(), pt3d);
                     }
                     newD += transformAndStore(pt3d, matrixArray, points);
                     //if the loop is executed more than once, then a comma is dumped between points
@@ -252,13 +252,8 @@ function getPt2d(pt3d, firstCoord) {
     pt3d[2] = 0;
 }
 function getPt2dCumul(pt3d, firstCoord, relativeOriginPt) {
-    if (relativeOriginPt !== undefined) {
-        pt3d[0] = relativeOriginPt[0] + firstCoord;
-        pt3d[1] = relativeOriginPt[1] + this.getCoord();
-    } else {
-        pt3d[0] += firstCoord;
-        pt3d[1] += this.getCoord();
-    }
+    pt3d[0] = relativeOriginPt[0] + firstCoord;
+    pt3d[1] = relativeOriginPt[1] + this.getCoord();
 }
 function getXZ2d(pt3d, firstCoord) {
     pt3d[0] = firstCoord;
@@ -306,10 +301,10 @@ function getPt3d(pt3d, firstCoord) {
 /*
 get next 3d or 2d coordinates in the string and adds it to current point
 */
-function getPt3dCumul(pt3d, firstCoord) {
-    pt3d[0] += firstCoord;
-    pt3d[1] += this.getCoord();
-    pt3d[2] += this.getCoord();
+function getPt3dCumul(pt3d, firstCoord, relativeOriginPt) {
+    pt3d[0] = relativeOriginPt[0] + firstCoord;
+    pt3d[1] = relativeOriginPt[1] + this.getCoord();
+    pt3d[2] = relativeOriginPt[2] + this.getCoord();
 }
 function getXZ3d(pt3d, firstCoord) {
     pt3d[0] = firstCoord;
