@@ -47,7 +47,7 @@ function Shape(domNode) {
 /*
 get next coord in the string
 */
-var COORD = new RegExp("^ *,? *(-?[\\d.]+([eE][-+]?\\d+)?)");
+var COORD = new RegExp("^ *,? *(-?[\\d.]+([eE][-+]?\\d+)?) ?");
 Shape.prototype.getCoord = function() {
     var coord = COORD.exec(this.coords.substr(this.index));
     if (coord) {
@@ -96,40 +96,53 @@ function transformPath(matrixArray) {
     var pt3d = [0, 0, 0];
     var points = [];
     var newD = "";
-    //optimization ?
-    var ch = "";
-    var coord = 0;
-    var x_axis_rotation = 0;
-    var large_arc_flag = 0;
-    var sweep_flag = 0;
-    var isAbsolute = true;
+    var ch, coord, x_axis_rotation, large_arc_flag, sweep_flag, isAbsolute, relativeOriginRefreshAt;
     var pathLength = this.coords.length;
     for (this.index = 0 ; this.index < pathLength ;) {
         ch = this.coords.charAt(this.index);
         isAbsolute = true;
+        relativeOriginRefreshAt = 0;
         switch (ch) {
-            case "m":
-            case "l":
             case "c":
+                // ends at 3
+                relativeOriginRefreshAt++;
             case "s":
             case "q":
+                // ends at 2
+                relativeOriginRefreshAt++;
+            case "m":
+            case "l":
             case "t":
-                isAbsolute = false;
+                // ends at 1
+                relativeOriginRefreshAt++;
+                var relativeOriginPt = cloneArray(pt3d);
+                var relativeOriginIndex = 0;
                 ch = ch.toUpperCase();
+                //(x y)+ or s(x2 y2 x y)+ or q(x1 y1 x y)+ or c(x1 y1 x2 y2 x y)+
+                this.index++;
+                for (coord = this.getCoord() ; coord !== undefined ; coord = this.getCoord()) {
+                    this.getPointCumul(pt3d, coord, relativeOriginPt);
+                    relativeOriginIndex++;
+                    if (relativeOriginIndex === relativeOriginRefreshAt) {
+                        relativeOriginPt = cloneArray(pt3d);
+                        relativeOriginIndex = 0;
+                    }
+                    newD += ch + transformAndStore(pt3d, matrixArray, points);
+                    //if the loop is executed more than once, then a comma is dumped between points
+                    ch = ",";
+                }
+                relativeOriginRefreshAt = 0;
+                break;
             case "M":
             case "L":
             case "C":
             case "S":
             case "Q":
             case "T":
-                //(x y)+ or (x1 y1 x2 y2 x y)+
+                //(x y)+ or s(x2 y2 x y)+ or q(x1 y1 x y)+ or c(x1 y1 x2 y2 x y)+
                 this.index++;
                 for (coord = this.getCoord() ; coord !== undefined ; coord = this.getCoord()) {
-                    if (isAbsolute) {
-                        this.getPoint(pt3d, coord);
-                    } else {
-                        this.getPointCumul(pt3d, coord);
-                    }
+                    this.getPoint(pt3d, coord);
                     newD += ch + transformAndStore(pt3d, matrixArray, points);
                     //if the loop is executed more than once, then a comma is dumped between points
                     ch = ",";
@@ -238,9 +251,14 @@ function getPt2d(pt3d, firstCoord) {
     pt3d[1] = this.getCoord();
     pt3d[2] = 0;
 }
-function getPt2dCumul(pt3d, firstCoord) {
-    pt3d[0] += firstCoord;
-    pt3d[1] += this.getCoord();
+function getPt2dCumul(pt3d, firstCoord, relativeOriginPt) {
+    if (relativeOriginPt !== undefined) {
+        pt3d[0] = relativeOriginPt[0] + firstCoord;
+        pt3d[1] = relativeOriginPt[1] + this.getCoord();
+    } else {
+        pt3d[0] += firstCoord;
+        pt3d[1] += this.getCoord();
+    }
 }
 function getXZ2d(pt3d, firstCoord) {
     pt3d[0] = firstCoord;
