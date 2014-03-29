@@ -144,6 +144,8 @@ $(document).ready(function() {
 			var matrixArray = [];
 			if (elem.translateMatrix !== undefined) {
 				matrixArray.push(elem.translateMatrix);
+			} else {
+
 			}
 			elem.svg3dshape.transform(matrixArray);
 			if (elem.svg3dclones !== undefined) {
@@ -277,9 +279,6 @@ $(document).ready(function() {
 		},
 		set: function( elem, value ) {
 			setTransformPart(elem, elem.translatex + ", " + elem.translatey, "translate", rReplaceTranslate);
-		},
-		get: function( elem ) {
-			return getTransformPart(elem, "translate", rExtractTranslate);
 		}
 	};
 	$.cssHooks[ "translatex" ] = {

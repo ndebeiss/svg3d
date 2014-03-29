@@ -21,9 +21,13 @@
    width="100%"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.0"
-      xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-          z:xOrigin="0"
-          z:yOrigin="0">
+ xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng">
+  <script type="text/ecmascript" xlink:href="../jquery/jquery-2.0.3.js"></script>
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js"></script>
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js"></script>
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js"></script>
+  <script type="text/ecmascript" xlink:href="../svg3d/jquery_svg3d.js"></script>
+  <script type="text/ecmascript" xlink:href="js/barrel.js"></script>
 
   <metadata
      id="metadata3">
@@ -827,7 +831,8 @@
   <g
      id="barrel"
      inkscape:groupmode="layer"
-     inkscape:label="Layer 1">
+     inkscape:label="Layer 1"
+     transform="translate(500, 400)">
     <g
        id="g5204">
       <path
