@@ -8,15 +8,7 @@ svg3d.sortAlgo = svg3d.AVERAGE_Z;
 $( document ).ready(function() {
   $("#g3172").animate({
     svg3d: {
-      translate3d : {x: 0, y: 0, z: 0},
-      clone3d: {
-        row: 10,
-        x: 50,
-        surface: 100,
-        y: -50,
-        z: 50,
-        nb: 0
-      }
+      translate3d : {x: 400, y: 300, z: 1000}
     }
   }, {
     duration: 1000, 

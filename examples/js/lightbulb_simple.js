@@ -8,19 +8,26 @@ svg3d.sortAlgo = svg3d.AVERAGE_Z;
 $( document ).ready(function() {
   $("#g3038").animate({
     svg3d: {
-      translate3d : {x: 200, y: 200, z: 0},
       clone3d: {
         row: 10,
         x: 50,
         surface: 100,
-        y: -50,
+        y: 50,
         z: 50,
-        nb: 0
+        nb: 300
       }
-    }
+    },
+    yInfinite: 300,
+    yOrigin: 200,
+    xInfinite: 0,
+    xOrigin: -600
   }, {
-    duration: 1000, 
-    easing: "easeInCubic"
+    duration: 4000, 
+    easing: "easeInOutCubic",
+    specialEasing: {
+      yInfinite: "easeInCubic",
+      yOrigin: "easeInCubic"
+    }
   });
   
 });
