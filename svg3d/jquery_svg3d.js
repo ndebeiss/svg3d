@@ -128,7 +128,7 @@ $(document).ready(function() {
             if (value.clone3d !== undefined) {
                 expanded.clone3drow = value.clone3d.row;
                 expanded.clone3dx = value.clone3d.x;
-                expanded.clone3dsurface = value.clone3d.surface;
+                expanded.clone3dlayer = value.clone3d.layer;
                 expanded.clone3dy = value.clone3d.y;
                 expanded.clone3dz = value.clone3d.z;
                 expanded.clone3dNb = value.clone3d.nb;
@@ -196,9 +196,9 @@ $(document).ready(function() {
 		}
 
 	};
-	$.cssHooks[ "clone3dsurface" ] = {
+	$.cssHooks[ "clone3dlayer" ] = {
 		set: function( elem, value, end ) {
-			elem.clone3dsurface = end;
+			elem.clone3dlayer = end;
 		}
 
 	};
@@ -219,10 +219,10 @@ $(document).ready(function() {
 				if (clone.svg3dshape === undefined) {
 					clone.svg3dshape = elem.svg3dshape.cloneOn(clone);
 				}
-				var surface = Math.floor( i / elem.clone3dsurface );
-				var row = Math.floor( ( i % elem.clone3dsurface ) / elem.clone3drow);
-				var z = Math.floor( ( ( i % elem.clone3dsurface ) % elem.clone3drow ) );
-				clone.cloneMatrix = svg3d.setTranslationMatrix(elem.clone3dx * row, elem.clone3dy * surface, elem.clone3dz * z);
+				var layer = Math.floor( i / elem.clone3dlayer );
+				var row = Math.floor( ( i % elem.clone3dlayer ) / elem.clone3drow);
+				var z = Math.floor( ( ( i % elem.clone3dlayer ) % elem.clone3drow ) );
+				clone.cloneMatrix = svg3d.setTranslationMatrix(elem.clone3dx * row, elem.clone3dy * layer, elem.clone3dz * z);
 			}
 		}
 	};
@@ -351,8 +351,8 @@ $(document).ready(function() {
 	$.fx.step[ "clone3dy" ] = function( fx ) {
 		$.cssHooks[ "clone3dy" ].set( fx.elem, fx.now, fx.end );	
 	};
-	$.fx.step[ "clone3dsurface" ] = function( fx ) {
-		$.cssHooks[ "clone3dsurface" ].set( fx.elem, fx.now, fx.end );	
+	$.fx.step[ "clone3dlayer" ] = function( fx ) {
+		$.cssHooks[ "clone3dlayer" ].set( fx.elem, fx.now, fx.end );	
 	};
 	$.fx.step[ "clone3dz" ] = function( fx ) {
 		$.cssHooks[ "clone3dz" ].set( fx.elem, fx.now, fx.end );	

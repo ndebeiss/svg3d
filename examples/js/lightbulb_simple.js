@@ -11,7 +11,7 @@ $( document ).ready(function() {
       clone3d: {
         row: 10,
         x: 50,
-        surface: 100,
+        layer: 100,
         y: 50,
         z: 50,
         nb: 300
