@@ -210,19 +210,30 @@ $(document).ready(function() {
 	};
 	$.cssHooks[ "clone3dNb" ] = {
 		set: function( elem, value ) {
+			var incx, incy, incz, clone, i, increments, layer, row, z;
 			if (elem.svg3dclones === undefined) {
 				elem.svg3dclones = [];
 			}
-			for (var i = elem.svg3dclones.length; i < value; i++) {
-				var clone = $(elem).clone()[0];
+			for (i = elem.svg3dclones.length; i < value; i++) {
+				clone = $(elem).clone()[0];
 				elem.svg3dclones.push(clone);
 				if (clone.svg3dshape === undefined) {
 					clone.svg3dshape = elem.svg3dshape.cloneOn(clone);
 				}
-				var layer = Math.floor( i / elem.clone3dlayer );
-				var row = Math.floor( ( i % elem.clone3dlayer ) / elem.clone3drow);
-				var z = Math.floor( ( ( i % elem.clone3dlayer ) % elem.clone3drow ) );
-				clone.cloneMatrix = svg3d.setTranslationMatrix(elem.clone3dx * row, elem.clone3dy * layer, elem.clone3dz * z);
+				if (elem.svg3dCloneGeographicDistribution !== undefined) {
+					increments = elem.svg3dCloneGeographicDistribution(i, elem.clone3drow, elem.clone3dlayer, elem.clone3dx, elem.clone3dy, elem.clone3dz);
+					incx = increments.incx;
+					incy = increments.incy;
+					incz = increments.incz;
+				} else {
+					layer = Math.floor( i / elem.clone3dlayer );
+					row = Math.floor( ( i % elem.clone3dlayer ) / elem.clone3drow);
+					z = Math.floor( ( ( i % elem.clone3dlayer ) % elem.clone3drow ) );
+					incx = elem.clone3dx * row;
+					incy = elem.clone3dy * layer;
+					incz = elem.clone3dz * z;
+				}
+				clone.cloneMatrix = svg3d.setTranslationMatrix(incx, incy, incz);
 			}
 		}
 	};
