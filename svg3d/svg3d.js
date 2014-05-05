@@ -205,15 +205,15 @@ function transformPath(matrixArray) {
                     var rx = newPt3d[0] - oldPt3d[0];
                     var ry = newPt3d[1] - oldPt3d[1];
                     newD += ch + Math.abs(rx) + "," + Math.abs(ry);
-                    
+                    //TODO modify x_axis_rotation with rotation on y (-rotY % (2*Math.PI)) * 360 / (2*Math.PI)
                     x_axis_rotation = this.getCoord();
                     large_arc_flag = this.getCoord();
                     sweep_flag = this.getCoord();
-                    newD += "," + x_axis_rotation + "," + large_arc_flag + "," + sweep_flag + ",";
+                    newD += " " + x_axis_rotation + " " + large_arc_flag + " " + sweep_flag + " ";
                     if (isAbsolute) {
                         this.getPoint(pt3d, this.getCoord());
                     } else {
-                        this.getPointCumul(pt3d, this.getCoord(), pt3d);
+                        this.getPointCumul(pt3d, this.getCoord(), oldPt3d);
                     }
                     newD += transformAndStore(pt3d, matrixArray, points);
                     //if the loop is executed more than once, then a comma is dumped between points
