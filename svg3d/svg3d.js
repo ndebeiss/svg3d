@@ -613,7 +613,6 @@ Group.prototype.setPositionDirectorVectorAverage = function(points) {
     // position and director vector will be the average position and director vector of all the shapes contained in that g tag
     var sumPosition = [0, 0, 0], sumDirectorVector = [0, 0, 0], i = this.subShapes.length;
     while (i--) {
-        this.subShapes[i].setDirectorVector_default(points);
         sumPosition[0] += this.subShapes[i].position[0];
         sumPosition[1] += this.subShapes[i].position[1];
         sumPosition[2] += this.subShapes[i].position[2];
@@ -672,9 +671,9 @@ function setDirectorVector_default(points) {
                 this.position[1] += points[i][1];
                 this.position[2] += points[i][2];
             }
-            this.position[0] = this.position[0] / length;
-            this.position[1] = this.position[1] / length;
-            this.position[2] = this.position[2] / length;
+            this.position[0] = this.position[0] / points.length;
+            this.position[1] = this.position[1] / points.length;
+            this.position[2] = this.position[2] / points.length;
             //this.position will be used as third point, still in order to avoid problem of very small director vectors (1e-15 ...)
             // in order to calculate director vector
             // u=(ux, uy, uz) et v=(vx, vy, vz)
