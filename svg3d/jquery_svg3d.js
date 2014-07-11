@@ -115,6 +115,9 @@
                     beforeElem = false;
                     parentNode.appendChild(current);
                 }
+                if (current.svg3dshape.subShapes !== undefined) {
+                    svg3d.sort(current.svg3dshape.subShapes);
+                }
             }
         }
     }
