@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-flat-20030114.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" 
+ width="100%" height="100%" onload="svg3d.init(this)" z:xInfinite="300" z:yInfinite="200" z:zRatio="2">
+	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
+	<title>SVG animation - half pipe 3d</title>
+	<g id="g1" onclick="svg3d.toggleRotation()">
+        <path id="face0" style="fill: yellow; opacity: 0.9;" d="M0,0,100 L123.6,0,100 L123.6,76.4,100 L0,76.4,100 Z" z:threeD="true">
+            <z:translation x="100" y="200"/>
+            <z:rotation incRotZ="0.1" />
+            <z:translation x="50" y="50"/>
+        </path>
+		<path id="face1" style="fill: yellow; opacity: 1.0;" d="M0,0,300 L123.6,0,300 L123.6,76.4,300 L0,76.4,300 Z" z:threeD="true">
+            <z:translation x="100" y="200"/>
+            <z:rotation incRotZ="0.1" />
+            <z:translation x="50" y="50"/>
+        </path>
+		<path id="face2" style="fill: gold; opacity: 1.0;" d="M0,0,100 L0,0,300 L0,76.4,300 L0,76.4,100 Z" z:threeD="true">
+            <z:translation x="100" y="200"/>
+            <z:rotation incRotZ="0.1" />
+            <z:translation x="50" y="50"/>
+        </path>
+		<path id="face3" style="fill: gold; opacity: 1.0;" d="M123.6,0,100 L123.6,0,300 L123.6,76.4,300 L123.6,76.4,100 Z" z:threeD="true">
+            <z:translation x="100" y="200"/>
+            <z:rotation incRotZ="0.1" />
+            <z:translation x="50" y="50"/>
+        </path>
+		<path id="face4" style="fill: goldenRod; opacity: 1.0;" d="M0,0,100 L123.6,0,100 L123.6,0,300 L0,0,300 Z" z:threeD="true">
+            <z:translation x="100" y="200"/>
+            <z:rotation incRotZ="0.1" />
+            <z:translation x="50" y="50"/>
+        </path>
+		<path id="face5" style="fill: goldenRod; opacity: 1.0;" d="M0,76.4,100 L123.6,76.4,100 L123.6,76.4,300 L0,76.4,300 Z" z:threeD="true">
+            <z:translation x="100" y="200"/>
+            <z:rotation incRotZ="0.1" />
+            <z:translation x="50" y="50"/>
+        </path>
+        
+	</g>
+</svg>
