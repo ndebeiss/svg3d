@@ -886,11 +886,18 @@ svg3d.sortFacesAllToAll = function(pathArray) {
 }
 
 /*
+With :
+- A is the position of the camera
+- B is the position of the face
+- P is the position of the reference face
+- u is the director vector of the reference
 if AP . u and BP . u have opposite signs, then they are not on the same side of the plan, then face is behind reference
+
 A is ( 0, 0, -infinite )
 AP . u = APx * ux + APy * uy + APz * uz = Px * ux + Py * uy + (Pz  + infinite) * uz
-so if uz < 0 then it is -infinite otherwise it is infinite
-AP . u has the sign of uz
+If uz = 0 then AP . u = Px * ux + Py * uy and it must be calculated
+But if uz != 0 then it is infinite or -infinite and AP . u has the sign of uz
+
 BP . u = BPx * ux + BPy * uy + BPz * uz
 BP . u = ( Px - Bx ) * ux + ( Py - By ) * uy + ( Pz - Bz ) * uz
 
@@ -900,6 +907,13 @@ function isBehind(face, reference) {
     var p = reference.position;
     var b = face.position;
     var bpu = (p[0] - b[0]) * u[0] + (p[1] - b[1]) * u[1] + (p[2] - b[2]) * u[2];
+    if (u[2] === 0) {
+        var apu = p[0] * u[0] + p[1] * u[1];
+        if (bpu * apu < 0) {
+            return true;
+        }
+        return false;
+    }
     if (bpu * u[2] < 0) {
         return true;
     }
