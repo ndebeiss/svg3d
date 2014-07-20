@@ -35,10 +35,22 @@ svgClonableG.animate(
             {
 	            duration: 1000, 
      	        easing: "easeInCubic"
-            }
-            );
+            });
+            $("#svgTranslatableG_ad530959e0d04d6d9d2b83028be85eaf").animate(
+                { "svg3d":{"translate3d":
+            		{
+    		    		x: 200,
+						y: 200,
+						z: 0
+            		}
+            	}
+                },
+                { queue: This.id,
+                  duration: 1000, 
+                  easing: "easeInCubic"
+                });
+              }
           }
-   	}
 );
 });
 
