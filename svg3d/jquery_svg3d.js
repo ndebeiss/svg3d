@@ -160,10 +160,11 @@
                     elem.svg3dshape = svg3d.shapeFactory(elem);
                 }
                 var matrixArray = [];
-                if (elem.translateMatrix !== undefined) {
-                    matrixArray.push(elem.translateMatrix);
+                if (elem.translateMatrix === undefined) {
+                    // identity matrix
+                    matrixArray.push(svg3d.setTranslationMatrix(0, 0, 0));
                 } else {
-
+                    matrixArray.push(elem.translateMatrix);
                 }
                 elem.svg3dshape.transform(matrixArray);
                 if (elem.svg3dclones !== undefined) {
@@ -229,6 +230,9 @@
         $.cssHooks["clone3dNb"] = {
             set: function(elem, value) {
                 var incx, incy, incz, clone, i, increments, layer, row, z;
+                if (elem.svg3dshape === undefined) {
+                    elem.svg3dshape = svg3d.shapeFactory(elem);
+                }
                 if (elem.svg3dclones === undefined) {
                     elem.svg3dclones = [];
                 }
