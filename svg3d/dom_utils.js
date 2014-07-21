@@ -1,39 +1,3 @@
-/*
-Copyright or © or Copr. Nicolas Debeissat
-
-nicolas.debeissat@gmail.com (http://debeissat.nicolas.free.fr/)
-
-This software is a computer program whose purpose is to rotate svg
- pictures in a 3 dimensional space and projects it back on the screen.
-
-This software is governed by the CeCILL license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
-modify and/ or redistribute the software under the terms of the CeCILL
-license as circulated by CEA, CNRS and INRIA at the following URL
-"http://www.cecill.info". 
-
-As a counterpart to the access to the source code and  rights to copy,
-modify and redistribute granted by the license, users are provided only
-with a limited warranty  and the software's author,  the holder of the
-economic rights,  and the successive licensors  have only  limited
-liability. 
-
-In this respect, the user's attention is drawn to the risks associated
-with loading,  using,  modifying and/or developing or reproducing the
-software by the user in light of its specific status of free software,
-that may mean  that it is complicated to manipulate,  and  that  also
-therefore means  that it is reserved for developers  and  experienced
-professionals having in-depth computer knowledge. Users are therefore
-encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
-
-The fact that you are presently reading this means that you have had
-knowledge of the CeCILL license and that you accept its terms.
-
-*/
-
 ELEMENT_NODE = 1;
 ATTRIBUTE_NODE = 2;
 TEXT_NODE = 3;
@@ -62,16 +26,16 @@ function cloneArray(array) {
  example : .//textarea|.//select
  */
 
-function applyXpath(domNode,xpath) {
+function applyXpath(domNode, xpath) {
     var inputs = [];
     // code for IE
     if (window.ActiveXObject) {
-        domNode.ownerDocument.setProperty("SelectionLanguage","XPath");
+        domNode.ownerDocument.setProperty("SelectionLanguage", "XPath");
         inputs = domNode.selectNodes(xpath);
     }
     // code for Mozilla, Firefox, Opera, etc.
     else if (document.implementation && document.implementation.createDocument) {
-        var nodes = document.evaluate(xpath, domNode, null, XPathResult.ANY_TYPE,null);
+        var nodes = document.evaluate(xpath, domNode, null, XPathResult.ANY_TYPE, null);
         var result = nodes.iterateNext();
         while (result) {
             inputs.push(result);
@@ -84,7 +48,7 @@ function applyXpath(domNode,xpath) {
 /*
  get the first ancestor with that tag name and that class name
  */
-function getFirstAncestorByTagAndClass(domNode,tagName,className) {
+function getFirstAncestorByTagAndClass(domNode, tagName, className) {
     var ancestor = domNode.parentNode;
     while (ancestor) {
         if ((ancestor.tagName) && (ancestor.tagName.toLowerCase() == tagName) && (ancestor.className) && (ancestor.className.toLowerCase() == className)) {
@@ -99,9 +63,9 @@ function getFirstAncestorByTagAndClass(domNode,tagName,className) {
  sets the selection of that <select> to 'selectionName'
  returns true when the selection has been made, false otherwise
  */
-function setSelected(select,optionName) {
+function setSelected(select, optionName) {
     var optionTags = select.getElementsByTagName('option');
-    for (var i=0 ; i<optionTags.length ; i++) {
+    for (var i = 0; i < optionTags.length; i++) {
         if (optionTags[i].getAttribute("value") == optionName) {
             select.selectedIndex = i;
             return true;
@@ -145,7 +109,7 @@ function isDisplayed(domNode) {
   Free to use if this text is included
  */
 function getElementsByAttribute(oElm, strTagName, strAttributeName, strAttributeValue) {
-    var arrElements = (strTagName == "*" && document.all)? document.all : oElm.getElementsByTagName(strTagName);
+    var arrElements = (strTagName == "*" && document.all) ? document.all : oElm.getElementsByTagName(strTagName);
     var arrReturnElements = [];
     //MODIFIED to be visible (and understandable)
     //var oAttributeValue = (typeof strAttributeValue != "undefined")? new RegExp("(^|\\s)" + strAttributeValue + "(\\s|$)") : null;
@@ -155,11 +119,11 @@ function getElementsByAttribute(oElm, strTagName, strAttributeName, strAttribute
     }
     var oCurrent;
     var oAttribute;
-    for(var i=0; i<arrElements.length; i++) {
+    for (var i = 0; i < arrElements.length; i++) {
         oCurrent = arrElements[i];
         oAttribute = oCurrent.getAttribute(strAttributeName);
         if (typeof oAttribute == "string" && oAttribute.length > 0) {
-            if (typeof strAttributeValue == "undefined" || (oAttributeValue && oAttributeValue.test(oAttribute))){
+            if (typeof strAttributeValue == "undefined" || (oAttributeValue && oAttributeValue.test(oAttribute))) {
                 arrReturnElements.push(oCurrent);
             }
         }
@@ -184,14 +148,14 @@ function createDocumentFromText(text) {
     var doc, parser;
     // code for IE
     if (window.ActiveXObject) {
-        doc=new ActiveXObject("Microsoft.XMLDOM");
-        doc.async="false";
+        doc = new ActiveXObject("Microsoft.XMLDOM");
+        doc.async = "false";
         doc.loadXML(text);
     }
     // code for Mozilla, Firefox, Opera, etc.
     else {
-        parser=new DOMParser();
-        doc=parser.parseFromString(text,"text/xml");
+        parser = new DOMParser();
+        doc = parser.parseFromString(text, "text/xml");
     }
     return doc;
 }
@@ -200,8 +164,8 @@ function createDocument() {
     var doc;
     // code for IE
     if (window.ActiveXObject) {
-        doc=new ActiveXObject("Microsoft.XMLDOM");
-        doc.async="false";
+        doc = new ActiveXObject("Microsoft.XMLDOM");
+        doc.async = "false";
     }
     // code for Mozilla, Firefox
     else {
@@ -292,7 +256,7 @@ function insertAfter(node, ref) {
     if (ref == pn.lastChild) {
         pn.appendChild(node);
     } else {
-        pn.insertBefore(node,ref.nextSibling);
+        pn.insertBefore(node, ref.nextSibling);
     }
 }
 
@@ -318,14 +282,14 @@ function removePrefix(nodeName) {
     return nodeName;
 }
 
-function getNamespaceURIFromNodeName(nodeName,namespaces) {
+function getNamespaceURIFromNodeName(nodeName, namespaces) {
     if (nodeName.match(":")) {
-        return getNamespaceURI(nodeName.split(":")[0],namespaces);
+        return getNamespaceURI(nodeName.split(":")[0], namespaces);
     }
-    return getDefaultNamespace(namespaces); 
+    return getDefaultNamespace(namespaces);
 }
 
-function getNamespaceURI(prefix,namespaces) {
+function getNamespaceURI(prefix, namespaces) {
     if (namespaces[prefix]) {
         return namespaces[prefix];
     }

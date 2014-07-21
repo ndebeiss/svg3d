@@ -1,7 +1,7 @@
 /**
  *
  * Many thanks from guys from three.js :
- * 
+ *
  * @author mrdoob / http://mrdoob.com/
  * @author supereggbert / http://www.paulbrunt.co.uk/
  * @author philogb / http://blog.thejit.org/
@@ -22,15 +22,16 @@ if (window.svg3d === undefined) {
 
 svg3d.MATRIX = {
 
-	identity: function () {
+    identity: function() {
 
-		return [1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, 0];
+        return [1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0
+        ];
 
-	},
+    },
 
-/* to adapt
+    /* to adapt
 	copy: function ( m ) {
 
 		this.elements.set( m.elements );
@@ -682,54 +683,66 @@ svg3d.MATRIX = {
 
 	},*/
 
-	makeTranslation: function ( x, y, z ) {
-		return [1, 0, 0, x,
-			0, 1, 0, y,
-			0, 0, 1, z];
-	},
+    makeTranslation: function(x, y, z) {
+        return [1, 0, 0, x,
+            0, 1, 0, y,
+            0, 0, 1, z
+        ];
+    },
 
-	makeRotationX: function ( theta ) {
-		var c = Math.cos( theta ), s = Math.sin( theta );
-		return [1, 0,  0, 0,
-			0, c, - s, 0,
-			0, s,  c, 0];
-	},
+    makeRotationX: function(theta) {
+        var c = Math.cos(theta),
+            s = Math.sin(theta);
+        return [1, 0, 0, 0,
+            0, c, -s, 0,
+            0, s, c, 0
+        ];
+    },
 
-	makeRotationY: function ( theta ) {
-		var c = Math.cos( theta ), s = Math.sin( theta );
-		return [c, 0, s, 0,
-			 0, 1, 0, 0,
-			- s, 0, c, 0];
-	},
+    makeRotationY: function(theta) {
+        var c = Math.cos(theta),
+            s = Math.sin(theta);
+        return [c, 0, s, 0,
+            0, 1, 0, 0, -s, 0, c, 0
+        ];
+    },
 
-	makeRotationZ: function ( theta ) {
-		var c = Math.cos( theta ), s = Math.sin( theta );
-		return [c, - s, 0, 0,
-			s,  c, 0, 0,
-			0,  0, 1, 0];
-	},
+    makeRotationZ: function(theta) {
+        var c = Math.cos(theta),
+            s = Math.sin(theta);
+        return [c, -s, 0, 0,
+            s, c, 0, 0,
+            0, 0, 1, 0
+        ];
+    },
 
-	makeRotationAxis: function ( axis, angle ) {
+    makeRotationAxis: function(axis, angle) {
 
-		// Based on http://www.gamedev.net/reference/articles/article1199.asp
+        // Based on http://www.gamedev.net/reference/articles/article1199.asp
 
-		var c = Math.cos( angle );
-		var s = Math.sin( angle );
-		var t = 1 - c;
-		var x = axis.x, y = axis.y, z = axis.z;
-		var tx = t * x, ty = t * y;
+        var c = Math.cos(angle);
+        var s = Math.sin(angle);
+        var t = 1 - c;
+        var x = axis.x,
+            y = axis.y,
+            z = axis.z;
+        var tx = t * x,
+            ty = t * y;
 
-		return [tx * x + c, tx * y - s * z, tx * z + s * y, 0,
-			tx * y + s * z, ty * y + c, ty * z - s * x, 0,
-			tx * z - s * y, ty * z + s * x, t * z * z + c, 0];
-	},
-	
+        return [tx * x + c, tx * y - s * z, tx * z + s * y, 0,
+            tx * y + s * z, ty * y + c, ty * z - s * x, 0,
+            tx * z - s * y, ty * z + s * x, t * z * z + c, 0
+        ];
+    },
 
-	makeScale: function ( x, y, z ) {
-		return [x, 0, 0, 0,
-			0, y, 0, 0,
-			0, 0, z, 0];
-	}/*,
+
+    makeScale: function(x, y, z) {
+        return [x, 0, 0, 0,
+            0, y, 0, 0,
+            0, 0, z, 0
+        ];
+    }
+    /*,
 
 
 	compose: function ( position, quaternion, scale ) {
