@@ -151,6 +151,9 @@
                     expanded.clone3dz = value.clone3d.z;
                     expanded.clone3dNb = value.clone3d.nb;
                 }
+                if (value.matrix3ds !== undefined) {
+                    expanded.matrix3ds = value.matrix3ds;
+                }
                 expanded.svg3d = 1;
                 return expanded;
             },
@@ -160,6 +163,9 @@
                     elem.svg3dshape = svg3d.shapeFactory(elem);
                 }
                 var matrixArray = [];
+                if (elem.matrix3ds !== undefined) {
+                    matrixArray = matrixArray.concat(elem.matrix3ds);
+                }
                 if (elem.translateMatrix === undefined) {
                     // identity matrix
                     matrixArray.push(svg3d.setTranslationMatrix(0, 0, 0));
@@ -172,6 +178,9 @@
                     while (i--) {
                         var matrixArray4Clone = [];
                         matrixArray4Clone.push(elem.svg3dclones[i].cloneMatrix);
+                        if (elem.matrix3ds !== undefined) {
+                            matrixArray4Clone = matrixArray4Clone.concat(elem.matrix3ds);
+                        }
                         if (elem.translateMatrix !== undefined) {
                             matrixArray4Clone.push(elem.translateMatrix);
                         }
@@ -258,6 +267,12 @@
                     clone.cloneMatrix = svg3d.setTranslationMatrix(incx, incy, incz);
                 }
             }
+        };
+        $.cssHooks["matrix3ds"] = {
+            set: function(elem, value, end) {
+                elem.matrix3ds = end;
+            }
+
         };
         $.cssHooks["scaleInPlace"] = {
             expand: function(value) {
@@ -393,6 +408,9 @@
         };
         $.fx.step["clone3dNb"] = function(fx) {
             $.cssHooks["clone3dNb"].set(fx.elem, fx.now);
+        };
+        $.fx.step["matrix3ds"] = function(fx) {
+            $.cssHooks["matrix3ds"].set(fx.elem, fx.now, fx.end);
         };
         $.fx.step["svg3d"] = function(fx) {
             $.cssHooks["svg3d"].set(fx.elem, fx.now);
