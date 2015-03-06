@@ -45,7 +45,7 @@ svgClonableG.animate(
             		}
             	}
                 },
-                { queue: This.id,
+                { queue: this.id,
                   duration: 1000, 
                   easing: "easeInCubic"
                 });

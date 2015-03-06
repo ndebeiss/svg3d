@@ -11,7 +11,7 @@
     <script type="text/ecmascript" xlink:href="js/declarative_cube_kierGroup.js" />
   <title>SVG animation - half pipe 3d</title>
   <g id="g1" onclick="svg3d.toggleRotation()">
-      <path id="face1" style="fill: yellow; opacity: 1.0;" d="M0,0,150 L110,0,150 L110,75,150 L0,75" z:threeD="true">
+      <path id="face1" style="fill: yellow; opacity: 1.0;" d="M0,0,150 L110,0,150 L110,75,150 L0,75,150 Z" z:threeD="true">
         </path>
       <path id="face5" style="fill: goldenRod; opacity: 1.0;" d="M0,75,0 L110,75,0 L110,75,150 L0,75,150 Z" z:threeD="true">
         </path>
@@ -23,7 +23,7 @@
         </path>
       <path id="face0" style="fill: yellow; opacity: 0.9;" d="M0,0,0 L110,0,0 L110,75,0 L0,75,0 Z" z:threeD="true">
         </path>
-
+<!--
       <path
          
          id="path3078"
@@ -99,5 +99,6 @@
          id="rect3203"
          d="m 102.03091,26.164742,0 c 1.79154,-0.073,0 3.58306,-0.1467,0 5.37459,-0.22001,0 0.0733,1.79151,0 0.14667,3.583,0 0.22,5.3745,0 -1.79153,0.073,0 -3.58306,0.1468,0 -5.3746,0.2201,0 -0.0733,-1.7916,0 -0.14666,-3.58309,0 -0.21999,-5.37459,0 z" z:threeD="true"
          style="fill:#ffffff" />
+       -->
       </g>
 </svg>

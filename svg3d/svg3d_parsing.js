@@ -36,7 +36,7 @@
 
     svg3d.rotationTime = 50;
 
-    var debugDirectorVector = false;
+    svg3d.debugDirectorVector = false;
 
     svg3d.clockRotation = undefined;
 
@@ -81,7 +81,7 @@
         }
         var debugDirectorVectorAttr = g.getAttribute("z:showDirectorVector");
         if (debugDirectorVectorAttr != undefined) {
-            debugDirectorVector = debugDirectorVectorAttr === "true";
+            svg3d.debugDirectorVector = debugDirectorVectorAttr === "true";
         }
         svg3d.objects = [];
         svg3d.createObjects(g);
@@ -128,12 +128,12 @@
             case svg3d.ALL_TO_ALL:
                 indexPathsSorted = svg3d.sortFacesAllToAll(objectArray);
                 svg3d.sortFaces(objectArray, indexPathsSorted);
-                showDirectorVectorsIfNeeded();
+                showDirectorVectorsIfNeeded(objectArray);
                 break;
             default:
                 indexPathsSorted = svg3d.sortFacesOneToAll(objectArray);
                 svg3d.sortFaces(objectArray, indexPathsSorted);
-                showDirectorVectorsIfNeeded();
+                showDirectorVectorsIfNeeded(objectArray);
                 break;
         }
     }
@@ -152,11 +152,11 @@
     }
 
 
-    function showDirectorVectorsIfNeeded() {
-        if (debugDirectorVector) {
-            var i = svg3d.objects.length;
+    function showDirectorVectorsIfNeeded(objectArray) {
+        if (svg3d.debugDirectorVector) {
+            var i = objectArray.length;
             while (i--) {
-                var object = svg3d.objects[i];
+                var object = objectArray[i];
                 if (!object.cloned) {
                     object.cloned = object.domNode.cloneNode(true);
                     var id = object.cloned.getAttribute("id");

@@ -637,7 +637,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                 break;
                 //as soon we have 3 points
             default:
-                //calcultates the position of the surface, also avoids the problem of very small director vectors
+                //calculates the position of the surface, also avoids the problem of very small director vectors
                 var i = points.length - 1;
                 this.position[0] = points[i][0];
                 this.position[1] = points[i][1];
@@ -654,7 +654,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                 // in order to calculate director vector
                 // u=(ux, uy, uz) et v=(vx, vy, vz)
                 //                (  uy vz - uz vy )
-                //  u /\ v = (  uz vx - ux vz   )
+                //  u /\ v =      (  uz vx - ux vz   )
                 //                (  ux vy - uy vx   )
                 var ux = points[1][0] - points[0][0];
                 var uy = points[1][1] - points[0][1];
@@ -877,20 +877,23 @@ But if uz != 0 then it is infinite or -infinite and AP . u has the sign of uz
 BP . u = BPx * ux + BPy * uy + BPz * uz
 BP . u = ( Px - Bx ) * ux + ( Py - By ) * uy + ( Pz - Bz ) * uz
 
+facePosRefPos_RefDirVec means 'are facePosRefPos and RefDirVec in the same direction ?'
+
 */
     function isBehind(face, reference) {
-        var u = reference.directorVector;
-        var p = reference.position;
-        var b = face.position;
-        var bpu = (p[0] - b[0]) * u[0] + (p[1] - b[1]) * u[1] + (p[2] - b[2]) * u[2];
-        if (u[2] === 0) {
-            var apu = p[0] * u[0] + p[1] * u[1];
-            if (bpu * apu < 0) {
+        var refDirVec = reference.directorVector;
+        var refPos = reference.position;
+        var facePos = face.position;
+        var facePosRefPos = [refPos[0] - facePos[0], refPos[1] - facePos[1], refPos[2] - facePos[2]];
+        var facePosRefPos_RefDirVec = facePosRefPos[0] * refDirVec[0] + facePosRefPos[1] * refDirVec[1] + facePosRefPos[2] * refDirVec[2];
+        if (refDirVec[2] === 0) {
+            var camPosRefPos_RefDirVec = (refPos[0] - svg3d.xInfinite) * refDirVec[0] + (refPos[1] - svg3d.yInfinite) * refDirVec[1];
+            if (facePosRefPos_RefDirVec * camPosRefPos_RefDirVec < 0) {
                 return true;
             }
             return false;
         }
-        if (bpu * u[2] < 0) {
+        if (facePosRefPos_RefDirVec * refDirVec[2] < 0) {
             return true;
         }
         return false;
