@@ -3,7 +3,7 @@ svg3d.yInfinite = 300;
 svg3d.xOrigin = 500;
 svg3d.yOrigin = 100;
 //zRatio = 20;
-//svg3d.sortAlgo = svg3d.AVERAGE_Z;
+svg3d.sortAlgo = svg3d.ALL_TO_ALL;
 
 $( document ).ready(function() {
 	$("#g1").animate({
