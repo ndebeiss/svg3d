@@ -22,7 +22,7 @@
             <z:rotation rotZ="28.90000000000014" rotX="2.8899999999999824" rotY="2.8899999999999824" />
             <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.02" rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" />
             <z:translation x="50" y="50"/>
         </path>
 		<path id="face1" style="fill: yellow; opacity: 1.0;" d="M0,0,300 L123.6,0,300 L123.6,76.4,300 L0,76.4,300 Z" z:threeD="true">
@@ -30,7 +30,7 @@
             <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
             <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.02" rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" />
             <z:translation x="50" y="50"/>
         </path>
 		<path id="face2" style="fill: gold; opacity: 1.0;" d="M0,0,100 L0,0,300 L0,76.4,300 L0,76.4,100 Z" z:threeD="true">
@@ -38,7 +38,7 @@
             <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
             <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.02" rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" />
             <z:translation x="50" y="50"/>
         </path>
 		<path id="face3" style="fill: gold; opacity: 1.0;" d="M123.6,0,100 L123.6,0,300 L123.6,76.4,300 L123.6,76.4,100 Z" z:threeD="true">
@@ -46,7 +46,7 @@
             <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
             <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.02" rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" />
             <z:translation x="50" y="50"/>
         </path>
 		<path id="face4" style="fill: goldenRod; opacity: 1.0;" d="M0,0,100 L123.6,0,100 L123.6,0,300 L0,0,300 Z" z:threeD="true">
@@ -54,7 +54,7 @@
             <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
             <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.02" rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" />
             <z:translation x="50" y="50"/>
         </path>
 		<path id="face5" style="fill: goldenRod; opacity: 1.0;" d="M0,76.4,100 L123.6,76.4,100 L123.6,76.4,300 L0,76.4,300 Z" z:threeD="true">
@@ -62,7 +62,7 @@
             <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
             <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.02" rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" />
             <z:translation x="50" y="50"/>
         </path>
         

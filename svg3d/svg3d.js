@@ -869,7 +869,7 @@ With :
 - u is the director vector of the reference
 if AP . u and BP . u have opposite signs, then they are not on the same side of the plan, then face is behind reference
 
-A is ( 0, 0, -infinite )
+A is ( window.innerWidth / 2 - svg3d.xOrigin + svg3d.xInfinite, window.innerHeight / 2 - svg3d.yOrigin + svg3d.yInfinite, -svg3d.focalDistance )
 AP . u = APx * ux + APy * uy + APz * uz = Px * ux + Py * uy + (Pz  + infinite) * uz
 If uz = 0 then AP . u = Px * ux + Py * uy and it must be calculated
 But if uz != 0 then it is infinite or -infinite and AP . u has the sign of uz
@@ -887,7 +887,7 @@ facePosRefPos_RefDirVec means 'are facePosRefPos and RefDirVec in the same direc
         var facePosRefPos = [refPos[0] - facePos[0], refPos[1] - facePos[1], refPos[2] - facePos[2]];
         var facePosRefPos_RefDirVec = facePosRefPos[0] * refDirVec[0] + facePosRefPos[1] * refDirVec[1] + facePosRefPos[2] * refDirVec[2];
         if (refDirVec[2] === 0) {
-            var camPosRefPos_RefDirVec = (refPos[0] - svg3d.xInfinite) * refDirVec[0] + (refPos[1] - svg3d.yInfinite) * refDirVec[1];
+            var camPosRefPos_RefDirVec = refPos[0] * refDirVec[0] + refPos[1] * refDirVec[1];
             if (facePosRefPos_RefDirVec * camPosRefPos_RefDirVec < 0) {
                 return true;
             }

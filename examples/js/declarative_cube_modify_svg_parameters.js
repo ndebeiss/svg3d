@@ -13,14 +13,14 @@ var rotate = function() {
     var ms = (t.getSeconds() % 10 * 1000 + t.getMilliseconds()) - max;
     //ms is contained between max - 1 and - max
     // a revolution is done in 10 secs
-    svg3d.xInfinite = 0;
-    svg3d.yInfinite = 0;
-    //svg3d.xInfinite = Math.sin(ms * 2 * Math.PI / max) * 100 + 600;
-    //svg3d.yInfinite = Math.cos(ms * 2 * Math.PI / max) * 100 + 500;
-    //svg3d.xOrigin = Math.sin(ms * 2 * Math.PI / max) * -10 + 550;
-    //svg3d.yOrigin = Math.cos(ms * 2 * Math.PI / max) * -10 + 450;
-    svg3d.xOrigin = Math.sin(ms * 2 * Math.PI / max) * 120 - 200;
-    svg3d.yOrigin = Math.cos(ms * 2 * Math.PI / max) * 120 - 200;
+    //svg3d.xInfinite = 0;
+    //svg3d.yInfinite = 0;
+    svg3d.xInfinite = Math.sin(ms * 2 * Math.PI / max) * 100 + 600;
+    svg3d.yInfinite = Math.cos(ms * 2 * Math.PI / max) * 100 + 400;
+    svg3d.xOrigin = Math.sin(ms * 2 * Math.PI / max) * -200 + 150;
+    svg3d.yOrigin = Math.cos(ms * 2 * Math.PI / max) * -100 + 150;
+    //svg3d.xOrigin = Math.sin(ms * 2 * Math.PI / max) * 120 - 200;
+    //svg3d.yOrigin = Math.cos(ms * 2 * Math.PI / max) * 120 - 200;
 	updateOriginAndInfinite();
 }
 
