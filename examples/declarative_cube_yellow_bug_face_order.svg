@@ -3,7 +3,7 @@
 <svg xmlns="http://www.w3.org/2000/svg"
  xmlns:xlink="http://www.w3.org/1999/xlink" 
  xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" 
- width="100%" height="100%" onload="svg3d.init(document.getElementById('g1')); toggleRotate()">
+ width="100%" height="100%" onload="svg3d.init(document.getElementById('g1')); toggleRotate();">
 	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />
@@ -14,57 +14,40 @@
         <circle id="infinite" cx="50" cy="50" r="2" stroke="red" stroke-width="1" fill="red" />
     </g>
 	<g id="g1" onclick="toggleRotate();svg3d.toggleRotation()" z:xInfinite="0" z:yInfinite="0" z:zRatio="2" z:sortAlgo="allToAll" z:showDirectorVector="true">
+        <path id="vanishingLinedownright" style="fill: #0000FF" d="M600,400,0 L600,400,100000 Z" z:threeD="true"/>
+        <path id="vanishingLineupright" style="fill: #0033FF" d="M600,-400,0 L600,-400,100000 Z" z:threeD="true"/>
+        <path id="vanishingLineupleft" style="fill: #0066FF" d="M-600,-400,0 L-600,-400,100000 Z" z:threeD="true"/>
+        <path id="vanishingLinedownleft" style="fill: #0099FF" d="M-600,400,0 L-600,400,100000 Z" z:threeD="true"/>
         <path id="face0" style="fill: yellow; opacity: 0.9;" d="M0,0,100 L123.6,0,100 L123.6,76.4,100 L0,76.4,100 Z" z:threeD="true">
-            <!--<z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
-            <z:translation x="50" y="50"/>-->
-            <!--<z:translation x="100" y="200"/>
-            <z:rotation rotZ="28.90000000000014" rotX="2.8899999999999824" rotY="2.8899999999999824" />
-            <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" incRotY="0.01" incRotX="0.2" />
             <z:translation x="50" y="50"/>
         </path>
 		<path id="face1" style="fill: yellow; opacity: 1.0;" d="M0,0,300 L123.6,0,300 L123.6,76.4,300 L0,76.4,300 Z" z:threeD="true">
-            <!--<z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
-            <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" incRotY="0.01" incRotX="0.2" />
             <z:translation x="50" y="50"/>
         </path>
 		<path id="face2" style="fill: gold; opacity: 1.0;" d="M0,0,100 L0,0,300 L0,76.4,300 L0,76.4,100 Z" z:threeD="true">
-            <!--<z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
-            <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" incRotY="0.01" incRotX="0.2" />
             <z:translation x="50" y="50"/>
         </path>
 		<path id="face3" style="fill: gold; opacity: 1.0;" d="M123.6,0,100 L123.6,0,300 L123.6,76.4,300 L123.6,76.4,100 Z" z:threeD="true">
-            <!--<z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
-            <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" incRotY="0.01" incRotX="0.2" />
             <z:translation x="50" y="50"/>
         </path>
 		<path id="face4" style="fill: goldenRod; opacity: 1.0;" d="M0,0,100 L123.6,0,100 L123.6,0,300 L0,0,300 Z" z:threeD="true">
-            <!--<z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
-            <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" incRotY="0.01" incRotX="0.2" />
             <z:translation x="50" y="50"/>
         </path>
 		<path id="face5" style="fill: goldenRod; opacity: 1.0;" d="M0,76.4,100 L123.6,76.4,100 L123.6,76.4,300 L0,76.4,300 Z" z:threeD="true">
-            <!--<z:translation x="100" y="200"/>
-            <z:rotation incRotZ="0.1" incRotX="0.01" incRotY="0.01" />
-            <z:translation x="50" y="50"/>-->
             <z:translation x="100" y="200"/>
-            <z:rotation rotX="2.8899999999999824" />
+            <z:rotation rotX="2.8899999999999824" incRotY="0.01" incRotX="0.2" />
             <z:translation x="50" y="50"/>
         </path>
-        
-	</g>
+
+    </g>
 </svg>

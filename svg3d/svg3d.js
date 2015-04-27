@@ -745,6 +745,12 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         }
     }
 
+    /*
+    A point located at coordinates (svg3d.xOrigin, svg3d.yOrigin, z) is projected at (svg3d.xInfinite, svg3d.yInfinite).
+    A point with z = infinite is also projected at (svg3d.xInfinite, svg3d.yInfinite).
+    A point (x, y, 0) is projected at (x - svg3d.xOrigin + svg3d.xInfinite, y - svg3d.yOrigin + svg3d.yInfinite).
+
+    */
     svg3d.projectPoint3d = function(pt3d) {
         var perspectiveRatio = svg3d.focalDistance / (svg3d.focalDistance + (pt3d[2] / svg3d.zRatio));
         pt3d[0] = (pt3d[0] - svg3d.xOrigin) * perspectiveRatio + svg3d.xInfinite;
@@ -869,13 +875,8 @@ With :
 - u is the director vector of the reference
 if AP . u and BP . u have opposite signs, then they are not on the same side of the plan, then face is behind reference
 
-A is ( window.innerWidth / 2 - svg3d.xOrigin + svg3d.xInfinite, window.innerHeight / 2 - svg3d.yOrigin + svg3d.yInfinite, -svg3d.focalDistance )
-AP . u = APx * ux + APy * uy + APz * uz = Px * ux + Py * uy + (Pz  + infinite) * uz
-If uz = 0 then AP . u = Px * ux + Py * uy and it must be calculated
-But if uz != 0 then it is infinite or -infinite and AP . u has the sign of uz
-
-BP . u = BPx * ux + BPy * uy + BPz * uz
-BP . u = ( Px - Bx ) * ux + ( Py - By ) * uy + ( Pz - Bz ) * uz
+A is ( svg3d.xOrigin, svg3d.yOrigin, - svg3d.zRatio * svg3d.focalDistance )
+which is projected at (svg3d.xInfinite, svg3d.yInfinite)
 
 facePosRefPos_RefDirVec means 'are facePosRefPos and RefDirVec in the same direction ?'
 
@@ -884,16 +885,15 @@ facePosRefPos_RefDirVec means 'are facePosRefPos and RefDirVec in the same direc
         var refDirVec = reference.directorVector;
         var refPos = reference.position;
         var facePos = face.position;
+        var camPos = [svg3d.xOrigin, svg3d.yOrigin, - svg3d.zRatio * svg3d.focalDistance];
+        var camPosRefPos = [refPos[0] - camPos[0], refPos[1] - camPos[1], refPos[2] - camPos[2]];
         var facePosRefPos = [refPos[0] - facePos[0], refPos[1] - facePos[1], refPos[2] - facePos[2]];
+        var camPosRefPos_RefDirVec = camPosRefPos[0] * refDirVec[0] + camPosRefPos[1] * refDirVec[1] + camPosRefPos[2] * refDirVec[2];
         var facePosRefPos_RefDirVec = facePosRefPos[0] * refDirVec[0] + facePosRefPos[1] * refDirVec[1] + facePosRefPos[2] * refDirVec[2];
-        if (refDirVec[2] === 0) {
-            var camPosRefPos_RefDirVec = refPos[0] * refDirVec[0] + refPos[1] * refDirVec[1];
-            if (facePosRefPos_RefDirVec * camPosRefPos_RefDirVec < 0) {
-                return true;
-            }
-            return false;
+        if (facePosRefPos_RefDirVec < 0 && camPosRefPos_RefDirVec > 0) {
+            return true;
         }
-        if (facePosRefPos_RefDirVec * refDirVec[2] < 0) {
+        if (facePosRefPos_RefDirVec > 0 && camPosRefPos_RefDirVec < 0) {
             return true;
         }
         return false;
