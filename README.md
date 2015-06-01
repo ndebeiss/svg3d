@@ -3,7 +3,7 @@
 Add third dimension to SVG pictures, declare and manipulate 3d declared SVG.
 
 Demonstration web page is : http://debeissat.nicolas.free.fr/svg3d.php
-With explanations on the algorithms used.
+with explanations on the algorithms used.
 
 ##Quick start
 
@@ -49,7 +49,7 @@ Or you can apply 3D transformations to a 2D shape adding z:rotation or z:transla
 
 ##Programmatically apply 3D transformations
 
-In that case do not add the attribute
+In that case do not add the attribute :
 
 ```HTML
 onload="svg3d.init(this)"
