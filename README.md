@@ -7,13 +7,13 @@ with explanations on the algorithms used.
 
 ##Quick start
 
-Once you drew your SVG picture under inkscape for example, add the following attributes to svg tag :
+Once you drew your SVG picture under Inkscape for example, add the following attributes to SVG tag :
 
 ```HTML
 xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" onload="svg3d.init(this)"
 ```
 
-And the following tags under the svg tag :
+And the following tags under the SVG tag :
 
 ```HTML
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js"></script>
@@ -55,7 +55,7 @@ In that case do not add the attribute :
 onload="svg3d.init(this)"
 ```
 
-Instead, create the svg3d objects by calling following function on DOM nodes :
+Instead, create the svg3d objects individually by calling following function on DOM nodes :
 
 ```JavaScript
 var shape = svg3d.shapeFactory(node);
