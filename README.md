@@ -10,7 +10,7 @@ with explanations on the algorithms used.
 Once you drew your SVG picture under Inkscape for example, add the following attributes to SVG tag :
 
 ```HTML
-xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" onload="svg3d.init(this)"
+<svg xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" onload="svg3d.init(this)">
 ```
 
 And the following tags under the SVG tag :
@@ -25,7 +25,7 @@ The SVG is then parsed and you can begin 3D modifications.
 
 ##Declare 3D coordinates
 
-The simplest way to add the 3rd dimension is to declare your coordinates with a 3rd figure which will be the value of the z coordinate of the point.
+The simplest way to add the 3rd dimension is to declare your coordinates with a 3rd number which will be the value of the z coordinate of the point.
 In order to do that, add an attribute to the tag :
 
 ```HTML
