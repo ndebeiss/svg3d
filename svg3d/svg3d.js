@@ -505,6 +505,40 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         return clone;
     };
 
+    function transformUse(matrixArray) {
+        var pt3d = cloneArray(this.translation);
+        var points = [];
+        transformPoint(matrixArray, pt3d);
+        //points are stored before projection
+        if (svg3d.sortAlgo !== svg3d.NONE) {
+            points.push(pt3d);
+        }
+        svg3d.projectPoint3d(pt3d);
+        this.setDirectorVector(points);
+        this.domNode.setAttribute("x", pt3d[0]);
+        this.domNode.setAttribute("y", pt3d[1]);
+    }
+
+    Use.prototype = new Shape();
+    Use.constructor = Shape;
+
+    function Use(domNode) {
+        Shape.call(this, domNode);
+        if (domNode) {
+            this.translation = [0, 0, 0];
+            this.translation[0] = domNode.getAttribute("x");
+            this.translation[1] = domNode.getAttribute("y");
+        }
+    }
+
+    Use.prototype.transform = transformUse;
+    Use.prototype.cloneOn = function(domNode) {
+        this.domNode.setAttribute("x", this.translation[0]);
+        this.domNode.setAttribute("y", this.translation[1]);
+        var clone = new Use(domNode);
+        return clone;
+    };
+
     Group.prototype = new Shape();
     Group.constructor = Shape;
 
@@ -703,6 +737,13 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                     returnedShape = new Circle3d(domNode);
                 } else {
                     returnedShape = new Circle(domNode);
+                }
+                break;
+            case "use":
+                if (threeD) {
+                    returnedShape = new Use3d(domNode);
+                } else {
+                    returnedShape = new Use(domNode);
                 }
                 break;
             default:
@@ -911,6 +952,8 @@ Expose Objects
     svg3d.Polyline3d = Polyline3d;
     svg3d.Circle = Circle;
     svg3d.Circle3d = Circle3d;
+    svg3d.Use = Use;
+    //svg3d.Use3d = Use3d;
 
     window.svg3d = svg3d;
 

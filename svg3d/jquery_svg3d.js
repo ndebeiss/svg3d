@@ -91,8 +91,11 @@
         if (elem.svg3dshape !== undefined) {
             var indexArray = [],
                 i = elem.svg3dclones.length,
-                current, j, beforeElem = true,
-                parentNode = elem.parentNode;
+                current, j, beforeElem = true;
+            var parentNode = elem.parentNode;
+            if (elem.svg3dUse !== undefined) {
+                parentNode = elem.svg3dUse.parentNode;
+            }
             // sort the clones by their z coordinates
             while (i--) {
                 current = elem.svg3dclones[i];
@@ -109,8 +112,12 @@
             j = indexArray.length;
             while (j--) {
                 current = elem.svg3dclones[indexArray[j]];
-                if (beforeElem && current.svg3dshape.z > elem.svg3dshape.z) {
-                    parentNode.insertBefore(current, elem);
+                if (beforeElem && isBehind(current.svg3dshape, elem.svg3dshape)) {
+                    if (elem.svg3dUse !== undefined) {
+                        parentNode.insertBefore(current, elem.svg3dUse);
+                    } else {
+                        parentNode.insertBefore(current, elem);
+                    }
                 } else {
                     beforeElem = false;
                     parentNode.appendChild(current);
@@ -123,16 +130,22 @@
     }
 
     function isBehind(face, reference) {
-        var p = reference.position;
-        var u = [-p[0], -p[1], -200 - p[2]];
-        var b = face.position;
-        var bpu = (p[0] - b[0]) * u[0] + (p[1] - b[1]) * u[1] + (p[2] - b[2]) * u[2];
-        if (bpu * u[2] < 0) {
+        var refDirVec = reference.directorVector;
+        var refPos = reference.position;
+        var facePos = face.position;
+        var camPos = [svg3d.xOrigin, svg3d.yOrigin, - svg3d.zRatio * svg3d.focalDistance];
+        var camPosRefPos = [refPos[0] - camPos[0], refPos[1] - camPos[1], refPos[2] - camPos[2]];
+        var facePosRefPos = [refPos[0] - facePos[0], refPos[1] - facePos[1], refPos[2] - facePos[2]];
+        var camPosRefPos_RefDirVec = camPosRefPos[0] * refDirVec[0] + camPosRefPos[1] * refDirVec[1] + camPosRefPos[2] * refDirVec[2];
+        var facePosRefPos_RefDirVec = facePosRefPos[0] * refDirVec[0] + facePosRefPos[1] * refDirVec[1] + facePosRefPos[2] * refDirVec[2];
+        if (facePosRefPos_RefDirVec < 0 && camPosRefPos_RefDirVec > 0) {
+            return true;
+        }
+        if (facePosRefPos_RefDirVec > 0 && camPosRefPos_RefDirVec < 0) {
             return true;
         }
         return false;
     }
-
 
     $(document).ready(function() {
         $.cssHooks["svg3d"] = {
@@ -149,6 +162,11 @@
                     expanded.clone3dlayer = value.clone3d.layer;
                     expanded.clone3dy = value.clone3d.y;
                     expanded.clone3dz = value.clone3d.z;
+                    if (value.clone3d.symbolize === undefined) {
+                        expanded.clone3dSymbolize = 0;
+                    } else {
+                        expanded.clone3dSymbolize = value.clone3d.symbolize;
+                    }
                     expanded.clone3dNb = value.clone3d.nb;
                 }
                 if (value.matrix3ds !== undefined) {
@@ -178,11 +196,14 @@
                     while (i--) {
                         var matrixArray4Clone = [];
                         matrixArray4Clone.push(elem.svg3dclones[i].cloneMatrix);
-                        if (elem.matrix3ds !== undefined) {
-                            matrixArray4Clone = matrixArray4Clone.concat(elem.matrix3ds);
-                        }
-                        if (elem.translateMatrix !== undefined) {
-                            matrixArray4Clone.push(elem.translateMatrix);
+                        // the matrix have already been applied on svg3dSymbol, only apply cloneMatrix on use tag
+                        if (elem.svg3dSymbol === undefined) {
+                            if (elem.matrix3ds !== undefined) {
+                                matrixArray4Clone = matrixArray4Clone.concat(elem.matrix3ds);
+                            }
+                            if (elem.translateMatrix !== undefined) {
+                                matrixArray4Clone.push(elem.translateMatrix);
+                            }
                         }
                         elem.svg3dclones[i].svg3dshape.transform(matrixArray4Clone);
                     }
@@ -210,31 +231,31 @@
             set: function(elem, value, end) {
                 elem.clone3dx = end;
             }
-
         };
         $.cssHooks["clone3drow"] = {
             set: function(elem, value, end) {
                 elem.clone3drow = end;
             }
-
         };
         $.cssHooks["clone3dy"] = {
             set: function(elem, value, end) {
                 elem.clone3dy = end;
             }
-
         };
         $.cssHooks["clone3dlayer"] = {
             set: function(elem, value, end) {
                 elem.clone3dlayer = end;
             }
-
         };
         $.cssHooks["clone3dz"] = {
             set: function(elem, value, end) {
                 elem.clone3dz = end;
             }
-
+        };
+        $.cssHooks["clone3dSymbolize"] = {
+            set: function(elem, value, end) {
+                elem.clone3dSymbolize = end;
+            }
         };
         $.cssHooks["clone3dNb"] = {
             set: function(elem, value) {
@@ -245,11 +266,32 @@
                 if (elem.svg3dclones === undefined) {
                     elem.svg3dclones = [];
                 }
+                if (elem.clone3dSymbolize) {
+                    if (elem.svg3dSymbol === undefined) {
+                        var symbolId = elem.id + "_symbolClone3d";
+                        var parentElm = $(elem).parent();
+                        parentElm[0].removeChild(elem);
+                        parentElm[0].innerHTML += '<symbol id="' + symbolId + '"></symbol><use xlink:href="#' + symbolId + '" x="0" y="0"></use>';
+                        elem.svg3dSymbol = $('#' + symbolId)[0];
+                        elem.svg3dSymbol.appendChild(elem);
+                        elem.svg3dSymbol.svg3dElem = elem;
+                        elem.svg3dUse = parentElm.children("use")[0];
+                        elem.svg3dUse.svg3dSymbol = elem.svg3dSymbol;
+                        elem.svg3dUse.svg3dshape = svg3d.shapeFactory(elem.svg3dUse);
+                    }
+                }
                 for (i = elem.svg3dclones.length; i < value; i++) {
-                    clone = $(elem).clone()[0];
-                    elem.svg3dclones.push(clone);
-                    if (clone.svg3dshape === undefined) {
-                        clone.svg3dshape = elem.svg3dshape.cloneOn(clone);
+                    if (elem.svg3dUse !== undefined) {
+                        clone = $(elem.svg3dUse).clone()[0];
+                        elem.svg3dclones.push(clone);
+                        clone.svg3dSymbol = elem.svg3dSymbol;
+                        clone.svg3dshape = elem.svg3dUse.svg3dshape.cloneOn(clone);
+                    } else {
+                        clone = $(elem).clone()[0];
+                        elem.svg3dclones.push(clone);
+                        if (clone.svg3dshape === undefined) {
+                            clone.svg3dshape = elem.svg3dshape.cloneOn(clone);
+                        }
                     }
                     if (elem.svg3dCloneGeographicDistribution !== undefined) {
                         increments = elem.svg3dCloneGeographicDistribution(i, elem.clone3drow, elem.clone3dlayer, elem.clone3dx, elem.clone3dy, elem.clone3dz);
@@ -259,7 +301,7 @@
                     } else {
                         layer = Math.floor(i / elem.clone3dlayer);
                         row = Math.floor((i % elem.clone3dlayer) / elem.clone3drow);
-                        z = Math.floor(((i % elem.clone3dlayer) % elem.clone3drow));
+                        z = Math.floor((i % elem.clone3dlayer) % elem.clone3drow);
                         incx = elem.clone3dx * row;
                         incy = elem.clone3dy * layer;
                         incz = elem.clone3dz * z;
@@ -300,9 +342,7 @@
                 correctionTranslatex = correctionTranslatex * (1 - value);
                 correctionTranslatey = correctionTranslatey * (1 - value);
                 setTransformPart(elem, value, "scale", rReplaceScale);
-
                 setTransformPart(elem, correctionTranslatex + ", " + correctionTranslatey, "translate", rReplaceTranslate);
-
             },
             get: function(elem) {
                 return getTransformPart(elem, "scale", rExtractScale);
@@ -405,6 +445,9 @@
         };
         $.fx.step["clone3dz"] = function(fx) {
             $.cssHooks["clone3dz"].set(fx.elem, fx.now, fx.end);
+        };
+        $.fx.step["clone3dSymbolize"] = function(fx) {
+            $.cssHooks["clone3dSymbolize"].set(fx.elem, fx.now, fx.end);
         };
         $.fx.step["clone3dNb"] = function(fx) {
             $.cssHooks["clone3dNb"].set(fx.elem, fx.now);
