@@ -507,6 +507,10 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
 
     function transformUse(matrixArray) {
         var pt3d = cloneArray(this.translation);
+        var symbolPosition = cloneArray(this.domNode.svg3dSymbol.svg3dElem.svg3dshape.position);
+        pt3d[0] += symbolPosition[0];
+        pt3d[1] += symbolPosition[1];
+        pt3d[2] += symbolPosition[2];
         var points = [];
         transformPoint(matrixArray, pt3d);
         //points are stored before projection
@@ -514,9 +518,10 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
             points.push(pt3d);
         }
         svg3d.projectPoint3d(pt3d);
+        svg3d.projectPoint3d(symbolPosition);
         this.setDirectorVector(points);
-        this.domNode.setAttribute("x", pt3d[0]);
-        this.domNode.setAttribute("y", pt3d[1]);
+        this.domNode.setAttribute("x", pt3d[0] - symbolPosition[0]);
+        this.domNode.setAttribute("y", pt3d[1] - symbolPosition[1]);
     }
 
     Use.prototype = new Shape();
@@ -526,8 +531,8 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         Shape.call(this, domNode);
         if (domNode) {
             this.translation = [0, 0, 0];
-            this.translation[0] = domNode.getAttribute("x");
-            this.translation[1] = domNode.getAttribute("y");
+            this.translation[0] = parseFloat(domNode.getAttribute("x"));
+            this.translation[1] = parseFloat(domNode.getAttribute("y"));
         }
     }
 
