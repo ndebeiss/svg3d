@@ -140,14 +140,16 @@
 
     //indexPathsSorted contains the index of the objects in the order they have to be displayed, from front to behind
     svg3d.sortFaces = function(objectArray, indexPathsSorted) {
-        var previousDomNode = objectArray[indexPathsSorted[0]].domNode;
-        var parentNode = previousDomNode.parentNode;
         var length = indexPathsSorted.length;
-        for (var j = 1; j < length; j++) {
-            var index = indexPathsSorted[j];
-            var objectDomNode = objectArray[index].domNode;
-            parentNode.insertBefore(objectDomNode, previousDomNode);
-            previousDomNode = objectDomNode;
+        if (length > 0) {
+            var previousDomNode = objectArray[indexPathsSorted[0]].domNode;
+            var parentNode = previousDomNode.parentNode;
+            for (var j = 1; j < length; j++) {
+                var index = indexPathsSorted[j];
+                var objectDomNode = objectArray[index].domNode;
+                parentNode.insertBefore(objectDomNode, previousDomNode);
+                previousDomNode = objectDomNode;
+            }
         }
     }
 

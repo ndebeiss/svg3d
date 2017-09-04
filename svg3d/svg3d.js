@@ -43,6 +43,48 @@ get next coord in the string
         }
     }
 
+    /****************************************
+    **************** path tag ***************
+    *****************************************/
+    Path.prototype = new Shape();
+    Path.constructor = Path;
+
+    function Path(domNode) {
+        Shape.call(this, domNode);
+        if (domNode) {
+            this.coords = domNode.getAttribute("d");
+        }
+    }
+
+    function getPt2d(pt3d, firstCoord) {
+        pt3d[0] = firstCoord;
+        pt3d[1] = this.getCoord();
+        pt3d[2] = 0;
+    }
+
+    function getPt2dCumul(pt3d, firstCoord, relativeOriginPt) {
+        pt3d[0] = relativeOriginPt[0] + firstCoord;
+        pt3d[1] = relativeOriginPt[1] + this.getCoord();
+    }
+
+    function getXZ2d(pt3d, firstCoord) {
+        pt3d[0] = firstCoord;
+        pt3d[2] = 0;
+    }
+
+    function getXZ2dCumul(pt3d, firstCoord) {
+        pt3d[0] += firstCoord;
+    }
+
+    function getYZ2d(pt3d, firstCoord) {
+        pt3d[1] = firstCoord;
+        pt3d[2] = 0;
+    }
+
+    function getYZ2dCumul(pt3d, firstCoord) {
+        pt3d[1] += firstCoord;
+    }
+
     /*
      *  M = moveto
      * L = lineto
@@ -200,45 +242,6 @@ get next coord in the string
         this.domNode.setAttribute("d", newD);
     }
 
-    Path.prototype = new Shape();
-    Path.constructor = Path;
-
-    function Path(domNode) {
-        Shape.call(this, domNode);
-        if (domNode) {
-            this.coords = domNode.getAttribute("d");
-        }
-    }
-
-    function getPt2d(pt3d, firstCoord) {
-        pt3d[0] = firstCoord;
-        pt3d[1] = this.getCoord();
-        pt3d[2] = 0;
-    }
-
-    function getPt2dCumul(pt3d, firstCoord, relativeOriginPt) {
-        pt3d[0] = relativeOriginPt[0] + firstCoord;
-        pt3d[1] = relativeOriginPt[1] + this.getCoord();
-    }
-
-    function getXZ2d(pt3d, firstCoord) {
-        pt3d[0] = firstCoord;
-        pt3d[2] = 0;
-    }
-
-    function getXZ2dCumul(pt3d, firstCoord) {
-        pt3d[0] += firstCoord;
-    }
-
-    function getYZ2d(pt3d, firstCoord) {
-        pt3d[1] = firstCoord;
-        pt3d[2] = 0;
-    }
-
-    function getYZ2dCumul(pt3d, firstCoord) {
-        pt3d[1] += firstCoord;
-    }
-
     Path.prototype.transform = transformPath;
     Path.prototype.getPoint = getPt2d;
     Path.prototype.getPointCumul = getPt2dCumul;
@@ -252,9 +255,6 @@ get next coord in the string
         return clone;
     };
 
-    /*
-http://mckoss.com/jscript/object.htm
-*/
     Path3d.prototype = new Path();
     Path3d.constructor = Path3d;
 
@@ -308,6 +308,12 @@ get next 3d or 2d coordinates in the string and adds it to current point
     };
 
 
+    /****************************************
+    **************** rect tag ***************
+    *****************************************/
+    Rect.prototype = new Path();
+    Rect.constructor = Path;
+
     /*
 transfoms the rect to a Path that can be rotated. The rounded edges are transformed to a C (cubic Bezier curve)
     */
@@ -339,9 +345,6 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         }
         return d;
     }
-
-    Rect.prototype = new Path();
-    Rect.constructor = Path;
     Rect.prototype.toPath = rectToPath;
 
     function Rect(domNode) {
@@ -392,6 +395,18 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         return clone;
     };
 
+    /****************************************
+    ************** polyline tag *************
+    *****************************************/
+    Polyline.prototype = new Shape();
+    Polyline.constructor = Shape;
+
+    function Polyline(domNode) {
+        Shape.call(this, domNode);
+        if (domNode) {
+            this.coords = domNode.getAttribute("points");
+        }
+    }
 
     function transformPolyline(matrixArray) {
         this.index = 0;
@@ -411,16 +426,6 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         }
         this.setDirectorVector(points);
         this.domNode.setAttribute("points", newPoints);
-    }
-
-    Polyline.prototype = new Shape();
-    Polyline.constructor = Shape;
-
-    function Polyline(domNode) {
-        Shape.call(this, domNode);
-        if (domNode) {
-            this.coords = domNode.getAttribute("points");
-        }
     }
 
     Polyline.prototype.transform = transformPolyline;
@@ -445,6 +450,23 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         return clone;
     };
 
+    /****************************************
+    *************** circle tag **************
+    *****************************************/
+    Circle.prototype = new Shape();
+    Circle.constructor = Shape;
+
+    function Circle(domNode) {
+        Shape.call(this, domNode);
+        if (domNode) {
+            this.radius = domNode.getAttribute("r");
+            this.center = [0, 0, 0];
+            this.center[0] = domNode.getAttribute("cx");
+            this.center[1] = domNode.getAttribute("cy");
+            this.center[2] = 0;
+        }
+    }
+
     function transformCircle(matrixArray) {
         var pt3d = cloneArray(this.center);
         var points = [];
@@ -461,20 +483,6 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         this.domNode.setAttribute("cx", pt3d[0]);
         this.domNode.setAttribute("cy", pt3d[1]);
         this.domNode.setAttribute("r", newRadius);
-    }
-
-    Circle.prototype = new Shape();
-    Circle.constructor = Shape;
-
-    function Circle(domNode) {
-        Shape.call(this, domNode);
-        if (domNode) {
-            this.radius = domNode.getAttribute("r");
-            this.center = [0, 0, 0];
-            this.center[0] = domNode.getAttribute("cx");
-            this.center[1] = domNode.getAttribute("cy");
-            this.center[2] = 0;
-        }
     }
 
     Circle.prototype.transform = transformCircle;
@@ -505,6 +513,21 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         return clone;
     };
 
+    /****************************************
+    **************** Use tag ****************
+    *****************************************/
+    Use.prototype = new Shape();
+    Use.constructor = Shape;
+
+    function Use(domNode) {
+        Shape.call(this, domNode);
+        if (domNode) {
+            this.translation = [0, 0, 0];
+            this.translation[0] = parseFloat(domNode.getAttribute("x"));
+            this.translation[1] = parseFloat(domNode.getAttribute("y"));
+        }
+    }
+
     function transformUse(matrixArray) {
         var pt3d = cloneArray(this.translation);
         var symbolPosition = cloneArray(this.domNode.svg3dSymbol.svg3dElem.svg3dshape.position);
@@ -524,18 +547,6 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         this.domNode.setAttribute("y", pt3d[1] - symbolPosition[1]);
     }
 
-    Use.prototype = new Shape();
-    Use.constructor = Shape;
-
-    function Use(domNode) {
-        Shape.call(this, domNode);
-        if (domNode) {
-            this.translation = [0, 0, 0];
-            this.translation[0] = parseFloat(domNode.getAttribute("x"));
-            this.translation[1] = parseFloat(domNode.getAttribute("y"));
-        }
-    }
-
     Use.prototype.transform = transformUse;
     Use.prototype.cloneOn = function(domNode) {
         this.domNode.setAttribute("x", this.translation[0]);
@@ -544,6 +555,53 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         return clone;
     };
 
+    /****************************************
+    *************** image tag ***************
+    *****************************************/
+    Image.prototype = new Shape();
+    Image.constructor = Shape;
+
+    function Image(domNode) {
+        Shape.call(this, domNode);
+        if (domNode) {
+            this.x = parseFloat(domNode.getAttribute("x"));
+            this.y = parseFloat(domNode.getAttribute("y"));
+            this.width = parseFloat(domNode.getAttribute("width"));
+            this.height = parseFloat(domNode.getAttribute("height"));
+        }
+    }
+
+    function transformImage(matrixArray) {
+        var pt3d = [];
+        pt3d[0] = this.x;
+        pt3d[1] = this.y;
+        pt3d[2] = 0;
+        var points = [];
+        transformPoint(matrixArray, pt3d);
+        //points are stored before projection
+        if (svg3d.sortAlgo !== svg3d.NONE) {
+            points.push(pt3d);
+        }
+        svg3d.projectPoint3d(pt3d);
+        this.setDirectorVector(points);
+        this.domNode.setAttribute("x", pt3d[0]);
+        this.domNode.setAttribute("y", pt3d[1]);
+    }
+
+    Image.prototype.transform = transformImage;
+    Image.prototype.cloneOn = function(domNode) {
+        this.domNode.setAttribute("x", this.x);
+        this.domNode.setAttribute("y", this.y);
+        this.domNode.setAttribute("width", this.width);
+        this.domNode.setAttribute("height", this.height);
+        var clone = new Image(domNode);
+        return clone;
+    };
+
+
+    /****************************************
+    ***************** g tag *****************
+    *****************************************/
     Group.prototype = new Shape();
     Group.constructor = Shape;
 
@@ -571,8 +629,10 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
     function addClonedSubShapes(clonedSubShapes, subShapes, parentNode) {
         if (parentNode) {
             for (var node = getFirstChildElement(parentNode), i = 0; node; node = getNextSiblingElement(node), i++) {
-                var clonedSubShape = subShapes[i].cloneOn(node);
-                clonedSubShapes.push(clonedSubShape);
+                if (subShapes[i] !== undefined) {
+                    var clonedSubShape = subShapes[i].cloneOn(node);
+                    clonedSubShapes.push(clonedSubShape);
+                }
             }
         }
     }
@@ -750,6 +810,9 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                 } else {
                     returnedShape = new Use(domNode);
                 }
+                break;
+            case "image":
+                returnedShape = new Image(domNode);
                 break;
             default:
                 return;
