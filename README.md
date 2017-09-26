@@ -6,7 +6,7 @@ Add third dimension to SVG pictures, declare and manipulate 3d declared SVG.
 Demonstration web page is : http://debeissat.nicolas.free.fr/svg3d.php
 with explanations on the algorithms used.
 
-### Quick start ###
+# Quick start #
 
 Once you drew your SVG picture under Inkscape for example, add the following attributes to SVG tag :
 
