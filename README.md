@@ -1,11 +1,12 @@
-#svg3d
+svg3d
+====
 
 Add third dimension to SVG pictures, declare and manipulate 3d declared SVG.
 
 Demonstration web page is : http://debeissat.nicolas.free.fr/svg3d.php
 with explanations on the algorithms used.
 
-##Quick start
+### Quick start ###
 
 Once you drew your SVG picture under Inkscape for example, add the following attributes to SVG tag :
 
@@ -23,7 +24,7 @@ And the following tags under the SVG tag :
 
 The SVG is then parsed and you can begin 3D modifications.
 
-##Declare 3D coordinates
+## Declare 3D coordinates ##
 
 The simplest way to add the 3rd dimension is to declare your coordinates with a 3rd number which will be the value of the z coordinate of the point.
 In order to do that, add an attribute to the tag :
@@ -38,7 +39,7 @@ Then you can declare a shape like :
 <path d="M200,100,400 A1.571,1.571,0 30 0,1 0,100,400" fill="none" stroke="blue" stroke-width="5" z:threeD="true"/>
 ```
 
-##Declare 3D transformations
+## Declare 3D transformations ##
 
 Or you can apply 3D transformations to a 2D shape adding z:rotation or z:translation tags inside the SVG tag like :
 
@@ -47,7 +48,7 @@ Or you can apply 3D transformations to a 2D shape adding z:rotation or z:transla
 <z:translation z="-75" />
 ```
 
-##Programmatically apply 3D transformations
+## Programmatically apply 3D transformations ##
 
 In that case do not add the attribute :
 
