@@ -133,18 +133,18 @@
     }
 
     function isBehind(face, reference) {
-        var refDirVec = reference.directorVector;
+        var refNormal = reference.normal;
         var refPos = reference.position;
         var facePos = face.position;
         var camPos = [svg3d.xOrigin, svg3d.yOrigin, - svg3d.zRatio * svg3d.focalDistance];
         var camPosRefPos = [refPos[0] - camPos[0], refPos[1] - camPos[1], refPos[2] - camPos[2]];
         var facePosRefPos = [refPos[0] - facePos[0], refPos[1] - facePos[1], refPos[2] - facePos[2]];
-        var camPosRefPos_RefDirVec = camPosRefPos[0] * refDirVec[0] + camPosRefPos[1] * refDirVec[1] + camPosRefPos[2] * refDirVec[2];
-        var facePosRefPos_RefDirVec = facePosRefPos[0] * refDirVec[0] + facePosRefPos[1] * refDirVec[1] + facePosRefPos[2] * refDirVec[2];
-        if (facePosRefPos_RefDirVec < 0 && camPosRefPos_RefDirVec > 0) {
+        var camPosRefPos_RefNormal = camPosRefPos[0] * refNormal[0] + camPosRefPos[1] * refNormal[1] + camPosRefPos[2] * refNormal[2];
+        var facePosRefPos_RefNormal = facePosRefPos[0] * refNormal[0] + facePosRefPos[1] * refNormal[1] + facePosRefPos[2] * refNormal[2];
+        if (facePosRefPos_RefNormal < 0 && camPosRefPos_RefNormal > 0) {
             return true;
         }
-        if (facePosRefPos_RefDirVec > 0 && camPosRefPos_RefDirVec < 0) {
+        if (facePosRefPos_RefNormal > 0 && camPosRefPos_RefNormal < 0) {
             return true;
         }
         return false;

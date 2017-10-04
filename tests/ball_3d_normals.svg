@@ -2,7 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-flat-20030114.dtd">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng" width="100%" height="100%"
- onload="svg3d.init(this)" z:rotationTime="300" z:sortAlgo="allToAll" z:showDirectorVector="true">
+ onload="svg3d.init(this)" z:rotationTime="300" z:sortAlgo="allToAll" z:showNormal="true">
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />

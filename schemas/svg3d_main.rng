@@ -57,7 +57,7 @@
             </rng:optional>
             <rng:optional>
                 <a:documentation>for debugging purposes, will display the calculated director vectors of each SVG element.</a:documentation>
-                <rng:attribute name="z:showDirectorVector">
+                <rng:attribute name="z:showNormal">
                     <rng:choice>
                         <rng:value>true</rng:value>
                         <rng:value>false</rng:value>

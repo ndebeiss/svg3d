@@ -36,7 +36,7 @@
 
     svg3d.rotationTime = 50;
 
-    svg3d.debugDirectorVector = false;
+    svg3d.debugNormal = false;
 
     svg3d.clockRotation = undefined;
 
@@ -79,9 +79,9 @@
         if (sortAlgoAttr != undefined) {
             svg3d.sortAlgo = sortAlgoAttr;
         }
-        var debugDirectorVectorAttr = g.getAttribute("z:showDirectorVector");
-        if (debugDirectorVectorAttr != undefined) {
-            svg3d.debugDirectorVector = debugDirectorVectorAttr === "true";
+        var debugNormalAttr = g.getAttribute("z:showNormal");
+        if (debugNormalAttr != undefined) {
+            svg3d.debugNormal = debugNormalAttr === "true";
         }
         svg3d.objects = [];
         svg3d.createObjects(g);
@@ -128,12 +128,12 @@
             case svg3d.ALL_TO_ALL:
                 indexPathsSorted = svg3d.sortFacesAllToAll(objectArray);
                 svg3d.sortFaces(objectArray, indexPathsSorted);
-                showDirectorVectorsIfNeeded(objectArray);
+                showNormalsIfNeeded(objectArray);
                 break;
             default:
                 indexPathsSorted = svg3d.sortFacesOneToAll(objectArray);
                 svg3d.sortFaces(objectArray, indexPathsSorted);
-                showDirectorVectorsIfNeeded(objectArray);
+                showNormalsIfNeeded(objectArray);
                 break;
         }
     }
@@ -154,8 +154,8 @@
     }
 
 
-    function showDirectorVectorsIfNeeded(objectArray) {
-        if (svg3d.debugDirectorVector) {
+    function showNormalsIfNeeded(objectArray) {
+        if (svg3d.debugNormal) {
             var i = objectArray.length;
             while (i--) {
                 var object = objectArray[i];
@@ -166,7 +166,7 @@
                 }
                 var origin = new Array(object.position[0], object.position[1], object.position[2]);
                 svg3d.projectPoint3d(origin);
-                var vector = new Array(object.position[0] + (object.directorVector[0] / 50), object.position[1] + (object.directorVector[1] / 50), object.position[2] + (object.directorVector[2] / 50));
+                var vector = new Array(object.position[0] + (object.normal[0] / 50), object.position[1] + (object.normal[1] / 50), object.position[2] + (object.normal[2] / 50));
                 svg3d.projectPoint3d(vector);
                 object.cloned.setAttribute("d", "M" + origin[0] + "," + origin[1] + "L" + vector[0] + "," + vector[1] + "z");
                 var style = object.cloned.getAttribute("style");

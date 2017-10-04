@@ -6,7 +6,7 @@
 
     function Shape(domNode) {
         this.domNode = domNode;
-        this.assignSetDirectorVector();
+        this.assignSetNormal();
     }
     /*
 get next coord in the string
@@ -21,23 +21,23 @@ get next coord in the string
         return undefined;
     };
 
-    Shape.prototype.assignSetDirectorVector = function() {
+    Shape.prototype.assignSetNormal = function() {
         switch (svg3d.sortAlgo) {
             case svg3d.NONE:
-                this.setDirectorVector = function() {};
+                this.setNormal = function() {};
                 break;
             case svg3d.AVERAGE_Z:
-                this.setDirectorVector = setDirectorVector_averageZ;
+                this.setNormal = setNormal_averageZ;
                 this.z = 0;
                 break;
             case svg3d.ALL_TO_ALL:
-                this.setDirectorVector = setDirectorVector_default;
-                this.directorVector = [0, 0, 0];
+                this.setNormal = setNormal_default;
+                this.normal = [0, 0, 0];
                 this.position = [0, 0, 0];
                 break;
             default:
-                this.setDirectorVector = setDirectorVector_default;
-                this.directorVector = [0, 0, 0];
+                this.setNormal = setNormal_default;
+                this.normal = [0, 0, 0];
                 this.position = [0, 0, 0];
                 break;
         }
@@ -238,7 +238,7 @@ get next coord in the string
             }
 
         }
-        this.setDirectorVector(points);
+        this.setNormal(points);
         this.domNode.setAttribute("d", newD);
     }
 
@@ -424,7 +424,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                 ch = ",";
             }
         }
-        this.setDirectorVector(points);
+        this.setNormal(points);
         this.domNode.setAttribute("points", newPoints);
     }
 
@@ -476,7 +476,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
             points.push(pt3d);
         }
         svg3d.projectPoint3d(pt3d);
-        this.setDirectorVector(points);
+        this.setNormal(points);
         //reduces or increases the radius of the circle (sphere)
         var perspectiveRatio = svg3d.focalDistance / (svg3d.focalDistance + (pt3d[2] / svg3d.zRatio));
         var newRadius = this.radius * perspectiveRatio;
@@ -542,7 +542,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         }
         svg3d.projectPoint3d(pt3d);
         svg3d.projectPoint3d(symbolPosition);
-        this.setDirectorVector(points);
+        this.setNormal(points);
         this.domNode.setAttribute("x", pt3d[0] - symbolPosition[0]);
         this.domNode.setAttribute("y", pt3d[1] - symbolPosition[1]);
     }
@@ -583,7 +583,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
             points.push(pt3d);
         }
         svg3d.projectPoint3d(pt3d);
-        this.setDirectorVector(points);
+        this.setNormal(points);
         this.domNode.setAttribute("x", pt3d[0]);
         this.domNode.setAttribute("y", pt3d[1]);
     }
@@ -642,7 +642,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         while (i--) {
             this.subShapes[i].transform(matrixArray);
         }
-        this.setDirectorVector();
+        this.setNormal();
     };
 
     Group.prototype.cloneOn = function(domNode) {
@@ -652,13 +652,13 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         return clone;
     };
 
-    Group.prototype.assignSetDirectorVector = function() {
+    Group.prototype.assignSetNormal = function() {
         switch (svg3d.sortAlgo) {
             case svg3d.NONE:
-                this.setDirectorVector = function() {};
+                this.setNormal = function() {};
                 break;
             case svg3d.AVERAGE_Z:
-                this.setDirectorVector = function() {
+                this.setNormal = function() {
                     // z will be the average z of all the shapes contained in that g tag
                     var sumZ = 0,
                         i = this.subShapes.length;
@@ -670,40 +670,40 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                 this.z = 0;
                 break;
             case svg3d.ALL_TO_ALL:
-                this.setDirectorVector = this.setPositionDirectorVectorAverage;
-                this.directorVector = [0, 0, 0];
+                this.setNormal = this.setPositionNormalAverage;
+                this.normal = [0, 0, 0];
                 this.position = [0, 0, 0];
                 break;
             default:
-                this.setDirectorVector = this.setPositionDirectorVectorAverage;
-                this.directorVector = [0, 0, 0];
+                this.setNormal = this.setPositionNormalAverage;
+                this.normal = [0, 0, 0];
                 this.position = [0, 0, 0];
                 break;
         }
     };
 
-    Group.prototype.setPositionDirectorVectorAverage = function(points) {
+    Group.prototype.setPositionNormalAverage = function(points) {
         // position and director vector will be the average position and director vector of all the shapes contained in that g tag
         var sumPosition = [0, 0, 0],
-            sumDirectorVector = [0, 0, 0],
+            sumNormal = [0, 0, 0],
             i = this.subShapes.length;
         while (i--) {
             sumPosition[0] += this.subShapes[i].position[0];
             sumPosition[1] += this.subShapes[i].position[1];
             sumPosition[2] += this.subShapes[i].position[2];
-            sumDirectorVector[0] += this.subShapes[i].directorVector[0];
-            sumDirectorVector[1] += this.subShapes[i].directorVector[1];
-            sumDirectorVector[2] += this.subShapes[i].directorVector[2];
+            sumNormal[0] += this.subShapes[i].normal[0];
+            sumNormal[1] += this.subShapes[i].normal[1];
+            sumNormal[2] += this.subShapes[i].normal[2];
         }
         this.position[0] = sumPosition[0] / this.subShapes.length;
         this.position[1] = sumPosition[1] / this.subShapes.length;
         this.position[2] = sumPosition[2] / this.subShapes.length;
-        this.directorVector[0] = sumDirectorVector[0] / this.subShapes.length;
-        this.directorVector[1] = sumDirectorVector[1] / this.subShapes.length;
-        this.directorVector[2] = sumDirectorVector[2] / this.subShapes.length;
+        this.normal[0] = sumNormal[0] / this.subShapes.length;
+        this.normal[1] = sumNormal[1] / this.subShapes.length;
+        this.normal[2] = sumNormal[2] / this.subShapes.length;
     };
 
-    function setDirectorVector_averageZ(points) {
+    function setNormal_averageZ(points) {
         var i = points.length - 1;
         var sumZ = points[i][2];
         while (i--) {
@@ -712,26 +712,26 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         this.z = sumZ / points.length;
     }
 
-    function setDirectorVector_default(points) {
+    function setNormal_default(points) {
         switch (points.length) {
             case 0:
-                this.directorVector[0] = 0;
-                this.directorVector[1] = 0;
-                this.directorVector[2] = 0;
+                this.normal[0] = 0;
+                this.normal[1] = 0;
+                this.normal[2] = 0;
                 this.position = [0, 0, 0];
                 break;
             case 1:
                 //surface is parallel to ( x, y ) plan
-                this.directorVector[0] = 0;
-                this.directorVector[1] = 0;
-                this.directorVector[2] = 1;
+                this.normal[0] = 0;
+                this.normal[1] = 0;
+                this.normal[2] = 1;
                 this.position = cloneArray(points[0]);
                 break;
             case 2:
                 //surface is orthogonal to the segment
-                this.directorVector[0] = points[1][0] - points[0][0];
-                this.directorVector[1] = points[1][1] - points[0][1];
-                this.directorVector[2] = points[1][2] - points[0][2];
+                this.normal[0] = points[1][0] - points[0][0];
+                this.normal[1] = points[1][1] - points[0][1];
+                this.normal[2] = points[1][2] - points[0][2];
                 this.position = cloneArray(points[0]);
                 break;
                 //as soon we have 3 points
@@ -761,9 +761,9 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                 var vx = this.position[0] - points[0][0];
                 var vy = this.position[1] - points[0][1];
                 var vz = this.position[2] - points[0][2];
-                this.directorVector[0] = uy * vz - uz * vy;
-                this.directorVector[1] = uz * vx - ux * vz;
-                this.directorVector[2] = ux * vy - uy * vx;
+                this.normal[0] = uy * vz - uz * vy;
+                this.normal[1] = uz * vx - ux * vz;
+                this.normal[2] = ux * vy - uy * vx;
                 break;
         }
     }
@@ -987,22 +987,22 @@ if AP . u and BP . u have opposite signs, then they are not on the same side of 
 A is ( svg3d.xOrigin, svg3d.yOrigin, - svg3d.zRatio * svg3d.focalDistance )
 which is projected at (svg3d.xInfinite, svg3d.yInfinite)
 
-facePosRefPos_RefDirVec means 'are facePosRefPos and RefDirVec in the same direction ?'
+facePosRefPos_RefNormal means 'are facePosRefPos and RefNormal in the same direction ?'
 
 */
     function isBehind(face, reference) {
-        var refDirVec = reference.directorVector;
+        var refNormal = reference.normal;
         var refPos = reference.position;
         var facePos = face.position;
         var camPos = [svg3d.xOrigin, svg3d.yOrigin, - svg3d.zRatio * svg3d.focalDistance];
         var camPosRefPos = [refPos[0] - camPos[0], refPos[1] - camPos[1], refPos[2] - camPos[2]];
         var facePosRefPos = [refPos[0] - facePos[0], refPos[1] - facePos[1], refPos[2] - facePos[2]];
-        var camPosRefPos_RefDirVec = camPosRefPos[0] * refDirVec[0] + camPosRefPos[1] * refDirVec[1] + camPosRefPos[2] * refDirVec[2];
-        var facePosRefPos_RefDirVec = facePosRefPos[0] * refDirVec[0] + facePosRefPos[1] * refDirVec[1] + facePosRefPos[2] * refDirVec[2];
-        if (facePosRefPos_RefDirVec < 0 && camPosRefPos_RefDirVec > 0) {
+        var camPosRefPos_RefNormal = camPosRefPos[0] * refNormal[0] + camPosRefPos[1] * refNormal[1] + camPosRefPos[2] * refNormal[2];
+        var facePosRefPos_RefNormal = facePosRefPos[0] * refNormal[0] + facePosRefPos[1] * refNormal[1] + facePosRefPos[2] * refNormal[2];
+        if (facePosRefPos_RefNormal < 0 && camPosRefPos_RefNormal > 0) {
             return true;
         }
-        if (facePosRefPos_RefDirVec > 0 && camPosRefPos_RefDirVec < 0) {
+        if (facePosRefPos_RefNormal > 0 && camPosRefPos_RefNormal < 0) {
             return true;
         }
         return false;

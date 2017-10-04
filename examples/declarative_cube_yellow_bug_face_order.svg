@@ -13,7 +13,7 @@
         <circle id="origin" cx="50" cy="50" r="5" stroke="blue" stroke-width="1" fill="blue" />
         <circle id="infinite" cx="50" cy="50" r="2" stroke="red" stroke-width="1" fill="red" />
     </g>
-	<g id="g1" onclick="toggleRotate();svg3d.toggleRotation()" z:xInfinite="0" z:yInfinite="0" z:zRatio="2" z:sortAlgo="allToAll" z:showDirectorVector="true">
+	<g id="g1" onclick="toggleRotate();svg3d.toggleRotation()" z:xInfinite="0" z:yInfinite="0" z:zRatio="2" z:sortAlgo="allToAll" z:showNormal="true">
         <path id="vanishingLinedownright" style="fill: #0000FF" d="M600,400,0 L600,400,100000 Z" z:threeD="true"/>
         <path id="vanishingLineupright" style="fill: #0033FF" d="M600,-400,0 L600,-400,100000 Z" z:threeD="true"/>
         <path id="vanishingLineupleft" style="fill: #0066FF" d="M-600,-400,0 L-600,-400,100000 Z" z:threeD="true"/>
