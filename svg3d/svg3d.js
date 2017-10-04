@@ -691,9 +691,9 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
             sumPosition[0] += this.subShapes[i].position[0];
             sumPosition[1] += this.subShapes[i].position[1];
             sumPosition[2] += this.subShapes[i].position[2];
-            sumDirectorVector[0] += this.subShapes[i].position[0];
-            sumDirectorVector[1] += this.subShapes[i].position[1];
-            sumDirectorVector[2] += this.subShapes[i].position[2];
+            sumDirectorVector[0] += this.subShapes[i].directorVector[0];
+            sumDirectorVector[1] += this.subShapes[i].directorVector[1];
+            sumDirectorVector[2] += this.subShapes[i].directorVector[2];
         }
         this.position[0] = sumPosition[0] / this.subShapes.length;
         this.position[1] = sumPosition[1] / this.subShapes.length;
