@@ -579,11 +579,11 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
 	matrix is 		matrix(0,0)	matrix(1,0)	matrix(2,0)
 				(	matrix(0,1)	matrix(1,1)	matrix(2,1)	)
 					0			0			1
-	x1 previous = matrix(0,0) * x1 new + matrix(1,0) * y1 new + matrix(2,0)
-	y1 previous = matrix(0,1) * x1 new + matrix(1,1) * y1 new + matrix(2,1)
+	x1 new = matrix(0,0) * x1 previous + matrix(1,0) * y1 previous + matrix(2,0)
+	y1 new = matrix(0,1) * x1 previous + matrix(1,1) * y1 previous + matrix(2,1)
 	and
-	x2 previous = matrix(0,0) * x2 new + matrix(1,0) * y2 new + matrix(2,0)
-	y2 previous = matrix(0,1) * x2 new + matrix(1,1) * y2 new + matrix(2,1)
+	x2 new = matrix(0,0) * x2 previous + matrix(1,0) * y2 previous + matrix(2,0)
+	y2 new = matrix(0,1) * x2 previous + matrix(1,1) * y2 previous + matrix(2,1)
 	so
 	
 	
