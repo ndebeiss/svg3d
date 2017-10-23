@@ -572,37 +572,78 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
     }
 
 	/*
-	- 3d transform and project image upper left corner
-	- dump new position
-	- 3d transform and project image lower right corner
-	- reverse calculate 2d matrix to apply on image
+	- 3d transform and project 3 points of the image
+	- reverse calculate 2d matrix to apply on image :
 	matrix is 		matrix(0,0)	matrix(1,0)	matrix(2,0)
 				(	matrix(0,1)	matrix(1,1)	matrix(2,1)	)
 					0			0			1
-	x1 new = matrix(0,0) * x1 previous + matrix(1,0) * y1 previous + matrix(2,0)
-	y1 new = matrix(0,1) * x1 previous + matrix(1,1) * y1 previous + matrix(2,1)
-	and
-	x2 new = matrix(0,0) * x2 previous + matrix(1,0) * y2 previous + matrix(2,0)
-	y2 new = matrix(0,1) * x2 previous + matrix(1,1) * y2 previous + matrix(2,1)
-	so
-	
-	
+	x new = matrix(0,0) * x previous + matrix(1,0) * y previous + matrix(2,0)
+	y new = matrix(0,1) * x previous + matrix(1,1) * y previous + matrix(2,1)
+	let us take 3 corners as transformation points :
+    - upper left corner (x1, y1) -> (x1new, y1new)
+    - upper right corner (x2 = x + width, y2 = y1) -> (x2new, y2new)
+    - lower right corner (x3 = x2 = x1 + with, y3 = y2 + height = y1 + height) > (x3new, y3new)
+	matrix(0, 0) = ( (x1new - x2new) * (y2 - y3) - (x2new - x3new) * (y1 - y2) ) / ( (x1 - x2) * (y2 - y3) - (x2 - x3) * (y1 - y2) )
+                 = (x1new - x2new) * (-height) / (-width) * (-height)
+                 = (x2new - x1new) / width
+    matrix(1, 0) = (x3new - x2new) / height
+    matrix(0, 1) = (y2new - y1new) / width
+    matrix(1, 1) = (y3new - y2new) / height
+    matrix(2, 0) = ( (x1new * x2 - x2new * x1) * (y2 * x3 - y3 * x2) ) - ( (x2new * x3 - x3new * x2) * (y1 * x2 - y2 * x1) ) /
+                        ( (x2 - x1) * (y2 * x3 - y3 * x2) - (x3 - x2) * (y1 * x2 - y2 * x1) )
+	    where y2 * x3 - y3 * x2 = x2 * (y2 - y3) = x2 * (-height)
+              y1 * x2 - y2 * x1 = y1 * (x2 - x1) = y1 * width
+              x3 - x2 = 0
+    so
+    matrix(2, 0) = (x2 * height * (x2new * x1 - x1new * x2) - y1 * width * (x2new * x3 - x3new * x2) ) / width * x2 * (-height)
+                 = ((x1 + width) * height * (x2new * x1 - x1new * (x1 + width)) - y1 * width * (x2new * x3 - x3new * x2) ) / width * x2 * (-height)
+                 = ( h * (x1 + width) * (x2new * x1 - x1new * (x1 + width) ) - width * y1 * (x1 + width) * (x2new - x3new) ) / width * x2 * (-height)
+    matrix(2, 1) = ( h * (x1 + width) * (y2new * x1 - x1new * (x1 + width) ) - width * y1 * (x1 + width) * (y2new - x3new) ) / width * x2 * (-height)
 	*/
     function transformImage(matrixArray) {
-        var pt3d = [];
-        pt3d[0] = this.x;
-        pt3d[1] = this.y;
-        pt3d[2] = 0;
+        var pt3d_upperLeft = [];
+        pt3d_upperLeft[0] = this.x;
+        pt3d_upperLeft[1] = this.y;
+        pt3d_upperLeft[2] = 0;
+        var pt3d_upperRight = [];
+        pt3d_upperRight[0] = this.x + this.width;
+        pt3d_upperRight[1] = this.y;
+        pt3d_upperRight[2] = 0;
+        var pt3d_lowerRight = [];
+        pt3d_lowerRight[0] = this.x + this.width;
+        pt3d_lowerRight[1] = this.y + this.height;
+        pt3d_lowerRight[2] = 0;
+
         var points = [];
-        transformPoint(matrixArray, pt3d);
+        transformPoint(matrixArray, pt3d_upperLeft);
+        transformPoint(matrixArray, pt3d_upperRight);
+        transformPoint(matrixArray, pt3d_lowerRight);
         //points are stored before projection
         if (svg3d.sortAlgo !== svg3d.NONE) {
-            points.push(pt3d);
+            points.push(pt3d_upperLeft);
+            points.push(pt3d_upperRight);
+            points.push(pt3d_lowerRight);
         }
-        svg3d.projectPoint3d(pt3d);
+        svg3d.projectPoint3d(pt3d_upperLeft);
+        svg3d.projectPoint3d(pt3d_upperRight);
+        svg3d.projectPoint3d(pt3d_lowerRight);
         this.setNormal(points);
-        this.domNode.setAttribute("x", pt3d[0]);
-        this.domNode.setAttribute("y", pt3d[1]);
+        //matrix(0, 0) = (x2new - x1new) / width
+        matrix00 = (pt3d_upperRight[0] - pt3d_upperLeft[0]) / this.width;
+        //matrix(0, 1) = (y2new - y1new) / width
+        matrix01 = (pt3d_upperRight[1] - pt3d_upperLeft[1]) / this.width;
+        //matrix(1, 0) = (x3new - x2new) / height
+        matrix10 = (pt3d_lowerRight[0] - pt3d_upperRight[0]) / this.height;
+        //matrix(1, 1) = (y3new - y2new) / height
+        matrix11 = (pt3d_lowerRight[1] - pt3d_upperRight[1]) / this.height;
+        //matrix(2, 0) = ( h * (x1 + width) * (x2new * x1 - x1new * (x1 + width) ) - width * y1 * (x1 + width) * (x2new - x3new) ) / width * x2 * (-height)
+        var x2 = this.x + this.width;
+        // width * x2 * (-height)
+        var divider = -(this.width * x2 * this.height);
+        matrix20 = ( this.height * x2 * (pt3d_upperRight[0] * this.x - pt3d_upperLeft[0] * x2 ) - this.width * this.y * x2 * (pt3d_upperRight[0] - pt3d_lowerRight[0]) ) / divider
+        //matrix(2, 1) = ( h * (x1 + width) * (y2new * x1 - x1new * (x1 + width) ) - width * y1 * (x1 + width) * (y2new - x3new) ) / width * x2 * (-height)
+        matrix21 = ( this.height * x2 * (pt3d_upperRight[1] * this.x - pt3d_upperLeft[0] * x2 ) - this.width * this.y * x2 * (pt3d_upperRight[1] - pt3d_lowerRight[0]) ) / divider
+        this.domNode.setAttribute("transform", "matrix(" + matrix00 + ", " + matrix01 + ", " + matrix10 + ", " + matrix11 + ", " + matrix20 + ", " + matrix21 + ")");
     }
 
     Image.prototype.transform = transformImage;
