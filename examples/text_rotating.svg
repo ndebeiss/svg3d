@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="100%"
+   height="100%"
+   id="svg2"
+   version="1.1"
+      xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
+     onload="initG()">
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js"></script>
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js"></script>
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js"></script>
+    <script type="text/ecmascript">
+    
+    function initG() {
+        var gRotX = document.getElementById("gRotX");
+        var gRotY = document.getElementById("gRotY");
+        var gRotZ = document.getElementById("gRotZ");
+        var gIncZ = document.getElementById("gIncZ");
+        var axes3d = document.getElementById("axes3d");
+        svg3d.objects = [];
+        svg3d.objects.push(svg3d.shapeFactory(gRotX));
+        svg3d.objects.push(svg3d.shapeFactory(gRotY));
+        svg3d.objects.push(svg3d.shapeFactory(gRotZ));
+        svg3d.objects.push(svg3d.shapeFactory(gIncZ));
+        svg3d.objects.push(svg3d.shapeFactory(axes3d));
+        svg3d.clockRotation = window.setInterval(svg3d.transform, svg3d.rotationTime);
+    }
+    </script>
+  
+  <g id="gRotX">
+      <z:rotation incRotX="0.01"/>
+        <text x="0" y="0">text rotating x</text>
+  </g>
+  <g id="gRotY">
+      <z:rotation incRotY="0.01"/>
+      <text x="0" y="0">text rotating y</text>
+  </g>
+  <g id="gRotZ">
+      <z:rotation incRotZ="0.01"/>
+      <text x="0" y="0">text rotating z</text>
+  </g>
+<g id="gIncZ">
+      <z:translation incZ="10"/>
+      <text x="0" y="0">text translating z</text>
+  </g>
+
+  <g id="axes3d">
+        <!-- axe X -->
+        <path d="M0,0,0 L300,0,0" fill="none" stroke="green" stroke-width="5" z:threeD="true" >
+        </path>
+        <!-- graduations on axe X -->
+        <path d="M100,-5,-5 L100,5,5" fill="none" stroke="green" stroke-width="1" z:threeD="true" >
+        </path>
+        <path d="M200,-5,-5 L200,5,5" fill="none" stroke="green" stroke-width="1" z:threeD="true" >
+        </path>
+        
+        <!-- axe Y -->
+        <path d="M0,0,0 L0,300,0" fill="none" stroke="red" stroke-width="5" z:threeD="true" >
+        </path>
+        <!-- graduations on axe Y -->
+        <path d="M-5,100,-5 L5,100,5" fill="none" stroke="red" stroke-width="1" z:threeD="true" >
+        </path>
+        <path d="M-5,200,-5 L5,200,5" fill="none" stroke="red" stroke-width="1" z:threeD="true" >
+        </path>        
+        
+        <!-- axe Z -->
+        <path d="M0,0,0 L0,0,300" fill="none" stroke="blue" stroke-width="5" z:threeD="true" >
+        </path>
+        <!-- graduations on axe Z -->
+        <path d="M-5,-5,100 L5,5,100" fill="none" stroke="blue" stroke-width="1" z:threeD="true" >
+        </path>
+        <path d="M-5,-5,200 L5,5,200" fill="none" stroke="blue" stroke-width="1" z:threeD="true" >
+        </path>
+  </g>
+</svg>
