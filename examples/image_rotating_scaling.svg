@@ -13,52 +13,52 @@
    id="svg2"
    version="1.1"
       xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-	 onload="initG()">
+     onload="initG()">
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js"></script>
-	<script type="text/ecmascript">
-	
-	function initG() {
-		var gRotX = document.getElementById("gRotX");
-    var gRotY = document.getElementById("gRotY");
-    var gRotZ = document.getElementById("gRotZ");
-    var gIncZ = document.getElementById("gIncZ");
-    var axes3d = document.getElementById("axes3d");
-		svg3d.objects = [];
-		svg3d.objects.push(svg3d.shapeFactory(gRotX));
-    svg3d.objects.push(svg3d.shapeFactory(gRotY));
-    svg3d.objects.push(svg3d.shapeFactory(gRotZ));
-    svg3d.objects.push(svg3d.shapeFactory(gIncZ));
-    svg3d.objects.push(svg3d.shapeFactory(axes3d));
-		svg3d.clockRotation = window.setInterval(svg3d.transform, svg3d.rotationTime);
-	}
-	</script>
+    <script type="text/ecmascript">
+    
+    function initG() {
+        var gRotX = document.getElementById("gRotX");
+        var gRotY = document.getElementById("gRotY");
+        var gRotZ = document.getElementById("gRotZ");
+        var gIncZ = document.getElementById("gIncZ");
+        var axes3d = document.getElementById("axes3d");
+        svg3d.objects = [];
+        svg3d.objects.push(svg3d.shapeFactory(gRotX));
+        svg3d.objects.push(svg3d.shapeFactory(gRotY));
+        svg3d.objects.push(svg3d.shapeFactory(gRotZ));
+        svg3d.objects.push(svg3d.shapeFactory(gIncZ));
+        svg3d.objects.push(svg3d.shapeFactory(axes3d));
+        svg3d.clockRotation = window.setInterval(svg3d.transform, svg3d.rotationTime);
+    }
+    </script>
   
   <g id="gRotX">
-      <z:translation x="150" y="200"/>
+      <z:translation x="150" y="150"/>
       <z:rotation incRotX="0.01"/>
-      <z:translation x="-150" y="-200"/>
-    	<image x="20" y="20" width="223" height="223"
+      <z:translation x="-150" y="-150"/>
+        <image x="150" y="150" width="223" height="223"
        xlink:href="img/223px-Pig_icon_05.svg.png"/>
   </g>
   <g id="gRotY">
-      <z:translation x="150" y="200"/>
+      <z:translation x="150" y="150"/>
       <z:rotation incRotY="0.01"/>
-      <z:translation x="-150" y="-200"/>
-      <image x="20" y="20" width="223" height="223"
+      <z:translation x="-150" y="-150"/>
+      <image x="150" y="150" width="223" height="223"
        xlink:href="img/223px-Pig_icon_05.svg.png"/>
   </g>
   <g id="gRotZ">
-      <z:translation x="150" y="200"/>
+      <z:translation x="150" y="150"/>
       <z:rotation incRotZ="0.01"/>
-      <z:translation x="-150" y="-200"/>
-      <image x="20" y="20" width="223" height="223"
+      <z:translation x="-150" y="-150"/>
+      <image x="150" y="150" width="223" height="223"
        xlink:href="img/223px-Pig_icon_05.svg.png"/>
   </g>
 <g id="gIncZ">
       <z:translation incZ="10"/>
-      <image x="20" y="20" width="223" height="223"
+      <image x="150" y="150" width="223" height="223"
        xlink:href="img/223px-Pig_icon_05.svg.png"/>
   </g>
 
