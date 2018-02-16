@@ -570,11 +570,12 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
     let us take 3 corners as transformation points :
     - upper left corner (x1, y1) -> (x1new, y1new)
     - upper right corner (x2 = x + width, y2 = y1) -> (x2new, y2new)
-    - lower right corner (x3 = x2 = x1 + with, y3 = y2 + height = y1 + height) > (x3new, y3new)
+    - lower right corner (x3 = x2 = x1 + with, y3 = y2 + height = y1 + height) -> (x3new, y3new)
     matrix(0, 0) = ( (x1new - x2new) * (y2 - y3) - (x2new - x3new) * (y1 - y2) ) / ( (x1 - x2) * (y2 - y3) - (x2 - x3) * (y1 - y2) )
                  = (x1new - x2new) * (-height) / (-width) * (-height)
                  = (x2new - x1new) / width
     matrix(1, 0) = (x3new - x2new) / height
+    In order to pass from matrix(*, 0) to matrix(*, 1) x new becomes y new
     matrix(0, 1) = (y2new - y1new) / width
     matrix(1, 1) = (y3new - y2new) / height
     matrix(2, 0) = ( (x1new * x2 - x2new * x1) * (y2 * x3 - y3 * x2) ) - ( (x2new * x3 - x3new * x2) * (y1 * x2 - y2 * x1) ) /
@@ -583,10 +584,9 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
               y1 * x2 - y2 * x1 = y1 * (x2 - x1) = y1 * width
               x3 - x2 = 0
     so
-    matrix(2, 0) = (x2 * height * (x2new * x1 - x1new * x2) - y1 * width * (x2new * x3 - x3new * x2) ) / width * x2 * (-height)
-                 = ((x1 + width) * height * (x2new * x1 - x1new * (x1 + width)) - y1 * width * (x2new * x3 - x3new * x2) ) / width * x2 * (-height)
-                 = ( h * (x1 + width) * (x2new * x1 - x1new * (x1 + width) ) - width * y1 * (x1 + width) * (x2new - x3new) ) / width * x2 * (-height)
-    matrix(2, 1) = ( h * (x1 + width) * (y2new * x1 - x1new * (x1 + width) ) - width * y1 * (x1 + width) * (y2new - x3new) ) / width * x2 * (-height)
+    matrix(2, 0) = ( x2 * height * (x2new * x1 - x1new * x2) - y1 * width * (x2new * x3 - x3new * x2) ) / width * x2 * (-height)
+                 = ( height * (x1 + width) * (x2new * x1 - x1new * (x1 + width) ) - width * y1 * (x1 + width) * (x2new - x3new) ) / width * x2 * (-height)
+    matrix(2, 1) = ( height * (x1 + width) * (y2new * x1 - y1new * (x1 + width) ) - width * y1 * (x1 + width) * (y2new - y3new) ) / width * x2 * (-height)
     */
     function setMatrixTransform(matrixArray, pt3d_upperLeft, pt3d_upperRight, pt3d_lowerRight) {
         var points = [];
@@ -611,29 +611,33 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         matrix10 = (pt3d_lowerRight[0] - pt3d_upperRight[0]) / this.height;
         //matrix(1, 1) = (y3new - y2new) / height
         matrix11 = (pt3d_lowerRight[1] - pt3d_upperRight[1]) / this.height;
-        //matrix(2, 0) = ( h * (x1 + width) * (x2new * x1 - x1new * (x1 + width) ) - width * y1 * (x1 + width) * (x2new - x3new) ) / width * x2 * (-height)
+        //matrix(2, 0) = ( h * (x1 + w) * (x2new * x1 - x1new * (x1 + w) ) - w * y1 * (x1 + w) * (x2new - x3new) ) / w * x2 * (-h)
         var x2 = this.x + this.width;
         // width * x2 * (-height)
         var divider = -(this.width * x2 * this.height);
-        matrix20 = ( this.height * x2 * (pt3d_upperRight[0] * this.x - pt3d_upperLeft[0] * x2 ) - this.width * this.y * x2 * (pt3d_upperRight[0] - pt3d_lowerRight[0]) ) / divider
-        //matrix(2, 1) = ( h * (x1 + width) * (y2new * x1 - x1new * (x1 + width) ) - width * y1 * (x1 + width) * (y2new - x3new) ) / width * x2 * (-height)
-        matrix21 = ( this.height * x2 * (pt3d_upperRight[1] * this.x - pt3d_upperLeft[0] * x2 ) - this.width * this.y * x2 * (pt3d_upperRight[1] - pt3d_lowerRight[0]) ) / divider
-        this.domNode.setAttribute("transform", "matrix(" + matrix00 + ", " + matrix01 + ", " + matrix10 + ", " + matrix11 + ", " + matrix20 + ", " + matrix21 + ")");
+        matrix20 = ( this.height * x2 * (pt3d_upperRight[0] * this.x - pt3d_upperLeft[0] * x2 ) - this.width * this.y * x2 * (pt3d_upperRight[0] - pt3d_lowerRight[0]) ) / divider;
+        //matrix(2, 1) = ( h * (x1 + w) * (y2new * x1 - y1new * (x1 + w) ) - w * y1 * (x1 + w) * (y2new - y3new) ) / w * x2 * (-h)
+        matrix21 = ( this.height * x2 * (pt3d_upperRight[1] * this.x - pt3d_upperLeft[1] * x2 ) - this.width * this.y * x2 * (pt3d_upperRight[1] - pt3d_lowerRight[1]) ) / divider;
+        var newTransformAttr = "matrix(" + matrix00 + ", " + matrix01 + ", " + matrix10 + ", " + matrix11 + ", " + matrix20 + ", " + matrix21 + ")";
+        if (this.transformAttr) {
+            newTransformAttr = newTransformAttr + " " + this.transformAttr;
+        }
+        this.domNode.setAttribute("transform", newTransformAttr);
     }
     
     function transformRectangleShape(matrixArray) {
         var pt3d_upperLeft = [];
         pt3d_upperLeft[0] = this.x;
         pt3d_upperLeft[1] = this.y;
-        pt3d_upperLeft[2] = 0;
+        pt3d_upperLeft[2] = this.z;
         var pt3d_upperRight = [];
         pt3d_upperRight[0] = this.x + this.width;
         pt3d_upperRight[1] = this.y;
-        pt3d_upperRight[2] = 0;
+        pt3d_upperRight[2] = this.z;
         var pt3d_lowerRight = [];
         pt3d_lowerRight[0] = this.x + this.width;
         pt3d_lowerRight[1] = this.y + this.height;
-        pt3d_lowerRight[2] = 0;
+        pt3d_lowerRight[2] = this.z;
         this.setMatrixTransform(matrixArray, pt3d_upperLeft, pt3d_upperRight, pt3d_lowerRight);
     }
     
@@ -647,6 +651,8 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
             this.y = parseFloat(domNode.getAttribute("y"));
             this.width = parseFloat(domNode.getAttribute("width"));
             this.height = parseFloat(domNode.getAttribute("height"));
+            this.z = 0;
+            this.transformAttr = domNode.getAttribute("transform");
         }
     }
 
@@ -676,14 +682,16 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
             if (widthAttr) {
                 this.width = parseFloat(widthAttr);
             } else {
-				this.width = 200;
-			}
+                this.width = 200;
+            }
             var heightAttr = domNode.getAttribute("height");
             if (heightAttr) {
                 this.height = parseFloat(heightAttr);
             } else {
-				this.height = 20;
-			}
+                this.height = 20;
+            }
+            this.z = 0;
+            this.transformAttr = domNode.getAttribute("transform");
         }
     }
     
@@ -698,7 +706,26 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         return clone;
     };
 
+    Text3d.prototype = new Text();
+    Text3d.constructor = Text;
 
+    function Text3d(domNode) {
+        Text.call(this, domNode);
+        if (domNode) {
+            this.z = domNode.getAttribute("z:z");
+        }
+    }
+
+    Text3d.prototype.cloneOn = function(domNode) {
+        this.domNode.setAttribute("x", this.x);
+        this.domNode.setAttribute("y", this.y);
+        this.domNode.setAttribute("z:z", this.z);
+        this.domNode.setAttribute("width", this.width);
+        this.domNode.setAttribute("height", this.height);
+        var clone = new Text3d(domNode);
+        return clone;
+    };
+    
     /****************************************
     ***************** g tag *****************
     *****************************************/
@@ -915,7 +942,11 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                 returnedShape = new Image(domNode);
                 break;
             case "text":
-                returnedShape = new Text(domNode);
+                if (threeD) {
+                    returnedShape = new Text3d(domNode);
+                } else {
+                    returnedShape = new Text(domNode);
+                }
                 break;
             default:
                 return;

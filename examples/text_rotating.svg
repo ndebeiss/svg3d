@@ -10,7 +10,7 @@
    id="svg2"
    version="1.1"
       xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-     onload="initG()">
+     onload="initG()" onclick="svg3d.toggleRotation()">
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d.js"></script>
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js"></script>
@@ -34,19 +34,19 @@
   
   <g id="gRotX">
       <z:rotation incRotX="0.01"/>
-        <text x="0" y="0">text rotating x</text>
+        <text x="100" y="10">text rotating x</text>
   </g>
   <g id="gRotY">
       <z:rotation incRotY="0.01"/>
-      <text x="0" y="0">text rotating y</text>
+      <text x="100" y="10">text rotating y</text>
   </g>
   <g id="gRotZ">
       <z:rotation incRotZ="0.01"/>
-      <text x="0" y="0">text rotating z</text>
+      <text x="100" y="10">text rotating z</text>
   </g>
 <g id="gIncZ">
       <z:translation incZ="10"/>
-      <text x="0" y="0">text translating z</text>
+      <text x="10" y="10">text translating z</text>
   </g>
 
   <g id="axes3d">
