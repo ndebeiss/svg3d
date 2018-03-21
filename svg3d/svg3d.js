@@ -473,7 +473,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         transformPoint(matrixArray, pt3d);
         //points are stored before projection
         if (svg3d.sortAlgo !== svg3d.NONE) {
-            points.push(pt3d);
+            points.push(cloneArray(pt3d));
         }
         svg3d.projectPoint3d(pt3d);
         this.setNormal(points);
@@ -538,7 +538,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         transformPoint(matrixArray, pt3d);
         //points are stored before projection
         if (svg3d.sortAlgo !== svg3d.NONE) {
-            points.push(pt3d);
+            points.push(cloneArray(pt3d));
         }
         svg3d.projectPoint3d(pt3d);
         svg3d.projectPoint3d(symbolPosition);
@@ -595,9 +595,9 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         transformPoint(matrixArray, pt3d_lowerRight);
         //points are stored before projection
         if (svg3d.sortAlgo !== svg3d.NONE) {
-            points.push(pt3d_upperLeft);
-            points.push(pt3d_upperRight);
-            points.push(pt3d_lowerRight);
+            points.push(cloneArray(pt3d_upperLeft));
+            points.push(cloneArray(pt3d_upperRight));
+            points.push(cloneArray(pt3d_lowerRight));
         }
         svg3d.projectPoint3d(pt3d_upperLeft);
         svg3d.projectPoint3d(pt3d_upperRight);
@@ -712,7 +712,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
     function Text3d(domNode) {
         Text.call(this, domNode);
         if (domNode) {
-            this.z = domNode.getAttribute("z:z");
+            this.z = parseFloat(domNode.getAttribute("z:z"));
         }
     }
 
@@ -810,7 +810,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
     };
 
     Group.prototype.setPositionNormalAverage = function(points) {
-        // position and director vector will be the average position and director vector of all the shapes contained in that g tag
+        // position and normal will be the average position and normal of all the shapes contained in that g tag
         var sumPosition = [0, 0, 0],
             sumNormal = [0, 0, 0],
             i = this.subShapes.length;
@@ -863,7 +863,7 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                 break;
                 //as soon we have 3 points
             default:
-                //calculates the position of the surface, also avoids the problem of very small director vectors
+                //calculates the position of the surface, also avoids the problem of very small normals
                 var i = points.length - 1;
                 this.position[0] = points[i][0];
                 this.position[1] = points[i][1];
@@ -876,8 +876,8 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                 this.position[0] = this.position[0] / points.length;
                 this.position[1] = this.position[1] / points.length;
                 this.position[2] = this.position[2] / points.length;
-                //this.position will be used as third point, still in order to avoid problem of very small director vectors (1e-15 ...)
-                // in order to calculate director vector
+                //this.position will be used as third point, still in order to avoid problem of very small normals (1e-15 ...)
+                // in order to calculate normal
                 // u=(ux, uy, uz) et v=(vx, vy, vz)
                 //                (  uy vz - uz vy )
                 //  u /\ v =      (  uz vx - ux vz   )
@@ -1115,7 +1115,7 @@ With :
 - A is the position of the camera
 - B is the position of the face
 - P is the position of the reference face
-- u is the director vector of the reference
+- u is the normal of the reference
 if AP . u and BP . u have opposite signs, then they are not on the same side of the plan, then face is behind reference
 
 A is ( svg3d.xOrigin, svg3d.yOrigin, - svg3d.zRatio * svg3d.focalDistance )

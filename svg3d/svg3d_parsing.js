@@ -36,7 +36,7 @@
 
     svg3d.rotationTime = 50;
 
-    svg3d.debugNormal = false;
+    svg3d.showNormal = false;
 
     svg3d.clockRotation = undefined;
 
@@ -79,9 +79,9 @@
         if (sortAlgoAttr != undefined) {
             svg3d.sortAlgo = sortAlgoAttr;
         }
-        var debugNormalAttr = g.getAttribute("z:showNormal");
-        if (debugNormalAttr != undefined) {
-            svg3d.debugNormal = debugNormalAttr === "true";
+        var showNormalAttr = g.getAttribute("z:showNormal");
+        if (showNormalAttr != undefined) {
+            svg3d.showNormal = showNormalAttr === "true";
         }
         svg3d.objects = [];
         svg3d.createObjects(g);
@@ -155,7 +155,7 @@
 
 
     function showNormalsIfNeeded(objectArray) {
-        if (svg3d.debugNormal) {
+        if (svg3d.showNormal) {
             var i = objectArray.length;
             while (i--) {
                 var object = objectArray[i];
