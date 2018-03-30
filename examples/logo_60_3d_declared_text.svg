@@ -3,20 +3,22 @@
 <svg xmlns="http://www.w3.org/2000/svg"
  xmlns:xlink="http://www.w3.org/1999/xlink" 
  xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
-onload="svg3d.init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="120" z:focalDistance="1200" z:sortAlgo="allToAll">
+onload="svg3d.init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="120"
+ z:focalDistance="1200" z:sortAlgo="oneToAll">
  	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
     <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />    
 	<title>SVG Animation - Cube Demonstration</title>
 	
-	<g id="g2" onclick="svg3d.toggleRotation()">
-        <!-- behind face -->
+	<g id="g2"  onclick="svg3d.toggleRotation()">
+        <!-- front face -->
 	<path id="red" style="fill: red;" d="M-60,-60,-60L60,-60,-60L60,60,-60L-60,60,-60z" z:threeD="true">
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
         </path>
 	<!-- html -->
-	<text id="html" style="fill: none; stroke-width: 2px; stroke: black" font-size="120"
-		x="-180" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.25,-1)" writing-mode="lr">
+	<!-- coordinates give the 3D position of the text, scale and transform allow reducing width without modifying the 3D position -->
+	<text id="html" style="fill: black; stroke-width: 2px; stroke: black" font-size="120"
+		x="-40" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.25,1) translate(-120)">
 		HTML
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
         </text>
@@ -26,8 +28,8 @@ onload="svg3d.init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="12
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
         </path>
 	<!-- xml -->
-	<text id="xml" style="fill: none; stroke-width: 2px; stroke: black" font-size="120"
-            x="-140" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.3,1)">
+	<text id="xml" style="fill: black; stroke-width: 2px; stroke: black" font-size="120"
+            x="-40" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.35,1) translate(-95)">
 		XML
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
             <z:rotation rotX="1.57"/>
@@ -38,21 +40,21 @@ onload="svg3d.init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="12
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
         </path>
 	<!-- rng -->
-	<text id="rng" style="fill: none; stroke-width: 2px; stroke: black" font-size="120"
-	    x="-120" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.3,1)">
-            RNG
+	<text id="rng" style="fill: black; stroke-width: 2px; stroke: black" font-size="120"
+	    x="-40" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.35,1) translate(-85)">
+        RNG
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
             <z:rotation rotY="1.57"/>
         </text>
 		
-        <!-- front face -->
+        <!-- behind face -->
 	<path id="yellow" style="fill: yellow;" d="M-60,-60,60L60,-60,60L60,60,60L-60,60,60z" z:threeD="true">
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
         </path>
         <!-- xsd -->
-	<text id="xsd" style="fill: none; stroke-width: 2px; stroke: black" font-size="120"
-	    x="-120" y="40" z:z="61" width="80" height="80" z:threeD="true" transform="scale(0.3,1)">
-            XSD
+	<text id="xsd" style="fill: black; stroke-width: 2px; stroke: black" font-size="120"
+	    x="-40" y="40" z:z="61" width="80" height="80" z:threeD="true" transform="scale(0.4,1) translate(-80)">
+        XSD
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
         </text>
 		
@@ -60,11 +62,25 @@ onload="svg3d.init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="12
 	<path id="grey" style="fill: grey;" d="M-60,60,-60L60,60,-60L60,60,60L-60,60,60z" z:threeD="true">
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
         </path>
+        <!-- svg -->
+	<text id="svg" style="fill: black; stroke-width: 2px; stroke: black" font-size="120"
+	    x="-40" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.4,1) translate(-85)">
+        SVG
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+			<z:rotation rotX="-1.57"/>
+        </text>
 		
         <!-- right face -->
 	<path id="purple" style="fill: purple;" d="M60,-60,-60L60,60,-60L60,60,60L60,-60,60z" z:threeD="true">
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
         </path>
+        <!-- xsl -->
+	<text id="xsl" style="fill: black; stroke-width: 2px; stroke: black" font-size="120"
+	    x="-40" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.4,1) translate(-75)">
+        XSL
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+			<z:rotation rotY="-1.57"/>
+        </text>
 		
 	</g>
 	

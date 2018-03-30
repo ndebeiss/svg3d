@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body" xml:space="preserve" onload="init(evt)" >
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body" xml:space="preserve"
+onclick="svg3d.toggleRotation()" onload="init(evt)" >
 	<script xlink:href="../svg3d/dom_utils.js" />
 	<script xlink:href="../svg3d/svg3d_parsing.js" />
 	<script xlink:href="../svg3d/svg3d.js" />
@@ -117,7 +118,7 @@
 ]]></script>
 	<title>SVG Animation - Cube Demonstration</title>
 	
-	<g id="g2" onclick="svg3d.toggleRotation()">
+	<g id="g2">
 		<path id="face0" style="fill: red;" d="M-180,-180L180,-180L180,180L-180,180z" />
 		<!-- x 20,20 40,100 30,60 20,100 40,20 -->
 		<!-- html -->

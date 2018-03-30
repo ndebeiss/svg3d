@@ -22,6 +22,7 @@
     var ROTATION = "rotation";
     var TRANSLATION = "translation";
     var OPTIMIZED_ROTATION = "optimizedrotation";
+	var SCALE = "scale";
 
     var PATH = "path";
     var POLYLINE = "polyline";
@@ -160,18 +161,28 @@
             while (i--) {
                 var object = objectArray[i];
                 if (!object.cloned) {
-                    object.cloned = object.domNode.cloneNode(true);
-                    var id = object.cloned.getAttribute("id");
+                    if (object.domNode.tagName === 'path') {
+                        object.cloned = object.domNode.cloneNode(true);
+                    } else {
+                        object.cloned = document.createElementNS("http://www.w3.org/2000/svg", "path");
+						var style = object.domNode.getAttribute("style");
+						if (style) {
+							object.cloned.setAttribute("style", style);
+						}
+                    }
+                    var id = object.domNode.getAttribute("id");
                     object.cloned.setAttribute("id", "vector_" + id);
                 }
-                var origin = new Array(object.position[0], object.position[1], object.position[2]);
+                var origin = [object.position[0], object.position[1], object.position[2]];
                 svg3d.projectPoint3d(origin);
-                var vector = new Array(object.position[0] + (object.normal[0] / 50), object.position[1] + (object.normal[1] / 50), object.position[2] + (object.normal[2] / 50));
+                var vector = [object.position[0] + (object.normal[0] / 50), object.position[1] + (object.normal[1] / 50), object.position[2] + (object.normal[2] / 50)];
                 svg3d.projectPoint3d(vector);
                 object.cloned.setAttribute("d", "M" + origin[0] + "," + origin[1] + "L" + vector[0] + "," + vector[1] + "z");
                 var style = object.cloned.getAttribute("style");
-                var color = style.replace(/^.*fill *: */, "").replace(/ *; *.*$/, "");
-                object.cloned.setAttribute("stroke", color);
+                if (style) {
+                    var color = style.replace(/^.*fill *: */, "").replace(/ *; *.*$/, "");
+                    object.cloned.setAttribute("stroke", color);
+                }
                 object.domNode.parentNode.appendChild(object.cloned);
             }
         }
@@ -190,6 +201,8 @@
                 case OPTIMIZED_ROTATION:
                     matrixArray.push(svg3d.getOptimizedRotation(node));
                     break;
+				case SCALE:
+					matrixArray.push(svg3d.getScale(node));
             }
         }
         object.transform(matrixArray);
@@ -224,11 +237,24 @@ rotation is specified by cos x, cos y, etc...
         var z = getAttrValue(node, "z", "incZ");
         return svg3d.setTranslationMatrix(x, y, z);
     }
+	
+	/*
+	It is possible to set scale in transform attribute as well.
+	*/
+	svg3d.getScale = function(node) {
+        var x = getAttrValue(node, "x", "incX", 1);
+        var y = getAttrValue(node, "y", "incY", 1);
+        var z = getAttrValue(node, "z", "incZ", 1);
+        return svg3d.setScaleMatrix(x, y, z);
+	}
 
-    function getAttrValue(node, tag, incTag) {
+    function getAttrValue(node, tag, incTag, defaultValue) {
         var attValue = node.getAttribute(tag);
         var incAttValue = node.getAttribute(incTag);
         var returnedValue = 0;
+		if (defaultValue !== undefined) {
+			returnedValue = defaultValue;
+		}
         //can be undefined or 0
         if (attValue) {
             returnedValue = parseFloat(attValue);

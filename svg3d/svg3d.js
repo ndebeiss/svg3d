@@ -354,13 +354,13 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
             this.width = parseFloat(domNode.getAttribute("width"));
             this.height = parseFloat(domNode.getAttribute("height"));
             var rxAtt = domNode.getAttribute("rx");
-            if (rxAtt !== undefined) {
+            if (rxAtt) {
                 this.rx = parseFloat(rxAtt);
             } else {
                 this.rx = 0;
             }
             var ryAtt = domNode.getAttribute("ry");
-            if (ryAtt !== undefined) {
+            if (ryAtt) {
                 this.ry = parseFloat(ryAtt);
             } else {
                 this.ry = 0;
@@ -469,14 +469,11 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
 
     function transformCircle(matrixArray) {
         var pt3d = cloneArray(this.center);
-        var points = [];
         transformPoint(matrixArray, pt3d);
-        //points are stored before projection
         if (svg3d.sortAlgo !== svg3d.NONE) {
-            points.push(cloneArray(pt3d));
+            this.setNormal([pt3d]);
         }
         svg3d.projectPoint3d(pt3d);
-        this.setNormal(points);
         //reduces or increases the radius of the circle (sphere)
         var perspectiveRatio = svg3d.focalDistance / (svg3d.focalDistance + (pt3d[2] / svg3d.zRatio));
         var newRadius = this.radius * perspectiveRatio;
@@ -534,15 +531,12 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         pt3d[0] += symbolPosition[0];
         pt3d[1] += symbolPosition[1];
         pt3d[2] += symbolPosition[2];
-        var points = [];
         transformPoint(matrixArray, pt3d);
-        //points are stored before projection
         if (svg3d.sortAlgo !== svg3d.NONE) {
-            points.push(cloneArray(pt3d));
+            this.setNormal([pt3d]);
         }
         svg3d.projectPoint3d(pt3d);
         svg3d.projectPoint3d(symbolPosition);
-        this.setNormal(points);
         this.domNode.setAttribute("x", pt3d[0] - symbolPosition[0]);
         this.domNode.setAttribute("y", pt3d[1] - symbolPosition[1]);
     }
@@ -589,20 +583,15 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
     matrix(2, 1) = ( height * (x1 + width) * (y2new * x1 - y1new * (x1 + width) ) - width * y1 * (x1 + width) * (y2new - y3new) ) / width * x2 * (-height)
     */
     function setMatrixTransform(matrixArray, pt3d_upperLeft, pt3d_upperRight, pt3d_lowerRight) {
-        var points = [];
         transformPoint(matrixArray, pt3d_upperLeft);
         transformPoint(matrixArray, pt3d_upperRight);
         transformPoint(matrixArray, pt3d_lowerRight);
-        //points are stored before projection
         if (svg3d.sortAlgo !== svg3d.NONE) {
-            points.push(cloneArray(pt3d_upperLeft));
-            points.push(cloneArray(pt3d_upperRight));
-            points.push(cloneArray(pt3d_lowerRight));
+            this.setNormal([pt3d_upperLeft, pt3d_upperRight, pt3d_lowerRight]);
         }
         svg3d.projectPoint3d(pt3d_upperLeft);
         svg3d.projectPoint3d(pt3d_upperRight);
         svg3d.projectPoint3d(pt3d_lowerRight);
-        this.setNormal(points);
         //matrix(0, 0) = (x2new - x1new) / width
         matrix00 = (pt3d_upperRight[0] - pt3d_upperLeft[0]) / this.width;
         //matrix(0, 1) = (y2new - y1new) / width
@@ -676,8 +665,6 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
     function Text(domNode) {
         Shape.call(this, domNode);
         if (domNode) {
-            this.x = parseFloat(domNode.getAttribute("x"));
-            this.y = parseFloat(domNode.getAttribute("y"));
             var widthAttr = domNode.getAttribute("width");
             if (widthAttr) {
                 this.width = parseFloat(widthAttr);
@@ -690,6 +677,10 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
             } else {
                 this.height = 20;
             }
+            this.x = parseFloat(domNode.getAttribute("x"));
+			//Specified point in SVG text is the lower left corner.
+			this.y_orig = parseFloat(domNode.getAttribute("y"));
+            this.y = this.y_orig - this.height;
             this.z = 0;
             this.transformAttr = domNode.getAttribute("transform");
         }
@@ -699,7 +690,8 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
     Text.prototype.transform = transformRectangleShape;
     Text.prototype.cloneOn = function(domNode) {
         this.domNode.setAttribute("x", this.x);
-        this.domNode.setAttribute("y", this.y);
+		//Specified point in SVG text is the lower left corner.
+        this.domNode.setAttribute("y", this.y_orig);
         this.domNode.setAttribute("width", this.width);
         this.domNode.setAttribute("height", this.height);
         var clone = new Text(domNode);
@@ -718,7 +710,8 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
 
     Text3d.prototype.cloneOn = function(domNode) {
         this.domNode.setAttribute("x", this.x);
-        this.domNode.setAttribute("y", this.y);
+		//Specified point in SVG text is the lower left corner.
+        this.domNode.setAttribute("y", this.y_orig);
         this.domNode.setAttribute("z:z", this.z);
         this.domNode.setAttribute("width", this.width);
         this.domNode.setAttribute("height", this.height);
@@ -1013,37 +1006,27 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
     }
 
     svg3d.setRotationMatrix = function(cx, sx, cy, sy, cz, sz) {
-        var matrix = [];
-        matrix[0] = cz * cy;
-        matrix[1] = sz * cx * cy - sx * sy;
-        matrix[2] = sz * sx * cy + cx * sy;
-        matrix[3] = 0;
-        matrix[4] = -sz;
-        matrix[5] = cz * cx;
-        matrix[6] = cz * sx;
-        matrix[7] = 0;
-        matrix[8] = cz * sy;
-        matrix[9] = sz * cx * sy + sx * cy;
-        matrix[10] = sz * sx * sy - cx * cy;
-        matrix[11] = 0;
-        return matrix;
+        return [
+			cz * cy, 	sz * cx * cy - sx * sy, 	- sz * sx * cy - cx * sy, 	0,
+			-sz, 		cz * cx,					- cz * sx, 					0,
+			cz * sy, 	sz * cx * sy + sx * cy,		cx * cy - sz * sx * sy, 	0
+		];
     }
 
     svg3d.setTranslationMatrix = function(x, y, z) {
-        var matrix = [];
-        matrix[0] = 1;
-        matrix[1] = 0;
-        matrix[2] = 0;
-        matrix[3] = x;
-        matrix[4] = 0;
-        matrix[5] = 1;
-        matrix[6] = 0;
-        matrix[7] = y;
-        matrix[8] = 0;
-        matrix[9] = 0;
-        matrix[10] = 1;
-        matrix[11] = z;
-        return matrix;
+		return [
+			1, 0, 0, x,
+            0, 1, 0, y,
+            0, 0, 1, z
+        ];
+    }
+	
+	svg3d.setScaleMatrix = function(x, y, z) {
+        return [
+			x, 0, 0, 0,
+            0, y, 0, 0,
+            0, 0, z, 0
+        ];
     }
 
     svg3d.sortFacesAverageZ = function(pathArray) {
