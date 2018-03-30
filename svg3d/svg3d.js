@@ -655,6 +655,26 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
         var clone = new Image(domNode);
         return clone;
     };
+	
+	Image3d.prototype = new Image();
+    Image3d.constructor = Image;
+
+    function Image3d(domNode) {
+        Image.call(this, domNode);
+        if (domNode) {
+            this.z = parseFloat(domNode.getAttribute("z:z"));
+        }
+    }
+
+    Image3d.prototype.cloneOn = function(domNode) {
+        this.domNode.setAttribute("x", this.x);
+        this.domNode.setAttribute("y", this.y);
+        this.domNode.setAttribute("z:z", this.z);
+        this.domNode.setAttribute("width", this.width);
+        this.domNode.setAttribute("height", this.height);
+        var clone = new Image3d(domNode);
+        return clone;
+    };
     
     /****************************************
     *************** text tag ***************
@@ -932,7 +952,11 @@ transfoms the rect to a Path that can be rotated. The rounded edges are transfor
                 }
                 break;
             case "image":
-                returnedShape = new Image(domNode);
+				if (threeD) {
+					returnedShape = new Image3d(domNode);
+				} else {
+					returnedShape = new Image(domNode);
+				}
                 break;
             case "text":
                 if (threeD) {

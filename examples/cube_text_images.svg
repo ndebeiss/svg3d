@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-flat-20030114.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:z="http://debeissat.nicolas.free.fr/svg3d/svg3d.rng"
+onload="svg3d.init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="120"
+ z:focalDistance="1200" z:sortAlgo="oneToAll">
+ 	<script type="text/ecmascript" xlink:href="../svg3d/svg3d.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/svg3d_parsing.js" />
+    <script type="text/ecmascript" xlink:href="../svg3d/dom_utils.js" />    
+	<title>SVG Animation - Cube Demonstration</title>
+	
+	<g id="g2"  onclick="svg3d.toggleRotation()">
+        
+	<image id="front" xlink:href="img/winter.jpg" x="-60" y="-60" z:z="-60" height="120" width="120"
+		z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+    </image>
+	<!-- coordinates give the 3D position of the text, scale and transform allow reducing width without modifying the 3D position -->
+	<text id="winter" style="fill: black; stroke-width: 2px; stroke: black" font-size="60"
+		x="-40" y="20" z:z="-61" width="80" height="40" z:threeD="true" transform="scale(0.3,1) translate(-80)">
+		WINTER
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+    </text>
+		
+	<image id="above" xlink:href="img/summer.jpg" x="-60" y="-60" z:z="-60" height="120" width="120"
+		z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+			<!-- optimizedrotation allows specification of an exact Pi/2 angle -->
+            <z:optimizedrotation cosX="0" sinX="-1" cosY="1" sinY="0" cosZ="1" sinZ="0"/>
+	</image>
+	<text id="summer" style="fill: black; stroke-width: 2px; stroke: black" font-size="60"
+            x="-40" y="20" z:z="-61" width="80" height="40" z:threeD="true" transform="scale(0.35,1) translate(-95)">
+		SUMMER
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+            <z:optimizedrotation cosX="0" sinX="-1" cosY="1" sinY="0" cosZ="1" sinZ="0"/>
+    </text>
+		
+	<image id="left" xlink:href="img/spring.jpg" x="-60" y="-60" z:z="-60" height="120" width="120"
+		z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+			<z:optimizedrotation cosX="1" sinX="0" cosY="0" sinY="-1" cosZ="1" sinZ="0"/>
+    </image>
+	<text id="spring" style="fill: black; stroke-width: 2px; stroke: black" font-size="60"
+	    x="-40" y="20" z:z="-61" width="80" height="40" z:threeD="true" transform="scale(0.4,1) translate(-75)">
+        SPRING
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+            <z:optimizedrotation cosX="1" sinX="0" cosY="0" sinY="-1" cosZ="1" sinZ="0"/>
+    </text>
+		
+	<image id="behind" xlink:href="img/night.jpg" x="-60" y="-60" z:z="60" height="120" width="120"
+		z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+	</image>
+	<text id="night" style="fill: white; stroke-width: 2px; stroke: white" font-size="60"
+	    x="-40" y="20" z:z="61" width="80" height="40" z:threeD="true" transform="scale(0.4,1) translate(-60)">
+        NIGHT
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+    </text>
+		
+	<image id="below" xlink:href="img/day.jpg" x="-60" y="-60" z:z="-60" height="120" width="120"
+		z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+			<z:optimizedrotation cosX="0" sinX="1" cosY="1" sinY="0" cosZ="1" sinZ="0"/>
+    </image>
+	<text id="day" style="fill: white; stroke-width: 2px; stroke: white" font-size="60"
+	    x="-40" y="20" z:z="-61" width="80" height="40" z:threeD="true" transform="scale(0.4,1) translate(-25)">
+        DAY
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+			<z:optimizedrotation cosX="0" sinX="1" cosY="1" sinY="0" cosZ="1" sinZ="0"/>
+    </text>
+		
+	<image id="right" xlink:href="img/automn.jpg" x="-60" y="-60" z:z="-60" height="120" width="120"
+		z:threeD="true">
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+			<z:optimizedrotation cosX="1" sinX="0" cosY="0" sinY="1" cosZ="1" sinZ="0"/>
+    </image>
+	<text id="autumn" style="fill: white; stroke-width: 2px; stroke: white" font-size="60"
+	    x="-40" y="20" z:z="-61" width="80" height="40" z:threeD="true" transform="scale(0.3,1) translate(-85)">
+        AUTUMN
+            <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
+			<z:optimizedrotation cosX="1" sinX="0" cosY="0" sinY="1" cosZ="1" sinZ="0"/>
+    </text>
+		
+	</g>
+	
+</svg>

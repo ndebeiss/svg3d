@@ -32,7 +32,7 @@ onload="svg3d.init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="12
             x="-40" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.35,1) translate(-95)">
 		XML
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
-            <z:rotation rotX="1.57"/>
+            <z:rotation rotX="-1.57"/>
         </text>
 		
         <!-- left face -->
@@ -44,7 +44,7 @@ onload="svg3d.init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="12
 	    x="-40" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.35,1) translate(-85)">
         RNG
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
-            <z:rotation rotY="1.57"/>
+            <z:rotation rotY="-1.57"/>
         </text>
 		
         <!-- behind face -->
@@ -67,7 +67,7 @@ onload="svg3d.init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="12
 	    x="-40" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.4,1) translate(-85)">
         SVG
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
-			<z:rotation rotX="-1.57"/>
+			<z:rotation rotX="1.57"/>
         </text>
 		
         <!-- right face -->
@@ -79,7 +79,7 @@ onload="svg3d.init(this)" z:rotationTime="150" z:xInfinite="120" z:yInfinite="12
 	    x="-40" y="40" z:z="-61" width="80" height="80" z:threeD="true" transform="scale(0.4,1) translate(-75)">
         XSL
             <z:rotation incRotX="0.07" incRotY="0.03" incRotZ="0.02"/>
-			<z:rotation rotY="-1.57"/>
+			<z:rotation rotY="1.57"/>
         </text>
 		
 	</g>
