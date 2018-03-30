@@ -203,6 +203,7 @@
                     break;
 				case SCALE:
 					matrixArray.push(svg3d.getScale(node));
+					break;
             }
         }
         object.transform(matrixArray);
