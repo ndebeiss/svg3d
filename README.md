@@ -27,7 +27,7 @@ The SVG is then parsed and you can begin 3D modifications.
 
 ### On HTML tags
 
-With https://www.w3.org/TR/css-transforms-1/ (working draft), the transformations done in that library in JS can be done with CSS applied on SVG tags.
+With https://www.w3.org/TR/css-transforms-1/ (working draft), the transformations done in that library in JS could be done with CSS.
 The support on HTML tags becomes good, especially with the CSS attribute : 
 ```css
 transformStyle="preserve-3d" :
@@ -56,7 +56,11 @@ These are screenshots at the end of the animation. The blue rectangle rotates ar
 
 Only Firefox handles it well. Chrome makes the animation, but it does not manage the stacking. Internet Explorer does not apply the CSS 3d transformations at all.
 
-## Declare 3D coordinates
+## Make it 3D
+
+Below, 3 possible ways of using svg3d library.
+
+### Declare 3D coordinates
 
 The simplest way to add the 3rd dimension is to declare your coordinates with a 3rd number which will be the value of the z coordinate of the point.
 In order to do that, add an attribute to the tag :
@@ -71,7 +75,9 @@ Then you can declare a shape like :
 <path d="M200,100,400 A1.571,1.571,0 30 0,1 0,100,400" fill="none" stroke="blue" stroke-width="5" z:threeD="true"/>
 ```
 
-## Declare 3D transformations
+This is for paths objects. For other use cases, browse the examples given.
+
+### Declare 3D transformations
 
 Or you can apply 3D transformations to a 2D shape adding z:rotation or z:translation tags inside the SVG tag like :
 
@@ -80,7 +86,7 @@ Or you can apply 3D transformations to a 2D shape adding z:rotation or z:transla
 <z:translation z="-75" />
 ```
 
-## Programmatically apply 3D transformations
+### Programmatically apply 3D transformations
 
 In that case do not add the attribute :
 
