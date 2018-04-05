@@ -25,6 +25,8 @@ The SVG is then parsed and you can begin 3D modifications.
 
 ## Comparison with new CSS 3d transformations
 
+### On HTML tags
+
 With https://www.w3.org/TR/css-transforms-1/ (working draft), the transformations done in that library in JS can be done with CSS applied on SVG tags.
 The support on HTML tags becomes good, especially with the CSS attribute : 
 ```css
@@ -40,12 +42,19 @@ Below the result of test with https://www.w3schools.com/cssref/trycss3_transform
 
 Firefox makes it work, Chrome even splits the rectangle if only a part of it is behind, but Internet Explorer does not show any intention to make the yellow rectangle going behind the other, with any rotation angle applied.
 
+### On SVG tags
+
 CSS 3d transformation on SVG tags is a lot more recent.
 
-You can test support of CSS 3d transformations on that file :
-https://github.com/ndebeiss/svg3d/blob/master/tests/css_3d_transform.svg
+Below the result of test with my test file : https://github.com/ndebeiss/svg3d/blob/master/tests/css_3d_transform.svg
 
+| Firefox | Chrome | Internet Explorer |
+| --- | --- | --- |
+| ![preserve-3d on Firefox](https://github.com/ndebeiss/svg3d/blob/master/doc/Capture_firefox_preserve-3d_SVG.PNG "preserve-3d on Firefox") | ![preserve-3d on Chrome](https://github.com/ndebeiss/svg3d/blob/master/doc/Capture_chrome_preserve-3d_SVG.PNG "preserve-3d on Chrome") | ![preserve-3d on Internet Explorer](https://github.com/ndebeiss/svg3d/blob/master/doc/Capture_IE_preserve-3d_SVG.PNG "preserve-3d on Internet Explorer") |
 
+These are screenshots at the end of the animation. The blue rectangle rotates around Y axe and should pass above yellow rectangle, then the green rectangle comes from behind, passes above yellow rectangle, then passes above blue one.
+
+Only Firefox handles it well. Chrome makes the animation, but it does not manage the stacking. Internet Explorer does not apply the CSS 3d transformations at all.
 
 ## Declare 3D coordinates
 
