@@ -38,7 +38,7 @@ Below the result of test with https://www.w3schools.com/cssref/trycss3_transform
 | --- | --- | --- |
 | ![preserve-3d on Firefox](https://github.com/ndebeiss/svg3d/blob/master/doc/Capture_firefox_preserve-3d.PNG "preserve-3d on Firefox") | ![preserve-3d on Chrome](https://github.com/ndebeiss/svg3d/blob/master/doc/Capture_chrome_preserve-3d.PNG "preserve-3d on Chrome") | ![preserve-3d on Internet Explorer](https://github.com/ndebeiss/svg3d/blob/master/doc/Capture_IE_preserve-3d.PNG "preserve-3d on Internet Explorer") |
 
-Firefox does make it work, Chrome even splits the rectangle if only a part of it is behind, but Internet Explorer does not show any intention to make the yellow rectangle going behind the other, with any rotation angle applied.
+Firefox makes it work, Chrome even splits the rectangle if only a part of it is behind, but Internet Explorer does not show any intention to make the yellow rectangle going behind the other, with any rotation angle applied.
 
 CSS 3d transformation on SVG tags is a lot more recent.
 
