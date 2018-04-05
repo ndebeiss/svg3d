@@ -26,22 +26,26 @@ The SVG is then parsed and you can begin 3D modifications.
 ## Comparison with new CSS 3d transformations
 
 With https://www.w3.org/TR/css-transforms-1/ (working draft), the transformations done in that library in JS can be done with CSS applied on SVG tags.
-The support on HTML tags becomes good, especially the CSS attribute : 
+The support on HTML tags becomes good, especially with the CSS attribute : 
 ```css
 transformStyle="preserve-3d" :
 ```
 which manages stacking of shapes.
 
-IE11 should have support for it, but the example :
-https://www.w3schools.com/cssref/trycss3_transform-style_inuse.htm
-does not work on my IE11 at the time of writing.
+Below the result of test with https://www.w3schools.com/cssref/trycss3_transform-style_inuse.htm :
 
-Firefox does make it work, and Chrome even splits the shape if a part of it is behind and the other part is above.
+| Firefox | Chrome | Internet Explorer |
+| --- | --- | --- |
+| ![preserve-3d on Firefox](https://github.com/ndebeiss/svg3d/blob/master/doc/Capture_firefox_preserve-3d.PNG "preserve-3d on Firefox") | ![preserve-3d on Chrome](https://github.com/ndebeiss/svg3d/blob/master/doc/Capture_chrome_preserve-3d.PNG "preserve-3d on Chrome") | ![preserve-3d on Internet Explorer](https://github.com/ndebeiss/svg3d/blob/master/doc/Capture_IE_preserve-3d.PNG "preserve-3d on Internet Explorer") |
+
+Firefox makes it work, Chrome even splits the rectangle if only a part of it is behind, but Internet Explorer does not show any intention to make the yellow rectangle going behind the other, with any rotation angle applied.
 
 CSS 3d transformation on SVG tags is a lot more recent.
 
 You can test support of CSS 3d transformations on that file :
 https://github.com/ndebeiss/svg3d/blob/master/tests/css_3d_transform.svg
+
+
 
 ## Declare 3D coordinates
 
