@@ -28,7 +28,7 @@ The SVG is then parsed and you can begin 3D modifications.
 ### On HTML tags
 
 With https://www.w3.org/TR/css-transforms-1/ (working draft), the transformations done in that library in JS could be done with CSS.
-The support on HTML tags becomes good, especially with the CSS attribute : 
+The support on [HTML tags](https://www.scaler.com/topics/html/html-tags/) becomes good, especially with the CSS attribute : 
 ```css
 transformStyle="preserve-3d" :
 ```
